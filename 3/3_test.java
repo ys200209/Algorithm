@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Main3 {
+class Main3_3 {
 
     public static void main(String[] args) {
         int min = 9;
