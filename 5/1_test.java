@@ -1,9 +1,9 @@
 import java.util.*;
 
 class Main5_1 {
-    static int N, M;
-    static int[][] map;
-    String str;
+    static int N, M, result;
+    static int[][] list;
+    static String str;
     public static void main(String[] args) {
 
         /*
@@ -24,13 +24,13 @@ class Main5_1 {
         N = sc.nextInt();
         M = sc.nextInt();
         sc.nextLine();
-        map = new int[N][M];
-        int result = 0;
+        list = new int[N][M];
 
+        //System.out.println("N = " + N + ", M = " + M);
         for(int i=0; i<N; i++) {
-            String str = sc.nextLine();
+            str = sc.nextLine();
             for(int j=0; j<M; j++) {
-                map[i][j] = str.charAt(j) - '0';
+                list[i][j] = str.charAt(j) - '0';
             }
         }
 
@@ -41,24 +41,23 @@ class Main5_1 {
                 }
             }
         }
-
         System.out.println("result = " + result);
-
     }
 
-    public static boolean DFS(int x, int y) { // x:행, y:열
+    public static boolean DFS(int x, int y) {
         if(x<0 || x>=N || y<0 || y>=M) {
             return false;
         }
 
-        if(map[x][y] == 0) {
-            map[x][y] = 1;
+        if(list[x][y] == 0) {
+            list[x][y] = 1;
             DFS(x-1, y);
             DFS(x+1, y);
             DFS(x, y-1);
             DFS(x, y+1);
             return true;
         }
+
         return false;
     }
 
