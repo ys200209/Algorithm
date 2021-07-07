@@ -27,7 +27,7 @@ class Main {
             } else {
                 queue.offer(cities[i].toLowerCase());
                 answer += 5;
-            }
+            } 
         }
 
         for(int i=cacheSize; i<cities.length; i++) {
