@@ -1,11 +1,11 @@
 import java.util.*;
 
 class Main5_2 {
-    static int N, M, count;
-    static int[][] map;
+    static int N, M, result;
+    static int[][] list;
+    static String str="";
 
     public static void main(String[] args) {
-
         /* 
         A는 N X M 크기의 직사각형 형태의 미로에 갇혀 있다. 미로에는 여러 마리의 괴물이 있어 이를 피해
         탈출해야 한다. A의 위치는 (1, 1)이고 미로의 출구는 (N, M)의 위치에 존재하며 한번에 한 칸씩 이동할 수 있다.
@@ -22,44 +22,49 @@ class Main5_2 {
         */
 
         Scanner sc = new Scanner(System.in);
+
         N = sc.nextInt();
         M = sc.nextInt();
+
+        list = new int[N][M];
         sc.nextLine();
-        String str;
-        map = new int[N][M];
         for(int i=0; i<N; i++) {
             str = sc.nextLine();
             for(int j=0; j<M; j++) {
-                map[i][j] = str.charAt(j) - '0';
+                list[i][j] = str.charAt(j) - '0';
             }
         }
 
-        DFS(1, 1, 1);
-
         for(int i=0; i<N; i++) {
-            System.out.println(Arrays.toString(map[i]));
+            for(int j=0; j<M; j++) {
+                if(BFS(1, 1, 1)) {
+                    result = list[N-1][M-1];
+                }
+            }
         }
 
-        System.out.println("result = " + map[N-1][M-1]);
+        System.out.println("result = " + result);
 
     }
 
-    public static void DFS(int x, int y, int count) {
-        if (x<0 || x>=N || y<0 || y>=M) {
-            return;
+    public static boolean BFS(int x, int y, int count) {
+        if(x<=0 || x>N || y<=0 || y>M) {
+            return false;
         }
 
-        if (map[x][y] == 1) {
-            map[x][y] = count;
-            DFS(x-1, y, count+1);
-            DFS(x+1, y, count+1);
-            DFS(x, y-1,count+1);
-            DFS(x, y+1, count+1);
-            
-            return ;
+        if(list[N-1][M-1] != 1) {
+            return true;
         }
 
-        return;
+        if(list[x-1][y-1] == 1) {
+            list[x-1][y-1] = count;
+            BFS(x-1, y, count+1);
+            BFS(x+1, y, count+1);
+            BFS(x, y-1, count+1);
+            BFS(x, y+1, count+1);
+            return true;
+        }
+        return false;
     }
 
 }
