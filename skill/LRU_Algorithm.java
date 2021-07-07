@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Main {
-    // 2018년도 코딩테스트 3번 문제
+    // 2018년도 카카오 블라인드 코딩테스트 3번 문제
     public static void main(String[] args) {
         int result = solution(3, new String[]{"Jeju", "Pangyo", "Seoul", "NewYork", "LA", "Jeju", "Pangyo", "Seoul", "NewYork", "LA"});
         System.out.println("result = " + result);
