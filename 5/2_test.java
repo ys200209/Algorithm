@@ -1,9 +1,10 @@
 import java.util.*;
 
 class Main5_2 {
-    static int N, M, result;
+    static int N, M;
     static int[][] list;
-    static String str="";
+    static int result;
+    static String str;
 
     public static void main(String[] args) {
         /* 
@@ -25,11 +26,11 @@ class Main5_2 {
 
         N = sc.nextInt();
         M = sc.nextInt();
-
-        list = new int[N][M];
         sc.nextLine();
+        list = new int[N][M];
+
         for(int i=0; i<N; i++) {
-            str = sc.nextLine();
+            str = sc.next();
             for(int j=0; j<M; j++) {
                 list[i][j] = str.charAt(j) - '0';
             }
@@ -37,23 +38,19 @@ class Main5_2 {
 
         for(int i=0; i<N; i++) {
             for(int j=0; j<M; j++) {
-                if(BFS(1, 1, 1)) {
-                    result = list[N-1][M-1];
-                }
+                result = BFS(i, j, 1);
             }
         }
-
         System.out.println("result = " + result);
-
     }
 
-    public static boolean BFS(int x, int y, int count) {
+    public static int BFS(int x, int y, int count) {
         if(x<=0 || x>N || y<=0 || y>M) {
-            return false;
+            return -1;
         }
 
         if(list[N-1][M-1] != 1) {
-            return true;
+            return list[N-1][M-1];
         }
 
         if(list[x-1][y-1] == 1) {
@@ -62,9 +59,8 @@ class Main5_2 {
             BFS(x+1, y, count+1);
             BFS(x, y-1, count+1);
             BFS(x, y+1, count+1);
-            return true;
         }
-        return false;
-    }
 
+        return -1;
+    }
 }
