@@ -48,11 +48,9 @@ class Main5_2 {
         if(x<=0 || x>N || y<=0 || y>M) {
             return -1;
         }
-
         if(list[N-1][M-1] != 1) {
             return list[N-1][M-1];
         }
-
         if(list[x-1][y-1] == 1) {
             list[x-1][y-1] = count;
             BFS(x-1, y, count+1);
