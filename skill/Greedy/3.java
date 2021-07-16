@@ -34,7 +34,9 @@ class Main3 {
         for(int i=0; i<number.length()-k-1; i++) {
             max=0;
             System.out.println("--i-- = " + i);
-            end = list.length - k + i - 1; // 2 // i가 2, k가 4일 때, j는 최대 6이어야 함. end는 7.
+            // i가 2, k가 4일 때, j는 최대 6이어야 함. end는 7.
+            // i가 1, k가 4일 때, j는 최대 6이어야 함. end는 7.
+            end = list.length - k + i; // 2 
             System.out.println("end = " + end);
             for(int j=start; j<end; j++) {
                 System.out.println("j = " + j);
