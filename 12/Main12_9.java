@@ -17,11 +17,11 @@ class Main12_9 {
         
         */
         
-        /*System.out.println(solution("aabbaccc"));
+        System.out.println(solution("aabbaccc"));
         System.out.println(solution("ababcdcdababcdcd"));
         System.out.println(solution("abcabcdede"));
         System.out.println(solution("abcabcabcabcdededededede"));
-        System.out.println(solution("xababcdcdababcdcd")); */ 
+        System.out.println(solution("xababcdcdababcdcd"));
         System.out.println(solution("a"));
 
     }
