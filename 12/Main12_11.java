@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Main12_11 {
-    static int N, K, L, snake_size=1, x, y, dx, dy, vector, result=0;
+    static int N, K, L, snake_size=1, x, y, dx, dy, vector, time_stamp=0, result=1;
     static int[][] map;
     static int[][] K_pos; // 사과
     static String[][] L_pos; // 뱀
@@ -37,7 +37,7 @@ class Main12_11 {
         map[0][0] = 2;
         queue.offer(new int[][]{{0,0}});
         pos = new int[]{0,0};
-        dx_dy = new int[][]{{0,1},{-1,0},{1,0},{0,-1}}; // 동,서,남,북
+        dx_dy = new int[][]{{0,1},{1,0},{0,-1},{-1,0}}; // 동,남,서,북
         vector = 0;
         // K_pos = new int[K][2];
 
@@ -66,11 +66,10 @@ class Main12_11 {
             for(int j=0; j<N; j++) {
                 System.out.println(Arrays.toString(map[j]));
             }
-            System.out.println("result = " + result);
+            //System.out.println("result = " + result);
         }
-        System.out.println("result = " + result);
 
-        
+        System.out.println("result = " + result);
     }
 
     public static boolean move(int[][] position, String x, String y) {
@@ -80,42 +79,66 @@ class Main12_11 {
             vector = 3;
         }
 
-        System.out.println("반복횟수 !!!!!!! : " + x);
+        System.out.println("반복 : " + x);
 
-        for(int i=0; i<Integer.parseInt(x); i++) {
+        for(int i=0; i<Integer.parseInt(x)-time_stamp; i++) {
             dx = dx_dy[vector][0];
             dy = dx_dy[vector][1];
             
+            System.out.println("queue.peek() = [" + queue.peek()[0][0]+"]["+queue.peek()[0][1]+"], queue.size() = " + queue.size());
             if(queue.peek()[0][0]+dx < 0 || queue.peek()[0][0]+dx >= N ||
                 queue.peek()[0][1]+dy < 0 || queue.peek()[0][1]+dy >= N) {
-                    System.out.println("IndexOutOfBounsException.");
+                    System.out.println("IndexOutOfBounsException. dx : " + dx + ", dy : " + dy);
                     return false;
             }
             System.out.println("map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] = " 
                                         + map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy]);
 
             if (map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] == 1) { // Apple 발견했다면.
-                System.out.println("여기는? result = " + result);
                 snake_size++;
                 result++;
                 map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] = 2;
                 queue.offer(new int[][]{{queue.peek()[0][0]+dx,queue.peek()[0][1]+dy}});
             } else if (map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] == 2) { // 자신과 부딪혔다면.
-                System.out.println("부딪힘");
                 return false;
             } else { // 그냥 이동했다면
                 result++;
-                System.out.println("여기는? result = " + result);
                 map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] = 2;
                 queue.offer(new int[][]{{queue.peek()[0][0]+dx,queue.peek()[0][1]+dy}});
                 int[][] pop = queue.poll();
                 map[pop[0][0]][pop[0][1]] = 0;
             }
         }
-
         if(y.equals("D")) vector++;
         else vector--;
+
+        if(x.equals(L_pos[L-1][0])) { // 마지막 인덱스까지 도착했는데도 종료되지 않았을 때.
+            dx = dx_dy[vector][0];
+            dy = dx_dy[vector][1];
+            while(true) {
+                if(queue.peek()[0][0]+dx < 0 || queue.peek()[0][0]+dx >= N ||
+                queue.peek()[0][1]+dy < 0 || queue.peek()[0][1]+dy >= N) { // 부딫혔다면
+                    break;
+                }
+                if (map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] == 1) { // Apple 발견했다면.
+                    snake_size++;
+                    result++;
+                    map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] = 2;
+                    queue.offer(new int[][]{{queue.peek()[0][0]+dx,queue.peek()[0][1]+dy}});
+                } else if (map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] == 2) { // 자신과 부딪혔다면.
+                    result++;
+                    return false;
+                } else { // 그냥 이동했다면
+                    result++;
+                    map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] = 2;
+                    queue.offer(new int[][]{{queue.peek()[0][0]+dx,queue.peek()[0][1]+dy}});
+                    int[][] pop = queue.poll();
+                    map[pop[0][0]][pop[0][1]] = 0;
+                }
+            }
+        }
         
+        time_stamp = Integer.parseInt(x);
         return true;
     }
     
