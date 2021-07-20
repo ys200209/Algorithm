@@ -42,31 +42,37 @@ class Main13_17 {
         for(int i=1; i<=S; i++) { // 특정 시간초만큼 전염시킨다.
             for(int j=1; j<=K; j++) {
                 virus = q.poll();
-                BFS(virus.virus_position[0] - 1, virus.virus_position[1], virus.virus_number);
-                BFS(virus.virus_position[0] + 1, virus.virus_position[1], virus.virus_number);
-                BFS(virus.virus_position[0], virus.virus_position[1] - 1, virus.virus_number);
-                BFS(virus.virus_position[0], virus.virus_position[1] + 1, virus.virus_number);
+                BFS(virus.virus_position[0] - 1, virus.virus_position[1], virus.virus_number, 0);
+                BFS(virus.virus_position[0] + 1, virus.virus_position[1], virus.virus_number, 0);
+                BFS(virus.virus_position[0], virus.virus_position[1] - 1, virus.virus_number, 0);
+                BFS(virus.virus_position[0], virus.virus_position[1] + 1, virus.virus_number, 0);
                 q.offer(virus);
             }
             System.out.println(i + "초 경과...");
+            q = new LinkedList<>();
+            size = pq.size();
+            for(int z=0; z<size; z++) {
+                q.offer(pq.poll());
+            }
+
             for(int a=0; a<=N; a++) {
                 System.out.println(Arrays.toString(map[a]));
             }
             System.out.println();
         }
 
-        System.out.println("pq.size() = " + pq.size());
-        System.out.println("pq.peek()? = " + pq.peek().virus_number);
+        System.out.println("result = " + map[X][Y]);
     }
 
-    public static void BFS(int dx, int dy, int number) {
+    public static void BFS(int dx, int dy, int number, int recursive) { // 움직일 좌표와 바이러스 숫자, 재귀 여부.
         System.out.println("("+ dx + "," + dy+ "), number = " + number);
         if(dx <= 0 || dx > N || dy <= 0 || dy > N) {
             return;
         }
 
-        if(map[dx][dy] == 0) {
+        if(map[dx][dy] == 0 && recursive == 0) { // 재귀가 아닌, 처음 실행될 때.
             map[dx][dy] = number;
+            pq.offer(new Virus(number, new int[]{dx, dy}));
         }
 
     }
