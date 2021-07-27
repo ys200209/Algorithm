@@ -30,6 +30,12 @@ class Main12_10 {
         return answer;
     }
 
+    public static int[][] rotateKey(int[][] key) {
+        
+
+        return key;
+    }
+
     public static void turn(int[][] key, int[][] lock) {
         // key[1][0] -> key[0][1] -> key[1][2] -> key[2][1]
         // key[2][1] -> key[1][0] -> key[0][1] -> key[1][2]
