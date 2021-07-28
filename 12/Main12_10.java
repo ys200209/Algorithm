@@ -18,34 +18,39 @@ class Main12_10 {
     public static boolean solution(int[][] key, int[][] lock) {
         boolean answer = true;
 
+        System.out.println("  [key]  ");
         for(int i=0; i<key.length; i++) {
             System.out.println(Arrays.toString(key[i]));
         }
         System.out.println("---------");
+        System.out.println("  [lock]   ");
         for(int i=0; i<key.length; i++) {
             System.out.println(Arrays.toString(lock[i]));
         }
+
+        key = rotateKey(key);
+
+        System.out.println("---------"); // 회전 후 key값.
+        System.out.println("  [key]  ");
+        for(int i=0; i<key.length; i++) {
+            System.out.println(Arrays.toString(key[i]));
+        }
+
 
         System.out.println("answer = " + answer);
         return answer;
     }
 
     public static int[][] rotateKey(int[][] key) {
-        
+        int[][] rot_key = new int[key.length][key[0].length];
+
+        for(int i=0; i<rot_key.length; i++) {
+            for(int j=0; j<rot_key[0].length; j++) {
+                rot_key[j][j-i+1] = key[i][j]; // [0][2] -> [2][2], [2][2] -> [2][0], [0][1] -> [1][2]
+            }
+        }
 
         return key;
-    }
-
-    public static void turn(int[][] key, int[][] lock) {
-        // key[1][0] -> key[0][1] -> key[1][2] -> key[2][1]
-        // key[2][1] -> key[1][0] -> key[0][1] -> key[1][2]
-        // key[2][2] -> key[2][0] -> key[0][0] -> key[0][2]
-
-    }
-
-    public static void move(int[][] key, int[][] lock) {
-        
-
     }
     
 }
