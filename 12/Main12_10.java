@@ -46,11 +46,11 @@ class Main12_10 {
 
         for(int i=0; i<rot_key.length; i++) {
             for(int j=0; j<rot_key[0].length; j++) {
-                rot_key[j][j-i+1] = key[i][j]; // [0][2] -> [2][2], [2][2] -> [2][0], [0][1] -> [1][2]
+                rot_key[j][key.length-i-1] = key[i][j]; // [0][2] -> [2][2], [2][2] -> [2][0], [0][1] -> [1][2], [1][2] -> [2][1]
             }
         }
 
-        return key;
+        return rot_key;
     }
     
 }
