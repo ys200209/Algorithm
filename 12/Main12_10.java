@@ -1,7 +1,10 @@
 import java.util.*;
 
 class Main12_10 {
-
+    static int UP = 0;
+    static int DOWN = 0;
+    static int LEFT = 0;
+    static int RIGHT = 0;
 
     public static void main(String[] args) {
 
@@ -40,9 +43,7 @@ class Main12_10 {
             [1, 0, 0]
             [0, 1, 1]
         */
-        
-
-
+        answer = checkKey(key, lock, new int[][]{{0,0},{0,0}});
         System.out.println("answer = " + answer);
         return answer;
     }
@@ -65,7 +66,12 @@ class Main12_10 {
         return move_key;
     }
 
-    public static void checkKey(int[][] key, int[][] lock) {
+    public static boolean checkKey(int[][] key, int[][] lock, int[][] position) { 
+        UP += position[0][0];
+        DOWN += position[0][1];
+        LEFT += position[1][0];
+        RIGHT += position[1][1];
+
         for(int i=0; i<key.length; i++) {
             for(int j=0; j<key[0].length; j++) {
                 if (key[i][j] == 0 && lock[i][j] == 1) {
@@ -74,10 +80,17 @@ class Main12_10 {
                     continue;
                 }
                 else {
+                    checkKey(key, lock, new int[][]{{1,0},{0,0}}); // ╩С
+                    checkKey(key, lock, new int[][]{{0,1},{0,0}}); // го
+                    checkKey(key, lock, new int[][]{{0,0},{1,0}}); // аб
+                    checkKey(key, lock, new int[][]{{0,0},{0,1}}); // ©Л
+
                     
                 }
             }
         }
+
+        return true;
     }
     
 }
