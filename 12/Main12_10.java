@@ -35,12 +35,18 @@ class Main12_10 {
         for(int i=0; i<key.length; i++) {
             System.out.println(Arrays.toString(key[i]));
         }
+        /*
+            [0, 0, 0]
+            [1, 0, 0]
+            [0, 1, 1]
+        */
+        
 
 
         System.out.println("answer = " + answer);
         return answer;
     }
-
+    
     public static int[][] rotateKey(int[][] key) {
         int[][] rot_key = new int[key.length][key[0].length];
 
@@ -51,6 +57,27 @@ class Main12_10 {
         }
 
         return rot_key;
+    }
+
+    public static int[][] moveKey(int[][] key) {
+        int[][] move_key = new int[key.length][key[0].length];
+
+        return move_key;
+    }
+
+    public static void checkKey(int[][] key, int[][] lock) {
+        for(int i=0; i<key.length; i++) {
+            for(int j=0; j<key[0].length; j++) {
+                if (key[i][j] == 0 && lock[i][j] == 1) {
+                    continue;
+                } else if (key[i][j] == 1 && lock[i][j] == 0) {
+                    continue;
+                }
+                else {
+                    
+                }
+            }
+        }
     }
     
 }
