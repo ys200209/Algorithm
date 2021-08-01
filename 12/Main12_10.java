@@ -67,10 +67,17 @@ class Main12_10 {
     }
 
     public static boolean checkKey(int[][] key, int[][] lock, int[][] position) { 
+        if (UP < 0 && position[0][1] == 1) return false;
+        if (DOWN > 0 && position[0][0] == -1) return false;
+        if (LEFT < 0 && position[1][1] == 1) return false;
+        if (RIGHT > 0 && position[1][0] == -1) return false;
+
         UP += position[0][0];
         DOWN += position[0][1];
         LEFT += position[1][0];
         RIGHT += position[1][1];
+
+        if()
 
         for(int i=0; i<key.length; i++) {
             for(int j=0; j<key[0].length; j++) {
@@ -80,10 +87,11 @@ class Main12_10 {
                     continue;
                 }
                 else {
-                    checkKey(key, lock, new int[][]{{1,0},{0,0}}); // ╩С
+                    checkKey(key, lock, new int[][]{{-1,0},{0,0}}); // ╩С
                     checkKey(key, lock, new int[][]{{0,1},{0,0}}); // го
-                    checkKey(key, lock, new int[][]{{0,0},{1,0}}); // аб
+                    checkKey(key, lock, new int[][]{{0,0},{-1,0}}); // аб
                     checkKey(key, lock, new int[][]{{0,0},{0,1}}); // ©Л
+
 
                     
                 }
