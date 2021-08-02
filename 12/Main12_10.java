@@ -14,7 +14,9 @@ class Main12_10 {
             특이한 모양의 열쇠는 MxM 크기인 정사각 격자 형태로 되어있다.
         */
 
-        System.out.println(solution(new int[][]{{0,0,0},{1,0,0},{0,1,1}}, new int[][]{{1,1,1},{1,1,0},{1,0,1}}));
+        // System.out.println(solution(new int[][]{{0,0,0},{1,0,0},{0,1,1}}, new int[][]{{1,1,1},{1,1,0},{1,0,1}}));
+
+        System.out.println(solution(new int[][]{{0,0,0,0},{1,0,0,0},{0,1,1,1},{0,0,0,0}}, new int[][]{{1,1,1,1},{1,1,0,0},{1,0,1,1},{1,0,1,1}}));
 
     }
 
@@ -26,20 +28,17 @@ class Main12_10 {
 
         int[][] newLock = new int[width * 3][width * 3];
 
-        System.out.println("width = " + width);
         for(int i=width; i<width+width; i++) {
             for(int j=width; j<width+width; j++) {
                 newLock[i][j] = lock[i-width][j-width];
             }
         }
 
-        System.out.println("newLock.length = " + newLock.length);
-        System.out.println("newLock[0].length = " + newLock[0].length);
         for(int i=0; i<newLock.length; i++) {
             System.out.println(Arrays.toString(newLock[i]));
         }
-
-
+        // 기준 좌표 기본값 (4, 4)
+        answer = checkKey(key, newLock, new int[]{width, width}); // 한 방향으로 모든 부분을 탐색한 뒤, 회전시켜 다시 탐색 반복.
 
 
 
@@ -87,6 +86,14 @@ class Main12_10 {
         return rot_key;
     }
 
+    public static boolean checkKey(int[][] key, int[][] newLock, int[] G) { // key와 자물쇠, 기준 좌표 G. (x, y) 
+        // 기준 좌표 G : (key.length, key.length) : (3, 3)
+
+
+        return false;
+    }
+
+/*
     public static int[][] moveKey(int[][] key) {
         int[][] move_key = new int[key.length][key[0].length];
 
@@ -94,10 +101,10 @@ class Main12_10 {
     }
 
     public static boolean checkKey(int[][] key, int[][] lock, int[][] position) { 
-        if (UP < 0 && position[0][1] == 1) return false;
-        if (DOWN > 0 && position[0][0] == -1) return false;
-        if (LEFT < 0 && position[1][1] == 1) return false;
-        if (RIGHT > 0 && position[1][0] == -1) return false;
+        if ( (UP < 0 && position[0][1] == 1) || lock.length/3 - 1 == UP ) return false;
+        if ( (DOWN > 0 && position[0][0] == -1) || lock.length/3 - 1 == DOWN ) return false;
+        if ( (LEFT < 0 && position[1][1] == 1) || lock.length/3 - 1 == LEFT ) return false;
+        if ( (RIGHT > 0 && position[1][0] == -1) || lock.length/3 - 1 == RIGHT ) return false; // 역주행하거나 이탈하면 중단.
 
         UP += position[0][0];
         DOWN += position[0][1];
@@ -108,24 +115,11 @@ class Main12_10 {
 
         for(int i=0; i<key.length; i++) {
             for(int j=0; j<key[0].length; j++) {
-                if (key[i][j] == 0 && lock[i][j] == 1) {
-                    continue;
-                } else if (key[i][j] == 1 && lock[i][j] == 0) {
-                    continue;
-                }
-                else {
-                    /*checkKey(key, lock, new int[][]{{-1,0},{0,0}}); // 상
-                    checkKey(key, lock, new int[][]{{0,1},{0,0}}); // 하
-                    checkKey(key, lock, new int[][]{{0,0},{-1,0}}); // 좌
-                    checkKey(key, lock, new int[][]{{0,0},{0,1}}); // 우*/
-
-
-                    
-                }
+                
             }
         }
 
         return true;
     }
-    
+*/
 }
