@@ -77,7 +77,7 @@ class Main12_10 {
         LEFT += position[1][0];
         RIGHT += position[1][1];
 
-        
+        if
 
         for(int i=0; i<key.length; i++) {
             for(int j=0; j<key[0].length; j++) {
