@@ -21,6 +21,32 @@ class Main12_10 {
     public static boolean solution(int[][] key, int[][] lock) {
         boolean answer = true;
 
+        int width = key.length; // ex) 3
+        // int height = key[0].length; // ex) 3
+
+        int[][] newLock = new int[width * 3][width * 3];
+
+        System.out.println("width = " + width);
+        for(int i=width; i<width+width; i++) {
+            for(int j=width; j<width+width; j++) {
+                newLock[i][j] = lock[i-width][j-width];
+            }
+        }
+
+        System.out.println("newLock.length = " + newLock.length);
+        System.out.println("newLock[0].length = " + newLock[0].length);
+        for(int i=0; i<newLock.length; i++) {
+            System.out.println(Arrays.toString(newLock[i]));
+        }
+
+
+
+
+
+
+
+
+        /*
         System.out.println("  [key]  ");
         for(int i=0; i<key.length; i++) {
             System.out.println(Arrays.toString(key[i]));
@@ -38,12 +64,13 @@ class Main12_10 {
         for(int i=0; i<key.length; i++) {
             System.out.println(Arrays.toString(key[i]));
         }
+        */
         /*
             [0, 0, 0]
             [1, 0, 0]
             [0, 1, 1]
         */
-        answer = checkKey(key, lock, new int[][]{{0,0},{0,0}});
+        // answer = checkKey(key, lock, new int[][]{{0,0},{0,0}});
         System.out.println("answer = " + answer);
         return answer;
     }
@@ -77,7 +104,7 @@ class Main12_10 {
         LEFT += position[1][0];
         RIGHT += position[1][1];
 
-        if
+        
 
         for(int i=0; i<key.length; i++) {
             for(int j=0; j<key[0].length; j++) {
@@ -87,10 +114,10 @@ class Main12_10 {
                     continue;
                 }
                 else {
-                    checkKey(key, lock, new int[][]{{-1,0},{0,0}}); // 상
+                    /*checkKey(key, lock, new int[][]{{-1,0},{0,0}}); // 상
                     checkKey(key, lock, new int[][]{{0,1},{0,0}}); // 하
                     checkKey(key, lock, new int[][]{{0,0},{-1,0}}); // 좌
-                    checkKey(key, lock, new int[][]{{0,0},{0,1}}); // 우
+                    checkKey(key, lock, new int[][]{{0,0},{0,1}}); // 우*/
 
 
                     
