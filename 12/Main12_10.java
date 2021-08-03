@@ -93,18 +93,16 @@ class Main12_10 {
             return false;
         }
 
-        for(int i=0; i<key.length; i++) {
+        for(int i=0; i<key.length-(G[0]-key.length); i++) {
             for(int j=0; j<key.length; j++) {
-                if(key[i][j] == newLock[i+key.length][j+key.length]) { // 상하좌우 및 회전
+                if(key[i][j] == 1 && newLock[i+G[0]][j+G[1]] == 1) { // 상하좌우 및 회전
                     checkKey(key, newLock, new int[]{G[0]-1, G[1]});
                     checkKey(key, newLock, new int[]{G[0]+1, G[1]});
                     checkKey(key, newLock, new int[]{G[0], G[1]-1});
                     checkKey(key, newLock, new int[]{G[0], G[1]+1}); 
                     rotateKey(key);
-                    break;  
-                    
-
-                }
+                    break;
+                } else if (key[i][j] == 0 && newLock[])
             }
         }
 
