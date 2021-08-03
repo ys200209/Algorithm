@@ -37,7 +37,7 @@ class Main12_10 {
         for(int i=0; i<newLock.length; i++) {
             System.out.println(Arrays.toString(newLock[i]));
         }
-        // 기준 좌표 기본값 (4, 4)
+        // 기준 좌표 기본값 (3, 3). 0, 1, 2, 3.
         answer = checkKey(key, newLock, new int[]{width, width}); // 한 방향으로 모든 부분을 탐색한 뒤, 회전시켜 다시 탐색 반복.
 
 
@@ -88,6 +88,25 @@ class Main12_10 {
 
     public static boolean checkKey(int[][] key, int[][] newLock, int[] G) { // key와 자물쇠, 기준 좌표 G. (x, y) 
         // 기준 좌표 G : (key.length, key.length) : (3, 3)
+        if(G[0]==0 || G[0]==newLock.length-key.length || 
+                    G[1]==0 || G[1]==newLock.length-key.length) {
+            return false;
+        }
+
+        for(int i=0; i<key.length; i++) {
+            for(int j=0; j<key.length; j++) {
+                if(key[i][j] == newLock[i+key.length][j+key.length]) { // 상하좌우 및 회전
+                    checkKey(key, newLock, new int[]{G[0]-1, G[1]});
+                    checkKey(key, newLock, new int[]{G[0]+1, G[1]});
+                    checkKey(key, newLock, new int[]{G[0], G[1]-1});
+                    checkKey(key, newLock, new int[]{G[0], G[1]+1}); 
+                    rotateKey(key);
+                    break;  
+                    
+
+                }
+            }
+        }
 
 
         return false;
