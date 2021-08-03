@@ -1,10 +1,10 @@
 import java.util.*;
 
 class Main12_10 {
-    static int UP = 0;
-    static int DOWN = 0;
-    static int LEFT = 0;
-    static int RIGHT = 0;
+    static int start_x;
+    static int start_y;
+    static int end_x;
+    static int end_y;
 
     public static void main(String[] args) {
 
@@ -93,8 +93,13 @@ class Main12_10 {
             return false;
         }
 
-        for(int i=0; i<key.length-(G[0]-key.length); i++) {
-            for(int j=0; j<key.length; j++) {
+        start_x = G[0] <= key.length ? key.length-G[0] : 0;
+        start_y = G[1] <= key.length ? key.length-G[1] : 0; 
+        end_x = G[0] <= key.length ? key.length : G[0]-key.length;
+        end_y = G[1] <= key.length ? key.length : G[1]-key.length;
+
+        for(int i=start_x; i<end_x; i++) { // G(2, 3) || G(4, 3) || G(3, 2) || G(3, 4)
+            for(int j=start_y; j<end_y; j++) {
                 if(key[i][j] == 1 && newLock[i+G[0]][j+G[1]] == 1) { // 상하좌우 및 회전
                     checkKey(key, newLock, new int[]{G[0]-1, G[1]});
                     checkKey(key, newLock, new int[]{G[0]+1, G[1]});
@@ -102,12 +107,16 @@ class Main12_10 {
                     checkKey(key, newLock, new int[]{G[0], G[1]+1}); 
                     rotateKey(key);
                     break;
-                } else if (key[i][j] == 0 && newLock[])
+                }
             }
-        }
+        } 
+        
+        // 탐색을 다 마쳤다면 나머지 자물쇠 공간에서 빈 공간이 존재하는지 찾는다.
+        
 
 
-        return false;
+
+        return true;
     }
 
 /*
