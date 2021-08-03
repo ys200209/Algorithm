@@ -14,9 +14,9 @@ class Main12_10 {
             특이한 모양의 열쇠는 MxM 크기인 정사각 격자 형태로 되어있다.
         */
 
-        // System.out.println(solution(new int[][]{{0,0,0},{1,0,0},{0,1,1}}, new int[][]{{1,1,1},{1,1,0},{1,0,1}}));
+        System.out.println(solution(new int[][]{{0,0,0},{1,0,0},{0,1,1}}, new int[][]{{1,1,1},{1,1,0},{1,0,1}}));
 
-        System.out.println(solution(new int[][]{{0,0,0,0},{1,0,0,0},{0,1,1,1},{0,0,0,0}}, new int[][]{{1,1,1,1},{1,1,0,0},{1,0,1,1},{1,0,1,1}}));
+        // System.out.println(solution(new int[][]{{0,0,0,0},{1,0,0,0},{0,1,1,1},{0,0,0,0}}, new int[][]{{1,1,1,1},{1,1,0,0},{1,0,1,1},{1,0,1,1}}));
 
     }
 
@@ -92,11 +92,11 @@ class Main12_10 {
                     G[1]==0 || G[1]==newLock.length-key.length) {
             return false;
         }
-
-        start_x = G[0] <= key.length ? key.length-G[0] : 0;
-        start_y = G[1] <= key.length ? key.length-G[1] : 0; 
-        end_x = G[0] <= key.length ? key.length : G[0]-key.length;
-        end_y = G[1] <= key.length ? key.length : G[1]-key.length;
+        // G(2, 2) 가정, key 기준.
+        start_x = G[0] <= key.length ? key.length-G[0] : 0; // 1
+        start_y = G[1] <= key.length ? key.length-G[1] : 0; // 1 ... (1, 1)
+        end_x = G[0] <= key.length ? key.length : G[0]-key.length; // 3
+        end_y = G[1] <= key.length ? key.length : G[1]-key.length; // 3 ... (3, 3)
 
         for(int i=start_x; i<end_x; i++) { // G(2, 3) || G(4, 3) || G(3, 2) || G(3, 4)
             for(int j=start_y; j<end_y; j++) {
@@ -112,10 +112,21 @@ class Main12_10 {
         } 
         
         // 탐색을 다 마쳤다면 나머지 자물쇠 공간에서 빈 공간이 존재하는지 찾는다.
-        
+        for(int i=key.length; i<key.length*2; i++) {
+            for(int j=key.length; j<key.length*2; j++) {
+                /* ex) 
+                0..1..  2 // key.length + (key.length - G[0] - 1) -> 3 + (3 - 2 - 1)
+                0..1..  2 // key.length + (key.length - G[0] - 1) -> 3 + (3 - )
+                0   1   2
+                */
+                if(i < G[0]+key.length && j < G[1]+key.length && newLock[i][j] == 0) { // G(2, 3) || G(4, 3) || G(3, 2) || G(3, 4)
+                    return false;
+                }
+            }
+        }
 
 
-
+        System.out.println("return true...");
         return true;
     }
 
