@@ -20,143 +20,75 @@ class Main12_10 {
 
     }
 
+    // 2차원 리스트 90도 회전하기
+    public static int[][] rotateMatrixBy90Degree(int[][] a) {
+        int n = a.length;
+        int m = a[0].length;
+        int[][] result = new int[n][m]; // 결과 리스트
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                result[j][n - i - 1] = a[i][j]; 
+                // a[0][0] = result[0][2];
+                // a[2][1] = result[1][0];
+            }
+        }
+        return result;
+    }
+
+    // 자물쇠의 중간 부분이 모두 1인지 확인
+    public static boolean check(int[][] newLock) {
+        int lockLength = newLock.length / 3;
+        for (int i = lockLength; i < lockLength * 2; i++) {
+            for (int j = lockLength; j < lockLength * 2; j++) {
+                if (newLock[i][j] != 1) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public static boolean solution(int[][] key, int[][] lock) {
-        boolean answer = true;
-
-        int width = key.length; // ex) 3
-        // int height = key[0].length; // ex) 3
-
-        int[][] newLock = new int[width * 3][width * 3];
-
-        for(int i=width; i<width+width; i++) {
-            for(int j=width; j<width+width; j++) {
-                newLock[i][j] = lock[i-width][j-width];
+        int n = lock.length;
+        int m = key.length;
+        // 자물쇠의 크기를 기존의 3배로 변환
+        int[][] newLock = new int[n * 3][n * 3];
+        // 새로운 자물쇠의 중앙 부분에 기존의 자물쇠 넣기
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                newLock[i + n][j + n] = lock[i][j];
             }
         }
 
         for(int i=0; i<newLock.length; i++) {
             System.out.println(Arrays.toString(newLock[i]));
         }
-        // 기준 좌표 기본값 (3, 3). 0, 1, 2, 3.
-        answer = checkKey(key, newLock, new int[]{width, width}); // 한 방향으로 모든 부분을 탐색한 뒤, 회전시켜 다시 탐색 반복.
 
-
-
-
-
-
-        /*
-        System.out.println("  [key]  ");
-        for(int i=0; i<key.length; i++) {
-            System.out.println(Arrays.toString(key[i]));
+        // 4가지 방향에 대해서 확인
+        for (int rotation = 0; rotation < 4; rotation++) {
+            key = rotateMatrixBy90Degree(key); // 열쇠 회전
+            for (int x = 0; x < n * 2; x++) {
+                for (int y = 0; y < n * 2; y++) {
+                    // 자물쇠에 열쇠를 끼워 넣기
+                    System.out.println("x = " + x + ", y = " + y);
+                    for (int i = 0; i < m; i++) {
+                        for (int j = 0; j < m; j++) {
+                            System.out.println("i = " + i + ", j = " + j);
+                            newLock[x + i][y + j] += key[i][j];
+                        }
+                    }
+                    // 새로운 자물쇠에 열쇠가 정확히 들어 맞는지 검사
+                    if (check(newLock)) return true;
+                    // 자물쇠에서 열쇠를 다시 빼기
+                    for (int i = 0; i < m; i++) {
+                        for (int j = 0; j < m; j++) {
+                            newLock[x + i][y + j] -= key[i][j];
+                        }
+                    }
+                }
+            }
         }
-        System.out.println("---------");
-        System.out.println("  [lock]   ");
-        for(int i=0; i<key.length; i++) {
-            System.out.println(Arrays.toString(lock[i]));
-        }
-
-        key = rotateKey(key);
-
-        System.out.println("---------"); // 회전 후 key값.
-        System.out.println("  [key]  ");
-        for(int i=0; i<key.length; i++) {
-            System.out.println(Arrays.toString(key[i]));
-        }
-        */
-        /*
-            [0, 0, 0]
-            [1, 0, 0]
-            [0, 1, 1]
-        */
-        // answer = checkKey(key, lock, new int[][]{{0,0},{0,0}});
-        System.out.println("answer = " + answer);
-        return answer;
+        return false;
     }
     
-    public static int[][] rotateKey(int[][] key) {
-        int[][] rot_key = new int[key.length][key[0].length];
-
-        for(int i=0; i<rot_key.length; i++) {
-            for(int j=0; j<rot_key[0].length; j++) {
-                rot_key[j][key.length-i-1] = key[i][j]; // [0][2] -> [2][2], [2][2] -> [2][0], [0][1] -> [1][2], [1][2] -> [2][1]
-            }
-        }
-
-        return rot_key;
-    }
-
-    public static boolean checkKey(int[][] key, int[][] newLock, int[] G) { // key와 자물쇠, 기준 좌표 G. (x, y) 
-        // 기준 좌표 G : (key.length, key.length) : (3, 3)
-        if(G[0]==0 || G[0]==newLock.length-key.length || 
-                    G[1]==0 || G[1]==newLock.length-key.length) {
-            return false;
-        }
-        // G(2, 2) 가정, key 기준.
-        start_x = G[0] <= key.length ? key.length-G[0] : 0; // 1
-        start_y = G[1] <= key.length ? key.length-G[1] : 0; // 1 ... (1, 1)
-        end_x = G[0] <= key.length ? key.length : G[0]-key.length; // 3
-        end_y = G[1] <= key.length ? key.length : G[1]-key.length; // 3 ... (3, 3)
-
-        for(int i=start_x; i<end_x; i++) { // G(2, 3) || G(4, 3) || G(3, 2) || G(3, 4)
-            for(int j=start_y; j<end_y; j++) {
-                if(key[i][j] == 1 && newLock[i+G[0]][j+G[1]] == 1) { // 상하좌우 및 회전
-                    checkKey(key, newLock, new int[]{G[0]-1, G[1]});
-                    checkKey(key, newLock, new int[]{G[0]+1, G[1]});
-                    checkKey(key, newLock, new int[]{G[0], G[1]-1});
-                    checkKey(key, newLock, new int[]{G[0], G[1]+1}); 
-                    rotateKey(key);
-                    break;
-                }
-            }
-        } 
-        
-        // 탐색을 다 마쳤다면 나머지 자물쇠 공간에서 빈 공간이 존재하는지 찾는다.
-        for(int i=key.length; i<key.length*2; i++) {
-            for(int j=key.length; j<key.length*2; j++) {
-                /* ex) 
-                0..1..  2 // key.length + (key.length - G[0] - 1) -> 3 + (3 - 2 - 1)
-                0..1..  2 // key.length + (key.length - G[0] - 1) -> 3 + (3 - )
-                0   1   2
-                */
-                if(i < G[0]+key.length && j < G[1]+key.length && newLock[i][j] == 0) { // G(2, 3) || G(4, 3) || G(3, 2) || G(3, 4)
-                    return false;
-                }
-            }
-        }
-
-
-        System.out.println("return true...");
-        return true;
-    }
-
-/*
-    public static int[][] moveKey(int[][] key) {
-        int[][] move_key = new int[key.length][key[0].length];
-
-        return move_key;
-    }
-
-    public static boolean checkKey(int[][] key, int[][] lock, int[][] position) { 
-        if ( (UP < 0 && position[0][1] == 1) || lock.length/3 - 1 == UP ) return false;
-        if ( (DOWN > 0 && position[0][0] == -1) || lock.length/3 - 1 == DOWN ) return false;
-        if ( (LEFT < 0 && position[1][1] == 1) || lock.length/3 - 1 == LEFT ) return false;
-        if ( (RIGHT > 0 && position[1][0] == -1) || lock.length/3 - 1 == RIGHT ) return false; // 역주행하거나 이탈하면 중단.
-
-        UP += position[0][0];
-        DOWN += position[0][1];
-        LEFT += position[1][0];
-        RIGHT += position[1][1];
-
-        
-
-        for(int i=0; i<key.length; i++) {
-            for(int j=0; j<key[0].length; j++) {
-                
-            }
-        }
-
-        return true;
-    }
-*/
 }
