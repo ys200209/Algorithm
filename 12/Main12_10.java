@@ -60,8 +60,14 @@ class Main12_10 {
             }
         }
 
+        System.out.println("---------- [Lock] ----------");
         for(int i=0; i<newLock.length; i++) {
             System.out.println(Arrays.toString(newLock[i]));
+        }
+
+        System.out.println("---------- [Key] ----------");
+        for(int i=0; i<newLock.length; i++) {
+            System.out.println(Arrays.toString(key[i]));
         }
 
         // 4가지 방향에 대해서 확인
@@ -73,11 +79,18 @@ class Main12_10 {
                     System.out.println("x = " + x + ", y = " + y);
                     for (int i = 0; i < m; i++) {
                         for (int j = 0; j < m; j++) {
-                            System.out.println("i = " + i + ", j = " + j);
+                            System.out.println("key["+i+"]["+j+"] = " + key[i][j]);
+                            System.out.println("newLock["+x+"+"+i+"]["+y+"+"+j+"] = " + newLock[x + i][y + j]);
                             newLock[x + i][y + j] += key[i][j];
+                            
                         }
                     }
                     // 새로운 자물쇠에 열쇠가 정확히 들어 맞는지 검사
+
+                    for(int i=0; i<newLock.length; i++) {
+                        System.out.println(Arrays.toString(newLock[i]));
+                    }
+
                     if (check(newLock)) return true;
                     // 자물쇠에서 열쇠를 다시 빼기
                     for (int i = 0; i < m; i++) {
