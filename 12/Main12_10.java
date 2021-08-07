@@ -65,7 +65,7 @@ class Main12_10 {
             System.out.println(Arrays.toString(newLock[i]));
         }
 
-        System.out.println("---------- [Key] ----------");
+        System.out.println("--------- [Key] ---------");
         for(int i=0; i<newLock.length; i++) {
             System.out.println(Arrays.toString(key[i]));
         }
