@@ -98,6 +98,7 @@ class Main12_10 {
                             newLock[x + i][y + j] -= key[i][j];
                         }
                     }
+                    System.out.println("End");
                 }
             }
         }
