@@ -70,7 +70,7 @@ class Main12_10 {
             System.out.println(Arrays.toString(key[i]));
         }
 
-        // 4가지 방향에 대해서 확인
+        // 4가지 방향에 대해서 확인하기
         for (int rotation = 0; rotation < 4; rotation++) {
             key = rotateMatrixBy90Degree(key); // 열쇠 회전
             for (int x = 0; x < n * 2; x++) {
