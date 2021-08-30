@@ -1,8 +1,7 @@
 import java.util.*;
 
 class Main11_1 {
-    static int N, index1, index2, result = 0;
-    static int[] list;
+
 
     public static void main(String[] args) {
 
@@ -16,34 +15,8 @@ class Main11_1 {
             공포도가 2 3 1 2 2라면 최대 2개의 그룹을 만들 수 있다.
         */
 
-        Scanner sc = new Scanner(System.in);
+        
 
-        N = sc.nextInt();
-        list = new int[N];
-
-        for(int i=0; i<N; i++) {
-            list[i] = sc.nextInt();
-        }
-        Arrays.sort(list);
-
-        index2 = index1 + list[index1] - 1;
-        while(true) {
-            if (index2 >= list.length) {
-                break;
-            }
-            if (index2-index1+1 == list[index2]) {
-                result++;
-                if(index2 != list.length-1) { // 그룹을 묶고도 아직 길드원이 더 남았다면 index를 넘기는 과정.
-                    index1 = index2+1;
-                    index2 = index1 + list[index1] - 1;
-                } else { // 그룹을 묶었는데 마지막 인원까지 묶어서 index를 다음 길드원으로 넘길 수 없을 때.
-                    break;
-                }
-            } else {
-                index2++;
-            }
-        }
-        System.out.println("result = " + result);
     }
     
 }
