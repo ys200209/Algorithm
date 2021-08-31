@@ -1,10 +1,10 @@
 import java.util.*;
 
 class Main11_3 {
-    static String s;
-    static int[] list;
-    static int count0, count1 = 0;
-    
+    static int zero, one, count;
+    static String[] S;
+    static String point;
+
     public static void main(String[] args) {
 
         /*
@@ -17,31 +17,23 @@ class Main11_3 {
             16:05 -> 16:15 (20Ка)
         */
 
-        Scanner sc = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
 
-        s = sc.next();
-        list = new int[s.length()];
+        S = scanner.next().split("");
+        count = 0;
+        point = S[0]; // "0" Or "1"
 
-        for(int i=0; i<list.length; i++) {
-            list[i] = s.charAt(i) - '0';
-        }
-        
-        if(list[0] == 0) {
-            count1++;
-        } else {
-            count0++;
-        }
-
-        for(int i=0; i<list.length-1; i++) {
-            if(list[i]==0 && list[i+1]==1) {
-                count0++;
-            } else if(list[i]==1 && list[i+1]==0) {
-                count1++;
+        for(int i=1; i<S.length; i++) {
+            if ( point.equals("0") && S[i].equals("1") ) {
+                point = "1";
+                zero++;
+            } else if (point.equals("1") && S[i].equals("0")) {
+                point = "0";
+                one++;
             }
         }
-        System.out.println("count0 = " + count0 + ", count1 = " + count1);
-        System.out.println("result = " + Math.min(count0, count1));
 
+        System.out.println( zero >= one ? one : zero );
     }
 
 }
