@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Main11_1 {
-    static int N, count;
+    static int N, count, index, value, fail;
     static int[] list;
 
     public static void main(String[] args) {
@@ -28,6 +28,26 @@ class Main11_1 {
         Arrays.sort(list);
 
         System.out.println("list = " + Arrays.toString(list));
+
+        index = 0;
+        fail = 0;
+
+        while(true) {
+            if (index >= N) break;
+            value = list[index] + fail;
+            if (index+value-1 >= N) break;
+            
+            if( list[index+value-1] <= value) {
+                count++;
+                index += value; // [1, 2, 2, 2, 3]
+                fail = 0;
+            } else {
+                fail++;
+            }
+            
+        }
+
+        System.out.println(count);
 
     }
     
