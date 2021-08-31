@@ -36,14 +36,14 @@ class Main11_1 {
             if (index >= N) break;
             value = list[index] + fail;
             if (index+value-1 >= N) break;
-            
+
             if( list[index+value-1] <= value) {
                 count++;
                 index += value; // [1, 2, 2, 2, 3]
                 fail = 0;
             } else {
                 fail++;
-            }
+            } 
             
         }
 
