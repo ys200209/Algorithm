@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Main11_4 {
-    static int N, result;
+    static int N, coin, total, result;
     static int[] list;
 
     public static void main(String[] args) {
@@ -14,20 +14,29 @@ class Main11_4 {
             16:20 -> (30Ка)
         */
 
-        Scanner sc = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
 
-        N = sc.nextInt();
+        total = 0;
+        N = scanner.nextInt();
         list = new int[N];
 
         for(int i=0; i<N; i++) {
-            list[i] = sc.nextInt();
+            list[i] = scanner.nextInt();
         }
 
         Arrays.sort(list);
 
-        for(int i=1; i<N; i++) {
-
+        for(int i=0; i<N; i++) {
+            coin = list[i];
+            if (coin - total > 1) {
+                result = total + 1;
+                break;
+            } else {
+                total += coin;
+            }
         }
+
+        System.out.println(result);
 
     }
     
