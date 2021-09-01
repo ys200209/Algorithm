@@ -30,32 +30,7 @@ class Main11_6 {
     }
     
     public static int solution(int[] food_times, long k) {
-        int index = 0;
-        int sum = 0;
-
-        for(int check : food_times) {
-            sum += check;
-        }
-
-        if(sum <= k) {
-            return -1;
-        }
-
-        while(k >= 0) {
-            if(index == food_times.length) {
-                index = 0;
-            }
-            if(food_times[index] == 0) {
-                index++;
-                continue;
-            } else {
-                food_times[index] -= 1;
-                index++;
-                k--;
-            }
-        }
-
-        return index;
+        
     }
     
     
