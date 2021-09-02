@@ -30,7 +30,11 @@ class Main11_6 {
     }
     
     public static int solution(int[] food_times, long k) {
+        int size = food_times.length;
+
+
         
+        return -1;
     }
     
     
