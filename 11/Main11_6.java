@@ -24,17 +24,62 @@ class Main11_6 {
             (만약 더 섭취해야 할 음식이 없다면 -1을 반환하면 됩니다.)
         */
 
-        solution(new int[]{3,1,2}, 5);
-        solution(new int[]{1, 1, 1, 1}, 4);
-        solution(new int[]{7, 5, 4, 8, 3}, 30);
+        System.out.println(solution(new int[]{3, 1, 2}, 5));
+        System.out.println(solution(new int[]{1, 1, 1, 1}, 4));
+        System.out.println(solution(new int[]{7, 5, 4, 8, 3}, 30));
+        System.out.println(solution(new int[]{7, 5, 4, 8, 3}, 300));
     }
     
     public static int solution(int[] food_times, long k) {
         int size = food_times.length;
-
-
+        int min = 1000;
+        int result = -1;
         
-        return -1;
+        for(int i=0; i<food_times.length; i++) {
+            if (food_times[i] < min) {
+                min = food_times[i]; // ex) min = 3
+            }
+        }
+
+        if (k - (min*size) >= 0) {
+            for(int i=0; i<food_times.length; i++) {
+                // 하나씩 빼주면 가능.
+                food_times[i] -= min;
+            }
+            k -= min*size;
+        } else {
+            min = (int) (k/size);
+            for(int i=0; i<food_times.length; i++) {
+                // 하나씩 빼주면 가능.
+                food_times[i] -= min;
+            }
+            k -= min*size;
+        }
+
+        System.out.println("k = " + k);
+
+        for(int i=0; i<food_times.length; i++) { // [5, 0, 0, 0, 0] k=3, 이런 경우가 있기에 한바퀴만 돌면 안된다.(수정)
+            if (k == 0) break;
+            if (food_times[i] == 0) {
+                continue;
+            } else {
+                result = i+1;
+                k -= 1;
+            }
+        }
+        
+        System.out.println("result = " +result);
+
+        if (result != -1) {
+            result += 1; 
+            // 기존 result까지만 먹방이 진행된 후 네트워크 장애가 발생하였음을 의미한다.
+            // 따라서 네트워크 장애가 복구된 후부터 먹을 다음 음식 번호를 반환하기위해 1을 더해준다.
+        }
+
+        if (result > food_times.length) {
+            result /= food_times.length; // 한바퀴를 돌아 다시 처음 음식으로 돌아갔음을 의미함.
+        }
+        return result;
     }
     
     
