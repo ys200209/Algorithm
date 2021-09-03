@@ -32,12 +32,16 @@ class Main11_6 {
     
     public static int solution(int[] food_times, long k) {
         int size = food_times.length;
-        int min = 1000;
+        int max = 0;
+        int min = 100000000;
         int result = -1;
+        int empty = -1;
         
         for(int i=0; i<food_times.length; i++) {
             if (food_times[i] < min) {
                 min = food_times[i]; // ex) min = 3
+            } else if (food_times[i] > max) {
+                max = food_times[i];
             }
         }
 
@@ -47,6 +51,7 @@ class Main11_6 {
                 food_times[i] -= min;
             }
             k -= min*size;
+            max -= min;
         } else {
             min = (int) (k/size);
             for(int i=0; i<food_times.length; i++) {
@@ -54,11 +59,12 @@ class Main11_6 {
                 food_times[i] -= min;
             }
             k -= min*size;
+            max -= min;
         }
 
         System.out.println("k = " + k);
 
-        for(int i=0; i<food_times.length; i++) { // [5, 0, 0, 0, 0] k=3, 이런 경우가 있기에 한바퀴만 돌면 안된다.(수정)
+        /*for(int i=0; i<food_times.length; i++) { // [5, 0, 0, 0, 0] k=3, 이런 경우가 있기에 한바퀴만 돌면 안된다.(수정)
             if (k == 0) break;
             if (food_times[i] == 0) {
                 continue;
@@ -66,9 +72,25 @@ class Main11_6 {
                 result = i+1;
                 k -= 1;
             }
+        }*/
+
+        System.out.println("(while) k == " + k);
+        System.out.println(Arrays.toString(food_times));
+
+        while(true) {
+            if (empty == -1) return -1;
+            if (k == 0) break;
+            empty = -1;
+            for(int j=0; j<food_times.length; j++) {
+                if (food_times[j] != 0) {
+                    food_times[j] -= 1;
+                    empty = 1;
+                    k -= 1;
+                    result = j+1;
+                }
+            }
         }
-        
-        System.out.println("result = " +result);
+        // System.out.println("result = " +result);
 
         if (result != -1) {
             result += 1; 
