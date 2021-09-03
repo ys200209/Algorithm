@@ -26,24 +26,31 @@ class Main11_6 {
 
         System.out.println(solution(new int[]{3, 1, 2}, 5));
         System.out.println(solution(new int[]{1, 1, 1, 1}, 4));
-        System.out.println(solution(new int[]{7, 5, 4, 8, 3}, 30));
+        System.out.println(solution(new int[]{7, 5, 4, 8, 3}, 20));
         System.out.println(solution(new int[]{7, 5, 4, 8, 3}, 300));
+        System.out.println(solution(new int[]{2, 2, 2, 15, 2}, 12));
     }
     
     public static int solution(int[] food_times, long k) {
         int size = food_times.length;
-        int max = 0;
+        int total = 0;
         int min = 100000000;
         int result = -1;
-        int empty = -1;
-        
+        int index;
+
         for(int i=0; i<food_times.length; i++) {
             if (food_times[i] < min) {
                 min = food_times[i]; // ex) min = 3
-            } else if (food_times[i] > max) {
-                max = food_times[i];
             }
+            total += food_times[i];
         }
+
+        if (total < k) {
+            System.out.println(total + " < " + k);
+            return -1;
+        }
+
+        System.out.println("(1) k = " + k);
 
         if (k - (min*size) >= 0) {
             for(int i=0; i<food_times.length; i++) {
@@ -51,7 +58,6 @@ class Main11_6 {
                 food_times[i] -= min;
             }
             k -= min*size;
-            max -= min;
         } else {
             min = (int) (k/size);
             for(int i=0; i<food_times.length; i++) {
@@ -59,10 +65,7 @@ class Main11_6 {
                 food_times[i] -= min;
             }
             k -= min*size;
-            max -= min;
         }
-
-        System.out.println("k = " + k);
 
         /*for(int i=0; i<food_times.length; i++) { // [5, 0, 0, 0, 0] k=3, 이런 경우가 있기에 한바퀴만 돌면 안된다.(수정)
             if (k == 0) break;
@@ -74,26 +77,42 @@ class Main11_6 {
             }
         }*/
 
-        System.out.println("(while) k == " + k);
-        System.out.println(Arrays.toString(food_times));
+        // System.out.println("(while) k == " + k);
+        // System.out.println(Arrays.toString(food_times));
 
-        while(true) {
-            if (empty == -1) return -1;
-            if (k == 0) break;
-            empty = -1;
-            for(int j=0; j<food_times.length; j++) {
-                if (food_times[j] != 0) {
-                    food_times[j] -= 1;
-                    empty = 1;
-                    k -= 1;
-                    result = j+1;
+        if (k == 0) {
+            for(int i=0; i<food_times.length; i++) {
+                if (food_times[i] != 0 ) {
+                    result = i+1;
+                    return result;
                 }
             }
         }
-        // System.out.println("result = " +result);
+        
+        while(true) {
+            if (k == 0) break;
+            for(int i=0; i<food_times.length; i++) {
+                if (food_times[i] != 0) {
+                    k -= 1;
+                    result = i+1;
+                }
+                if (k == 0) break;
+            }
+        }
 
+        System.out.println("result = " + result);
         if (result != -1) {
-            result += 1; 
+            
+            for (int i=result; i<food_times.length+result; i++) {
+                index = i;
+                if (index >= size) {
+                    index -= size;
+                }
+                if (food_times[index] != 0) {
+                    result = index+1;
+                    break;
+                }
+            }
             // 기존 result까지만 먹방이 진행된 후 네트워크 장애가 발생하였음을 의미한다.
             // 따라서 네트워크 장애가 복구된 후부터 먹을 다음 음식 번호를 반환하기위해 1을 더해준다.
         }
@@ -103,6 +122,5 @@ class Main11_6 {
         }
         return result;
     }
-    
     
 }
