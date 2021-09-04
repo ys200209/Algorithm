@@ -34,9 +34,8 @@ class Main11_6 {
     public static int solution(int[] food_times, long k) {
         long size = food_times.length; // 최단 시간 음식부터 줄여나갈때 남아있는 음식의 갯수
         long total = 0;
-        long index = 0;
         long extract = 0; 
-        long result = -1;
+        int result = -1;
         
         System.out.println("-------------------------------------------------------------");
         PriorityQueue<Food> pq = new PriorityQueue<>();
@@ -59,7 +58,6 @@ class Main11_6 {
             pq.poll();
             size -= 1;
         }
-        index = pq.peek().getNumber();
 
         ArrayList<Food> arrayList = new ArrayList<>();
         while( !pq.isEmpty() ) {
@@ -74,12 +72,30 @@ class Main11_6 {
         });
 
         for(int i=0; i<arrayList.size(); i++) {
-            System.out.print(arrayList.get(i).getTime() + " ");
+            System.out.print(arrayList.get(i).getNumber() + " ");
         }
         System.out.println(" ");
 
-        System.out.println("index = " + index);
-        return -1;
+        System.out.println("result = " + result);
+        
+        while( result == -1 ) {
+            for(int i=0; i<arrayList.size(); i++) {
+                if (k == 0 && arrayList.get(i).getTime() != 0) {
+                    result = arrayList.get(i).getNumber();
+                    System.out.println("result = " + result + ", break.");
+                    break;
+                }
+    
+                if (arrayList.get(i).getTime() != 0) {
+                    k -= 1;
+                }
+                System.out.println("k = " + k);
+            }
+        }
+
+        System.out.println("result = " + result);
+
+        return result;
     }
     
 }
