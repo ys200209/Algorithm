@@ -33,9 +33,12 @@ class Main11_6 {
     
     public static int solution(int[] food_times, long k) {
         long size = food_times.length; // 최단 시간 음식부터 줄여나갈때 남아있는 음식의 갯수
-        long total = 0; 
+        long total = 0;
+        long index = 0;
+        long extract = 0; 
+        long result = -1;
         
-
+        System.out.println("-------------------------------------------------------------");
         PriorityQueue<Food> pq = new PriorityQueue<>();
 
         for(int i=0; i<food_times.length; i++) {
@@ -44,25 +47,38 @@ class Main11_6 {
         }
 
         if (total <= k) {
+            System.out.println("total <= k.  return -1;");
             return -1;
         }
 
-        while( size * (pq.peek().getTime()) <= k ) {
-            k -= size * pq.peek().getTime();
+        while( size * (pq.peek().getTime() - extract) <= k ) {
+            k -= size * (pq.peek().getTime() - extract);
+            System.out.println("k = " + k);
+            extract = pq.peek().getTime();
+            System.out.println("extract = " + extract);
             pq.poll();
             size -= 1;
         }
+        index = pq.peek().getNumber();
 
         ArrayList<Food> arrayList = new ArrayList<>();
         while( !pq.isEmpty() ) {
             arrayList.add(pq.poll());
         }
-        
+
+        Collections.sort(arrayList, new Comparator<Food>(){
+            @Override
+            public int compare(Food o1, Food o2) {
+                return Integer.compare(o1.getNumber(), o2.getNumber());
+            }
+        });
+
         for(int i=0; i<arrayList.size(); i++) {
             System.out.print(arrayList.get(i).getTime() + " ");
         }
         System.out.println(" ");
 
+        System.out.println("index = " + index);
         return -1;
     }
     
