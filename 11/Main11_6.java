@@ -40,15 +40,28 @@ class Main11_6 {
 
         for(int i=0; i<food_times.length; i++) {
             pq.offer(new Food(food_times[i], i+1));
-            total = food_times[i];
+            total += food_times[i];
         }
 
         if (total <= k) {
             return -1;
         }
 
-        while()
+        while( size * (pq.peek().getTime()) <= k ) {
+            k -= size * pq.peek().getTime();
+            pq.poll();
+            size -= 1;
+        }
 
+        ArrayList<Food> arrayList = new ArrayList<>();
+        while( !pq.isEmpty() ) {
+            arrayList.add(pq.poll());
+        }
+        
+        for(int i=0; i<arrayList.size(); i++) {
+            System.out.print(arrayList.get(i).getTime() + " ");
+        }
+        System.out.println(" ");
 
         return -1;
     }
