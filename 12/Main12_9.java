@@ -1,8 +1,7 @@
 import java.util.*;
 
 class Main12_9 {
-    static String str, substr, result2 = "";
-    static int start, end, step, count=1, result1 = 1000;
+    
 
     public static void main(String[] args) {
 
@@ -17,54 +16,60 @@ class Main12_9 {
         
         */
         
-        System.out.println(solution("aabbaccc"));
-        System.out.println(solution("ababcdcdababcdcd"));
-        System.out.println(solution("abcabcdede"));
-        System.out.println(solution("abcabcabcabcdededededede"));
-        System.out.println(solution("xababcdcdababcdcd"));
-        System.out.println(solution("a"));
+        //System.out.println(solution("aabbaccc")); // 8(aabbaccc) -> 7(2a2ba3c)
+        System.out.println(solution("ababcdcdababcdcd")); // 16(ababcbcbababcbcb) -> 9(2ababcbcb)
+        //System.out.println(solution("abcabcdede")); //  10(abcabcdede) -> 8(2abcdede)
+        //System.out.println(solution("abcabcabcabcdededededede")); // 24 -> 14
+        //System.out.println(solution("xababcdcdababcdcd")); // 17 -> 17
+        //System.out.println(solution("a"));
 
     }
 
     public static int solution(String s) {
-        String substr, result2 = "";
-        int start, end, step, count=1, answer = 1000;
-        
-        start = 0;
-        end = s.length();
+        int min = 1000, count=1, start=0, end;
+        String str, result="";
 
-        for(step=s.length()/2; step>=1; step--) {
+        for(int i=1; i<s.length()/2; i++) { // i 개씩 묶는다고 가정
+            result="";
             start = 0;
-            result2 = "";
-            substr = s.substring(start, step);
-            result2 += substr;
-            start += step;
-            for(int i=start; i<=end; i+=step) {
-                if (i+step <= end) {
-                    if(substr.equals(s.substring(i, i+step))) {
-                        count++;
+            end = i;
+            
+            str = s.substring(start, end);
+            //result += s.substring(start, end);
+            for(int j=i; j<s.length(); j+=i) { // 처음부터 i개씩 묶기
+                start = start + i;
+                end = start + i;
+                System.out.println("1. start = " + start + ", end = " + end);
+                if (end < s.length()) {
+                    System.out.println("str = " + str + ", s.substring = " + s.substring(start, end));
+                    if (str.equals(s.substring(start, end))) {
+                        count += 1;
+                        System.out.println("count = " + count);
                     } else {
-                        result2 += count > 1 ? Integer.toString(count) + substr : substr;
-                        substr = s.substring(i, i+step);
-                        count=1;
+                        if (count != 1) {
+                            result += count + str;
+                            count = 1;
+                        } else {
+                            result += str;
+                        }
+                        str = s.substring(start, end);
                     }
                 } else {
-                    substr = s.substring(i, end);
-                    result2 += count > 1 ? Integer.toString(count) + substr : substr;
-                    count=1;
+                    result += s.substring(start-i, s.length());
+                    break;
                 }
+                
             }
-            
-            if(answer > result2.length()) {
-                answer = result2.length();
+            System.out.println("-----------------result = " + result);
+            if (min > result.length()) {
+                min = result.length();
             }
         }
 
-        if(result2.length() == 0) { // 아무런 압축이 일어나지 않은 문자열의 경우, 문자열 개수 자체를 리턴한다.
-            answer = s.length();
-        }
         
-        return answer;
+        System.out.println("min = " + min);
+
+        return min;
     }
     
 }
