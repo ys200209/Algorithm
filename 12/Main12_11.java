@@ -6,6 +6,7 @@ class Main12_11 {
     static String[][] vector;
     static String vec, second;
     static Queue<Snake> snake;
+    static Snake last_Snake;
 
     public static void main(String[] args) {
 
@@ -34,7 +35,9 @@ class Main12_11 {
         map = new int[N+1][N+1];
         pos = new int[][]{{1,0}, {0,1}, {-1,0}, {0,-1}};
         snake = new LinkedList<>();
-        vector = new String[L][2];
+        last_Snake = new Snake(1, 1);
+        snake.offer(last_Snake);
+        
         for(int i=0; i<N; i++) { // 맵을 로딩한다.
             for(int j=0; j<N; j++) {
                 map[i][j] = 0;
@@ -47,7 +50,9 @@ class Main12_11 {
             map[row][column] = 1;
         }
 
+        
         L = scanner.nextInt();
+        vector = new String[L][2];
         for(int i=0; i<L; i++) {
             second = scanner.next();
             vec = scanner.next();
@@ -56,34 +61,38 @@ class Main12_11 {
         }
 
         for(int i=0; i<vector.length; i++) {
-
+            
             for(int j=0; j<Integer.parseInt(vector[i][0]); j++) {
-
-                if ( snake.peek().getX()+pos[pos_index][0] > N || snake.peek().getX()+pos[pos_index][0] < 1 || 
-                snake.peek().getY()+pos[pos_index][1] > N || snake.peek().getY()+pos[pos_index][1] < 1 ) {
+                System.out.println("[" + snake.peek().getX() + ", " + snake.peek().getY() + "]");
+                if ( last_Snake.getX()+pos[pos_index][0] > N || last_Snake.getX()+pos[pos_index][0] < 1 || 
+                last_Snake.getY()+pos[pos_index][1] > N || last_Snake.getY()+pos[pos_index][1] < 1 ) {
                     break; // 뱀의 동선이 맵 밖으로 움직였을때 중지.
                 }
-                if ( map[snake.peek().getX()+pos[pos_index][0]][snake.peek().getY()+pos[pos_index][1]] == 2 ) { 
-                    break; // 뱀이 자기 몸에 부딪히면 중지.
+                if ( map[last_Snake.getX()+pos[pos_index][0]][last_Snake.getY()+pos[pos_index][1]] == 2 ) { 
+                    if (last_Snake.getX()+pos[pos_index][0] != snake.peek().getX() ||
+                    last_Snake.getY()+pos[pos_index][1] != snake.peek().getY()) {
+                        break; // 뱀이 자기 몸에 부딪히면 중지.
+                        // 뱀이 움직임에 따라 꼬리도 움직일 경우에는 그대로 진행.
+                    }
                 }
             
-                if ( map[snake.peek().getX()+pos[pos_index][0]][snake.peek().getY()+pos[pos_index][1]] == 0 ) {
+                if ( map[last_Snake.getX()+pos[pos_index][0]][last_Snake.getY()+pos[pos_index][1]] == 0 ) {
                     // 일반 땅을 밟았다면 뱀을 움직인다.
-                    snake.offer(new Snake(snake.peek().getX()+pos[pos_index][0], snake.peek().getY()+pos[pos_index][1]));
+                    snake.offer(new Snake(last_Snake.getX()+pos[pos_index][0], last_Snake.getY()+pos[pos_index][1]));
                     Snake tail = snake.poll();
-                    map[snake.peek().getX()+pos[pos_index][0]][snake.peek().getY()+pos[pos_index][1]] = 2;
+                    map[last_Snake.getX()+pos[pos_index][0]][last_Snake.getY()+pos[pos_index][1]] = 2;
                     map[tail.getX()][tail.getY()] = 0;
                     time++;
                 } else {
                     // 사과를 먹었다면 뱀의 머리를 늘린다.
-                    
+                    snake.offer(new Snake(last_Snake.getX()+pos[pos_index][0], last_Snake.getY()+pos[pos_index][1]));
+                    map[last_Snake.getX()+pos[pos_index][0]][last_Snake.getY()+pos[pos_index][1]] = 2;
+                    time++;
                 }
 
-
-                
             }
 
-            if (vector[i][1].equals("R")) {
+            if (vector[i][1].equals("D")) {
                 pos_index ++;
             } else {
                 pos_index --;
@@ -99,7 +108,7 @@ class Main12_11 {
             System.out.println(Arrays.toString(map[i]));
         }
 
-
+        System.out.println(time);
 
     }
 
