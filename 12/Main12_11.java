@@ -1,33 +1,188 @@
 import java.util.*;
 
 class Main12_11 {
-    
+    static int N, K, row, column, L, time=1, pos_index=0;
+    static int[][] map, pos;
+    static String[][] vector;
+    static String vec, second;
+    static Queue<Snake> snake;
 
     public static void main(String[] args) {
 
         /*
-            - »ï¼ºÀüÀÚ SW ¿ª·®Å×½ºÆ®
+            - ì‚¼ì„±ì „ì SW ì—­ëŸ‰í…ŒìŠ¤íŠ¸
 
-            'Dummy'¶ó´Â µµ½º °ÔÀÓÀÌ ÀÖ´Ù.ÀÌ °ÔÀÓ¿¡´Â ¹ìÀÌ ³ª¿Í¼­ ±â¾î ´Ù´Ï´Âµ¥ »ç°ú¸¦ ¸ÔÀ¸¸é ¹ì ±æÀÌ°¡ ´Ã¾î³³´Ï´Ù.
-            ¹ìÀÌ ÀÌ¸®Àú¸® ±â¾î ´Ù´Ï´Ù°¡ º® ¶Ç´Â ÀÚ±â ÀÚ½ÅÀÇ ¸ö°ú ºÎµúÈ÷¸é °ÔÀÓÀÌ ³¡³³´Ï´Ù.
-            °ÔÀÓÀº NxN Á¤»ç°¢ º¸µå À§¿¡¼­ ÁøÇàµÇ°í ¸î¸î Ä­¿¡´Â »ç°ú°¡ ³õ¿©Á® ÀÖ½À´Ï´Ù. º¸µåÀÇ »óÇÏÁÂ¿ì ³¡¿¡´Â
-            º®ÀÌ ÀÖ½À´Ï´Ù. °ÔÀÓÀ» ½ÃÀÛÇÒ ¶§ ¹ìÀº ¸Ç À§ ¸Ç ÁÂÃø¿¡ À§Ä¡ÇÏ°í ¹ìÀÇ ±æÀÌ´Â 1ÀÔ´Ï´Ù.
-            ¹ìÀº Ã³À½¿¡ ¿À¸¥ÂÊÀ» ÇâÇÕ´Ï´Ù.
+            'Dummy'ë¼ëŠ” ë„ìŠ¤ ê²Œì„ì´ ìˆë‹¤.ì´ ê²Œì„ì—ëŠ” ë±€ì´ ë‚˜ì™€ì„œ ê¸°ì–´ ë‹¤ë‹ˆëŠ”ë° ì‚¬ê³¼ë¥¼ ë¨¹ìœ¼ë©´ ë±€ ê¸¸ì´ê°€ ëŠ˜ì–´ë‚©ë‹ˆë‹¤.
+            ë±€ì´ ì´ë¦¬ì €ë¦¬ ê¸°ì–´ ë‹¤ë‹ˆë‹¤ê°€ ë²½ ë˜ëŠ” ìê¸° ìì‹ ì˜ ëª¸ê³¼ ë¶€ë”ªíˆë©´ ê²Œì„ì´ ëë‚©ë‹ˆë‹¤.
+            ê²Œì„ì€ NxN ì •ì‚¬ê° ë³´ë“œ ìœ„ì—ì„œ ì§„í–‰ë˜ê³  ëª‡ëª‡ ì¹¸ì—ëŠ” ì‚¬ê³¼ê°€ ë†“ì—¬ì ¸ ìˆìŠµë‹ˆë‹¤. ë³´ë“œì˜ ìƒí•˜ì¢Œìš° ëì—ëŠ”
+            ë²½ì´ ìˆìŠµë‹ˆë‹¤. ê²Œì„ì„ ì‹œì‘í•  ë•Œ ë±€ì€ ë§¨ ìœ„ ë§¨ ì¢Œì¸¡ì— ìœ„ì¹˜í•˜ê³  ë±€ì˜ ê¸¸ì´ëŠ” 1ì…ë‹ˆë‹¤.
+            ë±€ì€ ì²˜ìŒì— ì˜¤ë¥¸ìª½ì„ í–¥í•©ë‹ˆë‹¤.
 
-            - ÀÌµ¿ ±ÔÄ¢
-            1. ¹ìÀº ¸ö±æÀÌ¸¦ ´Ã·Á ¸Ó¸®¸¦ ´ÙÀ½Ä­¿¡ À§Ä¡½ÃÅ²´Ù.
-            2. ¸¸¾à ÀÌµ¿ÇÑ Ä­¿¡ »ç°ú°¡ ÀÖ´Ù¸é, ±× Ä­¿¡ ÀÖ´ø »ç°ú°¡ ¾ø¾îÁö°í ²¿¸®´Â ¿òÁ÷ÀÌÁö ¾Ê½À´Ï´Ù.
-            3. ¸¸¾à »ç°ú°¡ ¾ø´Ù¸é, ¸ö±æÀÌ¸¦ ÁÙ¿©¼­ ²¿¸®°¡ À§Ä¡ÇÑ Ä­À» ºñ¿öÁİ´Ï´Ù.
+            - ì´ë™ ê·œì¹™
+            1. ë±€ì€ ëª¸ê¸¸ì´ë¥¼ ëŠ˜ë ¤ ë¨¸ë¦¬ë¥¼ ë‹¤ìŒì¹¸ì— ìœ„ì¹˜ì‹œí‚¨ë‹¤.
+            2. ë§Œì•½ ì´ë™í•œ ì¹¸ì— ì‚¬ê³¼ê°€ ìˆë‹¤ë©´, ê·¸ ì¹¸ì— ìˆë˜ ì‚¬ê³¼ê°€ ì—†ì–´ì§€ê³  ê¼¬ë¦¬ëŠ” ì›€ì§ì´ì§€ ì•ŠìŠµë‹ˆë‹¤.
+            3. ë§Œì•½ ì‚¬ê³¼ê°€ ì—†ë‹¤ë©´, ëª¸ê¸¸ì´ë¥¼ ì¤„ì—¬ì„œ ê¼¬ë¦¬ê°€ ìœ„ì¹˜í•œ ì¹¸ì„ ë¹„ì›Œì¤ë‹ˆë‹¤.
 
-            »ç°úÀÇ À§Ä¡¿Í ¹ìÀÇ ÀÌµ¿ °æ·Î°¡ ÁÖ¾îÁú ¶§ ÀÌ °ÔÀÓÀÌ ¸î ÃÊ¿¡ ³¡³ª´ÂÁö °è»êÇÏ¼¼¿ä.
+            ì‚¬ê³¼ì˜ ìœ„ì¹˜ì™€ ë±€ì˜ ì´ë™ ê²½ë¡œê°€ ì£¼ì–´ì§ˆ ë•Œ ì´ ê²Œì„ì´ ëª‡ ì´ˆì— ëë‚˜ëŠ”ì§€ ê³„ì‚°í•˜ì„¸ìš”.
         */
 
-        
+        Scanner scanner = new Scanner(System.in);
+
+        N = scanner.nextInt(); // N : ë³´ë“œì˜ í¬ê¸°
+        K = scanner.nextInt(); // K : ì‚¬ê³¼ì˜ ê°œìˆ˜
+        // apple_Location = new int[K][2]; // ì‚¬ê³¼ì˜ ì¢Œí‘œ
+        map = new int[N+1][N+1];
+        pos = new int[][]{{1,0}, {0,1}, {-1,0}, {0,-1}};
+        snake = new LinkedList<>();
+        vector = new String[L][2];
+        for(int i=0; i<N; i++) { // ë§µì„ ë¡œë”©í•œë‹¤.
+            for(int j=0; j<N; j++) {
+                map[i][j] = 0;
+            }
+        }
+
+        for(int i=0; i<K; i++) { // ì‚¬ê³¼ì˜ ìœ„ì¹˜ë¥¼ ë§µì— ê¸°ë¡í•œë‹¤.
+            row = scanner.nextInt();
+            column = scanner.nextInt();
+            map[row][column] = 1;
+        }
+
+        L = scanner.nextInt();
+        for(int i=0; i<L; i++) {
+            second = scanner.next();
+            vec = scanner.next();
+            vector[i][0] = second;
+            vector[i][1] = vec;
+        }
+
+        for(int i=0; i<vector.length; i++) {
+
+            for(int j=0; j<Integer.parseInt(vector[i][0]); j++) {
+
+                if ( snake.peek().getX()+pos[pos_index][0] > N || snake.peek().getX()+pos[pos_index][0] < 1 || 
+                snake.peek().getY()+pos[pos_index][1] > N || snake.peek().getY()+pos[pos_index][1] < 1 ) {
+                    break; // ë±€ì˜ ë™ì„ ì´ ë§µ ë°–ìœ¼ë¡œ ì›€ì§ì˜€ì„ë•Œ ì¤‘ì§€.
+                }
+                if ( map[snake.peek().getX()+pos[pos_index][0]][snake.peek().getY()+pos[pos_index][1]] == 2 ) { 
+                    break; // ë±€ì´ ìê¸° ëª¸ì— ë¶€ë”ªíˆë©´ ì¤‘ì§€.
+                }
+            
+                if ( map[snake.peek().getX()+pos[pos_index][0]][snake.peek().getY()+pos[pos_index][1]] == 0 ) {
+                    // ì¼ë°˜ ë•…ì„ ë°Ÿì•˜ë‹¤ë©´ ë±€ì„ ì›€ì§ì¸ë‹¤.
+                    snake.offer(new Snake(snake.peek().getX()+pos[pos_index][0], snake.peek().getY()+pos[pos_index][1]));
+                    Snake tail = snake.poll();
+                    map[snake.peek().getX()+pos[pos_index][0]][snake.peek().getY()+pos[pos_index][1]] = 2;
+                    map[tail.getX()][tail.getY()] = 0;
+                    time++;
+                } else {
+                    // ì‚¬ê³¼ë¥¼ ë¨¹ì—ˆë‹¤ë©´ ë±€ì˜ ë¨¸ë¦¬ë¥¼ ëŠ˜ë¦°ë‹¤.
+                    
+                }
+
+
+                
+            }
+
+            if (vector[i][1].equals("R")) {
+                pos_index ++;
+            } else {
+                pos_index --;
+            }
+            
+            if (pos_index > 3) {
+                pos_index = 0;
+            } else if (pos_index < 0) {
+                pos_index = 3;
+            }
+        }
+        for(int i=0; i<N; i++) {
+            System.out.println(Arrays.toString(map[i]));
+        }
+
 
 
     }
 
 }
+
+class Snake {
+
+    private int x;
+    private int y;
+
+    public Snake(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
         Scanner sc = new Scanner(System.in);
@@ -38,7 +193,7 @@ class Main12_11 {
         map[0][0] = 2;
         queue.offer(new int[][]{{0,0}});
         pos = new int[]{0,0};
-        dx_dy = new int[][]{{0,1},{1,0},{0,-1},{-1,0}}; // µ¿,³²,¼­,ºÏ
+        dx_dy = new int[][]{{0,1},{1,0},{0,-1},{-1,0}}; // 
         vector = 0;
         // K_pos = new int[K][2];
 
@@ -61,7 +216,7 @@ class Main12_11 {
 
         for(int i=0; i<L; i++) {
             System.out.println("i = " + i);
-            if(!move(queue.peek(), L_pos[i][0], L_pos[i][1])) { // ÇØ´ç°ªÀ» Á¤»óÀûÀ¸·Î ¿òÁ÷¿´À» ¶§.
+            if(!move(queue.peek(), L_pos[i][0], L_pos[i][1])) {
                 break;
             }
             for(int j=0; j<N; j++) {
@@ -74,13 +229,13 @@ class Main12_11 {
     }
 
     public static boolean move(int[][] position, String x, String y) {
-        if(vector >= 4) { // ¹æÇâ ÀüÈ¯
+        if(vector >= 4) {
             vector = 0;
         } else if (vector < 0) {
             vector = 3;
         }
 
-        System.out.println("¹İº¹ : " + x);
+        System.out.println(" : " + x);
 
         for(int i=0; i<Integer.parseInt(x)-time_stamp; i++) {
             dx = dx_dy[vector][0];
@@ -95,14 +250,14 @@ class Main12_11 {
             System.out.println("map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] = " 
                                         + map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy]);
 
-            if (map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] == 1) { // Apple ¹ß°ßÇß´Ù¸é.
+            if (map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] == 1) { // 
                 snake_size++;
                 result++;
                 map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] = 2;
                 queue.offer(new int[][]{{queue.peek()[0][0]+dx,queue.peek()[0][1]+dy}});
-            } else if (map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] == 2) { // ÀÚ½Å°ú ºÎµúÇû´Ù¸é.
+            } else if (map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] == 2) { // 
                 return false;
-            } else { // ±×³É ÀÌµ¿Çß´Ù¸é
+            } else { // 
                 result++;
                 map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] = 2;
                 queue.offer(new int[][]{{queue.peek()[0][0]+dx,queue.peek()[0][1]+dy}});
@@ -113,23 +268,23 @@ class Main12_11 {
         if(y.equals("D")) vector++;
         else vector--;
 
-        if(x.equals(L_pos[L-1][0])) { // ¸¶Áö¸· ÀÎµ¦½º±îÁö µµÂøÇß´Âµ¥µµ Á¾·áµÇÁö ¾Ê¾ÒÀ» ¶§.
+        if(x.equals(L_pos[L-1][0])) { // 
             dx = dx_dy[vector][0];
             dy = dx_dy[vector][1];
             while(true) {
                 if(queue.peek()[0][0]+dx < 0 || queue.peek()[0][0]+dx >= N ||
-                queue.peek()[0][1]+dy < 0 || queue.peek()[0][1]+dy >= N) { // ºÎ‹HÇû´Ù¸é
+                queue.peek()[0][1]+dy < 0 || queue.peek()[0][1]+dy >= N) { // 
                     break;
                 }
-                if (map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] == 1) { // Apple ¹ß°ßÇß´Ù¸é.
+                if (map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] == 1) { // Apple
                     snake_size++;
                     result++;
                     map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] = 2;
                     queue.offer(new int[][]{{queue.peek()[0][0]+dx,queue.peek()[0][1]+dy}});
-                } else if (map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] == 2) { // ÀÚ½Å°ú ºÎµúÇû´Ù¸é.
+                } else if (map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] == 2) { //
                     result++;
                     return false;
-                } else { // ±×³É ÀÌµ¿Çß´Ù¸é
+                } else { //
                     result++;
                     map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] = 2;
                     queue.offer(new int[][]{{queue.peek()[0][0]+dx,queue.peek()[0][1]+dy}});
