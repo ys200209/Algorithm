@@ -1,14 +1,7 @@
 import java.util.*;
 
 class Main12_11 {
-    static int N, K, L, snake_size=1, x, y, dx, dy, vector, time_stamp=0, result=1;
-    static int[][] map;
-    static int[][] K_pos; // 사과
-    static String[][] L_pos; // 뱀
-    static String str;
-    static int[][] dx_dy;
-    static int[] pos;
-    static Queue<int[][]> queue;
+    
 
     public static void main(String[] args) {
 
@@ -29,6 +22,14 @@ class Main12_11 {
             사과의 위치와 뱀의 이동 경로가 주어질 때 이 게임이 몇 초에 끝나는지 계산하세요.
         */
 
+        
+
+
+    }
+
+}
+
+/*
         Scanner sc = new Scanner(System.in);
         N = sc.nextInt();
         K = sc.nextInt();
@@ -143,3 +144,4 @@ class Main12_11 {
     }
     
 }
+*/
