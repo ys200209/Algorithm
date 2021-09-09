@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Main12_11 {
-    static int N, K, row, column, L, time=1, pos_index=0;
+    static int N, K, row, column, L, time=1, pos_index=0, vector_index=0;
     static int[][] map, pos;
     static String[][] vector;
     static String vec, second;
@@ -62,7 +62,7 @@ class Main12_11 {
             vector[i][1] = vec;
         }
 
-        for(int i=0; i<vector.length; i++) {
+        /*for(int i=0; i<vector.length; i++) {
             System.out.println("vector[i][0] = " + vector[i][0]);
             for(int j=time; j<Integer.parseInt(vector[i][0]); j++) {
                 System.out.println("현재 위치1 : [" + last_Snake.getX() + ", " + last_Snake.getY() + "]");
@@ -74,13 +74,6 @@ class Main12_11 {
                 }
                 if ( map[(last_Snake.getX()+pos[pos_index][1])][(last_Snake.getY()+pos[pos_index][0])] == 2 ) { 
                     System.out.println("map[" + (last_Snake.getX()+pos[pos_index][1]) + ", " + (last_Snake.getY()+pos[pos_index][0]) + "] == 2");
-                    /*if (last_Snake.getX()+pos[pos_index][1] != snake.peek().getX() ||
-                    last_Snake.getY()+pos[pos_index][0] != snake.peek().getY()) {
-                        System.out.println("break. 2");
-                        System.out.println(time+1);
-                        return; // 뱀이 자기 몸에 부딪히면 중지.
-                        // 뱀이 움직임에 따라 꼬리도 움직일 경우에는 그대로 진행. (잘못됨)
-                    }*/
                     System.out.println("break. 2");
                     System.out.println(time+1);
                     return; // 뱀이 자기 몸에 부딪히면 중지.
@@ -123,6 +116,49 @@ class Main12_11 {
             } else if (pos_index < 0) {
                 pos_index = 3;
             }
+        }*/
+
+        while(true) {
+            System.out.println("현재 위치1 : [" + last_Snake.getX() + ", " + last_Snake.getY() + "]");
+                if ( last_Snake.getX()+pos[pos_index][1] > N || last_Snake.getX()+pos[pos_index][1] < 1 || 
+                last_Snake.getY()+pos[pos_index][0] > N || last_Snake.getY()+pos[pos_index][0] < 1 ) {
+                    System.out.println("break. 1");
+                    System.out.println(time+1);
+                    break; // 뱀의 동선이 맵 밖으로 움직였을때 중지.
+                }
+                if ( map[(last_Snake.getX()+pos[pos_index][1])][(last_Snake.getY()+pos[pos_index][0])] == 2 ) { 
+                    System.out.println("map[" + (last_Snake.getX()+pos[pos_index][1]) + ", " + (last_Snake.getY()+pos[pos_index][0]) + "] == 2");
+                    /*if (last_Snake.getX()+pos[pos_index][1] != snake.peek().getX() ||
+                    last_Snake.getY()+pos[pos_index][0] != snake.peek().getY()) {
+                        System.out.println("break. 2");
+                        System.out.println(time+1);
+                        return; // 뱀이 자기 몸에 부딪히면 중지.
+                        // 뱀이 움직임에 따라 꼬리도 움직일 경우에는 그대로 진행. (잘못됨)
+                    }*/
+                    System.out.println("break. 2");
+                    System.out.println(time+1);
+                    break; // 뱀이 자기 몸에 부딪히면 중지.
+                }
+            
+                if ( map[last_Snake.getX()+pos[pos_index][1]][last_Snake.getY()+pos[pos_index][0]] == 0 ) {
+                    // 일반 땅을 밟았다면 뱀을 움직인다.
+                    System.out.println("move 1");
+                    last_Snake = new Snake(last_Snake.getX()+pos[pos_index][1], last_Snake.getY()+pos[pos_index][0]);
+                    snake.offer(last_Snake);
+                    Snake tail = snake.poll();
+                    map[last_Snake.getX()][last_Snake.getY()] = 2;
+                    map[tail.getX()][tail.getY()] = 0;
+
+                    time++;
+                } else if ( map[last_Snake.getX()+pos[pos_index][1]][last_Snake.getY()+pos[pos_index][0]] == 1 ) {
+                    // 사과를 먹었다면 뱀의 머리를 늘린다.
+                    System.out.println("move 2");
+                    last_Snake = new Snake(last_Snake.getX()+pos[pos_index][1], last_Snake.getY()+pos[pos_index][0]);
+                    snake.offer(last_Snake);
+                    map[last_Snake.getX()][last_Snake.getY()] = 2;
+                    time++;
+                }
+
         }
         for(int i=0; i<=N; i++) {
             System.out.println(Arrays.toString(map[i]));
