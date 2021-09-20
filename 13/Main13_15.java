@@ -22,8 +22,12 @@ class Main13_15 {
         K = sc.nextInt();
         X = sc.nextInt();
 
-
+        PriorityQueue<Way> pq = new PriorityQueue<>();
 
     }
     
+}
+
+class Way {
+
 }
