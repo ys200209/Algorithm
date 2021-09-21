@@ -4,6 +4,7 @@ class Main18_1 {
     public static int N;
     public static String keyword;
     public static Stack<Integer> stack = new Stack<>();
+    public static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
 
@@ -14,33 +15,38 @@ class Main18_1 {
 
         for(int i=0; i<N; i++) {
             keyword = scanner.next();
-            if (keyword.equals("push")) {
-                stack.push(scanner.nextInt());
-                continue;
-            } else if (keyword.equals("pop")) {
-                if (!stack.isEmpty()) {
-                    System.out.println(stack.pop());
-                } else {
-                    System.out.println("-1");
-                }
-                continue;
-            } else if (keyword.equals("size")) {
-                System.out.println(stack.size());
-                continue;
-            } else if (keyword.equals("empty")) {
-                if (!stack.isEmpty()) {
-                    System.out.println("0");
-                } else {
-                    System.out.println("1");
-                }
-                continue;
-            } else {
-                if (!stack.isEmpty()) {
-                    System.out.println(stack.peek());
-                } else {
-                    System.out.println("-1");
-                }
-                continue;
+            switch(keyword) {
+                case "push":
+                    stack.push(scanner.nextInt());
+                    break;
+
+                case "pop":
+                    if (!stack.isEmpty()) {
+                        sb.append(stack.pop()+"\n");
+                    } else {
+                        sb.append("-1\n");
+                    }
+                    break;
+
+                case "size":
+                    sb.append(stack.size()+"\n");
+                    break;
+
+                case "empty":
+                    if (!stack.isEmpty()) {
+                        sb.append("0\n");
+                    } else {
+                        sb.append("1\n");
+                    }
+                    break;
+
+                case "top":
+                    if (!stack.isEmpty()) {
+                        sb.append(stack.peek()+"\n");
+                    } else {
+                        sb.append("-1\n");
+                    }
+                    break;
             }
         }
     }
