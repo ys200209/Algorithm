@@ -1,12 +1,13 @@
 {
     "java.project.sourcePaths": [
         "skill",
+        "BOJ/18",
         "8",
         "5",
         "14",
         "13",
         "12",
         "11",
-        "BOJ/18"
+        "BOJ/19"
     ]
 }
