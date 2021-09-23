@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Main18_6 {
-    public static int N, index=0;
+    public static int N;
     public static int[] A;
     public static Stack<Integer> stack = new Stack<>(); // 실제 스택
     public static Stack<Integer> stack_A = new Stack<>(); // 수열 A를 담은 스택
@@ -28,7 +28,6 @@ class Main18_6 {
         boolean push_check = false;
         for(int i=0; i<N; i++) {
             stack.push(stack_A.pop());
-            index = i+1;
             while(!stack_A.isEmpty()) {
                 if (stack.peek() < stack_A.peek()) {
                     sb.append(stack_A.peek() + " ");
