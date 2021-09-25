@@ -1,6 +1,8 @@
 import java.util.*;
 
 class Main5_1 {
+    public static int N, M, result;
+    public static String[][] frame;
 
     public static void main(String[] args) {
 
@@ -17,7 +19,48 @@ class Main5_1 {
 
         // 1. 배열의 크기 : 입력받는 것과 1000 중에서 1 택.
 
+        Scanner scanner = new Scanner(System.in);
 
+        N = scanner.nextInt();
+        M = scanner.nextInt();
 
+        frame = new String[N][M];
+
+        for(int i=0; i<N; i++) {
+            frame[i] = scanner.next().split("");
+        }
+
+        for(int i=0; i<N; i++) {
+            System.out.println(Arrays.toString(frame[i]));
+        }
+
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<M; j++) {
+                if(DFS(i, j)) {
+                    result += 1;
+                }
+            }
+        }
+        System.out.println(result);
+    }
+
+    public static boolean DFS(int x, int y) {
+        if (x >= N || x < 0 || y >= M || y < 0) {
+            return false;
+        }
+
+        if(frame[x][y].equals("1")) {
+            return false;
+        }
+
+        if (frame[x][y].equals("0")) {
+            frame[x][y] = "1";
+            DFS(x-1, y);
+            DFS(x+1, y);
+            DFS(x, y-1);
+            DFS(x, y+1);
+            return true;
+        }
+        return false;
     }
 }
