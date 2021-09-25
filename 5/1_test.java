@@ -1,9 +1,7 @@
 import java.util.*;
 
 class Main5_1 {
-    static int N, M, result;
-    static int[][] list;
-    static String str;
+
     public static void main(String[] args) {
 
         /*
@@ -19,46 +17,7 @@ class Main5_1 {
 
         // 1. 배열의 크기 : 입력받는 것과 1000 중에서 1 택.
 
-        Scanner sc = new Scanner(System.in);
 
-        N = sc.nextInt();
-        M = sc.nextInt();
-        sc.nextLine();
-        list = new int[N][M];
 
-        //System.out.println("N = " + N + ", M = " + M);
-        for(int i=0; i<N; i++) {
-            str = sc.nextLine();
-            for(int j=0; j<M; j++) {
-                list[i][j] = str.charAt(j) - '0';
-            }
-        }
-
-        for(int i=0; i<N; i++) {
-            for(int j=0; j<M; j++) {
-                if(DFS(i, j)) {
-                    result++;
-                }
-            }
-        }
-        System.out.println("result = " + result);
     }
-
-    public static boolean DFS(int x, int y) {
-        if(x<0 || x>=N || y<0 || y>=M) {
-            return false;
-        }
-
-        if(list[x][y] == 0) {
-            list[x][y] = 1;
-            DFS(x-1, y);
-            DFS(x+1, y);
-            DFS(x, y-1);
-            DFS(x, y+1);
-            return true;
-        }
-
-        return false;
-    }
-
 }
