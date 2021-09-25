@@ -1,9 +1,9 @@
 import java.util.*;
 
 class Main19_1 {
-    public static int N, last;
+    public static int N;
     public static String command;
-    public static Queue<Integer> queue = new LinkedList<>();
+    public static LinkedList<Integer> queue = new LinkedList<>();
     public static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
@@ -17,47 +17,40 @@ class Main19_1 {
         for(int i=0; i<N; i++) {
             command = scanner.next();
 
-            switch(command) {
-                case "push":
-                    last = scanner.nextInt();
-                    queue.offer(last);
-                    break;
-
-                case "pop":
-                    if (queue.isEmpty()) {
-                        sb.append("-1\n");
-                    } else {
-                        sb.append(queue.poll()+"\n");
-                    }
-                    break;
-
-                case "size":
-                    sb.append(queue.size() + "\n");
-                    break;
-                
-                case "empty":
-                    if (queue.isEmpty()) {
-                        sb.append("1\n");
-                    } else {
-                        sb.append("0\n");
-                    }
-                    break;
-
-                case "front":
-                    if (queue.isEmpty()) {
-                        sb.append("-1\n");
-                    } else {
-                        sb.append(queue.peek()+"\n");
-                    }
-                    break;
-
-                case "back":
-                    if (queue.isEmpty()) {
-                        sb.append("-1\n");
-                    } else {
-                        sb.append(last+"\n");
-                    }
-                    break;
+            if (command.equals("push")) {
+                queue.offer(scanner.nextInt());
+                continue;
+            } else if (command.equals("pop")) {
+                if (queue.isEmpty()) {
+                    sb.append("-1\n");
+                } else {
+                    sb.append(queue.poll()+"\n");
+                }
+                continue;
+            } else if (command.equals("size")) {
+                sb.append(queue.size() + "\n");
+                continue;
+            } else if (command.equals("empty")) {
+                if (queue.isEmpty()) {
+                    sb.append("1\n");
+                } else {
+                    sb.append("0\n");
+                }
+                continue;
+            } else if (command.equals("front")) {
+                if (queue.isEmpty()) {
+                    sb.append("-1\n");
+                } else {
+                    sb.append(queue.peek()+"\n");
+                }
+                continue;
+            } else { // back
+                if (queue.isEmpty()) {
+                    sb.append("-1\n");
+                } else {
+                    sb.append(queue.peekLast()+"\n");
+                }
+                continue;
             }
         }
 
