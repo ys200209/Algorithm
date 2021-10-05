@@ -28,12 +28,13 @@ class Main23_1 {
             map[y][x] = 1;
         }
 
+
         DFS(V);
+        System.out.println();
         visited = new boolean[1001];
 
-        System.out.println();
-
         BFS();
+
     }
 
     public static void DFS(int i) {
@@ -48,12 +49,13 @@ class Main23_1 {
     }
 
     public static void BFS() {
-        visited[V] = true;
         queue.offer(V);
         System.out.print(V + " ");
-
+        visited[V] = true;
+        
         while(!queue.isEmpty()) {
             int temp = queue.poll();
+
             for(int j=1; j<=N; j++) {
                 if (map[temp][j] == 1 && visited[j] == false) {
                     visited[j] = true;
@@ -62,6 +64,8 @@ class Main23_1 {
                 }
             }
         }
+
+
     }
 
 }
