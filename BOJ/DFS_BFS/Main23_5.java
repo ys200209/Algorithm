@@ -5,7 +5,6 @@ class Main23_5 {
     public static String str;
     public static int[][] map;
     public static Queue<Node> queue = new LinkedList<>();
-    public static boolean[][] visited;
     
     public static void main(String[] args) {
 
@@ -16,7 +15,6 @@ class Main23_5 {
         M = scanner.nextInt();
 
         map = new int[N+1][M+1];
-        visited = new boolean[101][101];
 
         for(int i=1; i<=N; i++) {
             str = scanner.next();
@@ -26,38 +24,38 @@ class Main23_5 {
             }
         }
 
-        BFS(1, 1, 1);
-
-        for(int i=0; i<N+1; i++) {
-            System.out.println(Arrays.toString(map[i]));
-        }
+        BFS();
 
         System.out.println(map[N][M]);
 
     }
-    
-    public static void BFS(int x, int y, int count) {
-        if (x < 1 || y < 1 || x > N || y > M) {
-            return;
-        }
 
-        if (map[x][y] == 0) return;
+    public static void BFS() {
+        queue.offer(new Node(1, 1));
 
-        visited[x][y] = true;
-        queue.offer(new Node(x, y));
+        int[] dx = new int[]{-1, 1, 0, 0};
+        int[] dy = new int[]{0, 0, -1, 1};
 
-        while(!queue.isEmpty() && map[N][M] == 1) {
-            count += 1;
+        while(!queue.isEmpty()) {
             Node node = queue.poll();
+            int x = node.getX();
+            int y = node.getY();
 
-            for(int j=1; j<=M; j++) {
-                if (map[node.getX()][j] != 0) {
-                    map[node.getX()][j] = count;
-                    queue.offer(new Node(node.getX(), j));
+            // 상, 하, 좌, 우 이동
+            for(int i=0; i<4; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+                if (nx < 1 || ny < 1 || nx > N || ny > M) continue; // 맵 밖으로 이동을 시도하면 취소.
+
+                if (map[nx][ny] == 0) continue; // 벽으로 이동하려고 하면 취소.
+
+                if (map[nx][ny] == 1) {
+                    map[nx][ny] = map[x][y] + 1;
+                    queue.offer(new Node(nx, ny));
                 }
             }
-        }
 
+        }
     }
 
 }
