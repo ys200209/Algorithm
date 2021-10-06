@@ -7,7 +7,7 @@ class Main23_4 {
     
     public static void main(String[] args) {
 
-        // 백준 온라인 저지 DFS/BFS(23)의 3번
+        // 백준 온라인 저지 DFS/BFS(23)의 4번
 
         Scanner scanner = new Scanner(System.in);
 
