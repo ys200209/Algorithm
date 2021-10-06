@@ -5,7 +5,7 @@ class Main23_5 {
     public static String str;
     public static int[][] map;
     public static Queue<Node> queue = new LinkedList<>();
-    public static boolean[] visited;
+    public static boolean[][] visited;
     
     public static void main(String[] args) {
 
@@ -16,48 +16,50 @@ class Main23_5 {
         M = scanner.nextInt();
 
         map = new int[N+1][M+1];
-        visited = new boolean[101];
+        visited = new boolean[101][101];
 
         for(int i=1; i<=N; i++) {
             str = scanner.next();
 
             for(int j=1; j<=M; j++) {
-                map[i][j] = str.charAt(j) - '0';
+                map[i][j] = str.charAt(j-1) - '0';
             }
         }
 
         BFS(1, 1, 1);
 
+        for(int i=0; i<N+1; i++) {
+            System.out.println(Arrays.toString(map[i]));
+        }
+
         System.out.println(map[N][M]);
 
     }
-
+    
     public static void BFS(int x, int y, int count) {
         if (x < 1 || y < 1 || x > N || y > M) {
             return;
         }
 
-        if (map[x][y] == 0) {
-            return;
-        }
+        if (map[x][y] == 0) return;
 
+        visited[x][y] = true;
         queue.offer(new Node(x, y));
-        visited[1] = true;
 
-        while(!queue.isEmpty()) {
+        while(!queue.isEmpty() && map[N][M] == 1) {
+            count += 1;
             Node node = queue.poll();
 
-            for(int j=1; j<=N; j++) {
-                if (map[x][y] != 0 && visited[j] == false) {
-                    visited[j] = true;
-                    map[j][j] = count = count+1;
-                    queue.offer(new Node(j, j));
+            for(int j=1; j<=M; j++) {
+                if (map[node.getX()][j] != 0) {
+                    map[node.getX()][j] = count;
+                    queue.offer(new Node(node.getX(), j));
                 }
             }
         }
 
-        return;
     }
+
 }
 
 class Node {
