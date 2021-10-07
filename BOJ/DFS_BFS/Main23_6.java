@@ -4,7 +4,6 @@ class Main23_6 {
     public static int N, M, result=0, state;
     public static int[][] map;
     public static Queue<Tomato> queue = new LinkedList<>();
-    public static Queue<Tomato> readyQueue = new LinkedList<>();
     
     public static void main(String[] args) {
         
@@ -26,15 +25,9 @@ class Main23_6 {
             }
         }
 
-        for(int i=0; i<M; i++) {
-            System.out.println(Arrays.toString(map[i]));
-        }
-
         BFS();
 
-        
-
-        if (result==0) { // 토마토가 원래 모두 익어있다면
+        if (result==0) { // 토마토가 원래 모두 익어있었다면
             System.out.println("0"); 
         } else { 
             for(int i=0; i<M; i++) {
@@ -46,7 +39,7 @@ class Main23_6 {
                 }
             }
             
-            System.out.println(result);
+            System.out.println(result); // 최소 시간 출력
         }
 
     }
@@ -59,7 +52,6 @@ class Main23_6 {
         while(!queue.isEmpty()) {
             int count = queue.size();
             result += 1;
-            System.out.println("count = " + count);
 
             for(int i=0; i<count; i++) { // 현재 1인 토마토의 갯수만큼 반복
                 Tomato tomato = queue.poll();
