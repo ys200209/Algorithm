@@ -57,7 +57,6 @@ class Main23_8 {
                 if ( (nx == N && ny == M && map[nx][ny] < map[x][y]+1) && map[N][M] != 0 ) {
                     continue;
                 }
-                
 
                 if ( (map[nx][ny] != 0 && map[nx][ny] != 1) || map[nx][ny] > map[x][y] + 1) { 
                     // 처음으로 지나가는 길이 아니고, 또한 이미 더 최단거리로 지나간 기록이 있다면 중지하라.
