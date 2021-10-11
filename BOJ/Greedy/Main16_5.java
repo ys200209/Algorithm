@@ -42,7 +42,7 @@ class Main16_5 {
 
             long price = price_queue.poll();
 
-            long front = price * load_sum;
+            long front = now;
             
             // now = price * load_queue.peek();
             load_sum -= load_queue.peek();
@@ -54,7 +54,7 @@ class Main16_5 {
 
             if (front >= back) {
                 result.offer(now + price_queue.peek() * load_queue.poll());
-                
+                System.out.println("result.offer");
                 continue;
             }
 
