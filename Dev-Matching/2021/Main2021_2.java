@@ -29,16 +29,61 @@ class Main2021_2 {
 
 
 
-
-
-
-
-
-
-
         return answer;
     }
 
+    public static int[][] rotateKey(int[][] key) {
+        int N = key.length;
+        int[][] result = new int[N][N];
+
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<N; j++) {
+                result[j][N - i - 1] = key[i][j];
+            }
+        }
+
+
+        return result;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
     public static int[][] rotateKey(int[][] key) {
 
         int N = key.length;
@@ -53,14 +98,9 @@ class Main2021_2 {
         }
 
         return list;
-
-
-
-
-
-        
+  
     }
-
+*/
 
 
 
