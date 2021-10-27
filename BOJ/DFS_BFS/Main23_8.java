@@ -54,15 +54,11 @@ class Main23_8 {
 
                 if (nx < 1 || ny < 1 || nx > N || ny > M) continue; // 맵 밖으로 지나가지 못하게 한다.
 
-                if ( (nx == N && ny == M && map[nx][ny] < map[x][y]+1) && map[N][M] != 0 ) {
-                    continue;
-                }
+                if ( (nx == N && ny == M && map[nx][ny] < map[x][y]+1) && map[N][M] != 0 ) continue;
 
-                if ( (map[nx][ny] != 0 && map[nx][ny] != 1) || map[nx][ny] > map[x][y] + 1) { 
+                if ( (map[nx][ny] != 0 && map[nx][ny] != 1) || map[nx][ny] > map[x][y] + 1) continue;
                     // 처음으로 지나가는 길이 아니고, 또한 이미 더 최단거리로 지나간 기록이 있다면 중지하라.
-                    continue;
-                }
-                
+                    
                 if ( map[nx][ny] == 1 && pass == 0) { // 벽을 처음으로 만났다면 부수고 지나간다.
                     queue.offer(new Node1(nx, ny, 1)); // ( x좌표, y좌표, 벽을 부순 횟수 )
                     map[nx][ny] = map[x][y] + 1;
