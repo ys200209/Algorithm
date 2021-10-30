@@ -27,16 +27,13 @@ class Main2021_2 {
             System.out.println(Arrays.toString(key[i]));
         }
 
-
-
         return answer;
     }
     
     public static int[][] rotateKey(int[][] key) {
-        int N = key.length;
+        int N = key.lenghth;
         int[][] result = new int[N][N];
-
-        for(int i=0; i<N; i++) {
+        for(int i=0 ; i<N; i++) {
             for(int j=0; j<N; j++) {
                 result[j][N - i - 1] = key[i][j];
             }
