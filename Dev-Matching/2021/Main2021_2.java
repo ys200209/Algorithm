@@ -20,7 +20,7 @@ class Main2021_2 {
             System.out.println(Arrays.toString(key[i]));
         }
 
-        key = rotateKey(key);
+        // key = rotateKey(key);
         
         System.out.println("- [rotateKey] -");
         for(int i=0; i<key.length; i++) {
@@ -28,18 +28,6 @@ class Main2021_2 {
         }
 
         return answer;
-    }
-    
-    public static int[][] rotateKey(int[][] key) {
-        int N = key.lenghth;
-        int[][] result = new int[N][N];
-        for(int i=0 ; i<N; i++) {
-            for(int j=0; j<N; j++) {
-                result[j][N - i - 1] = key[i][j];
-            }
-        }
-
-        return result;
     }
 
 
