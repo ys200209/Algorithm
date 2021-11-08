@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Main2 {
     public static Queue<Printer> queue = new PriorityQueue<>();
+    public static Queue<Integer> pri_queue = new PriorityQueue<>(Collections.reverseOrder());
 
     public static void main(String[] args) {
 
@@ -18,10 +19,16 @@ public class Main2 {
 
         for(int i=0; i<priorities.length; i++) {
             queue.offer(new Printer(i, priorities[i]));
+            pri_queue.offer(priorities[i]);
         }
 
         while(!queue.isEmpty()) {
-            System.out.println(queue.poll().getIndex());
+            
+        }
+
+        while(!pri_queue.isEmpty()) {
+            //System.out.println(queue.poll().getIndex());
+            System.out.println(pri_queue.poll());
         }
         
 
