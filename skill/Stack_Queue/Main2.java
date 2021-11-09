@@ -9,13 +9,15 @@ public class Main2 {
     public static void main(String[] args) {
 
         // 프린터
-        // System.out.println(solution(new int[]{2, 1, 3, 2}, 2)); // 1
+        System.out.println(solution(new int[]{2, 1, 3, 2}, 2)); // 1
         System.out.println(solution(new int[]{1, 1, 9, 1, 1, 1}, 0)); // 5
 
     }
 
     public static int solution(int[] priorities, int location) {
         int answer = 0;
+        queue = new LinkedList<>();
+        pri_queue = new PriorityQueue<>(Collections.reverseOrder()); // 새로운 입력값에 대한 대응 (초기화)
 
         for(int i=0; i<priorities.length; i++) {
             queue.offer(new Printer(i, priorities[i]));
