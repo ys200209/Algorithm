@@ -8,8 +8,8 @@ public class Main3 {
 
     public static void main(String[] args) {
 
-        // 이중 우선순위 큐 (2)
-        
+        // 이중 우선순위 큐 (3)
+
         //System.out.println(Arrays.toString(solution(new String[]{"I 16","D 1"}))); // [0, 0]
         //System.out.println(Arrays.toString(solution(new String[]{"I 7","I 5","I -5","D -1"}))); // [7, 5]
         System.out.println(Arrays.toString(solution(
