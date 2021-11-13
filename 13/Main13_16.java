@@ -1,6 +1,10 @@
-class Main13_16 {
+import java.util.*;
 
-    public void main(String[] args) {
+class Main13_16 {
+    public static int N, M, answer=0, score=0;
+    public static int[][] map, temp;
+
+    public static void main(String[] args) {
 
         /*
             - 삼성전자 SW 역량테스트
@@ -13,9 +17,96 @@ class Main13_16 {
             새로 세울 수 있는 벽의 개수는 3개이며, 꼭 3개를 세워야 합니다.
 
             벽 3개를 세운 뒤, 바이러스가 퍼질 수 없는 곳을 안전 영역이라고 할 때 지도에서 안전 영역 크기의 최댓값을 구하는
-            프로그램을 작성하세요. (3 <= N, M <= 8)
+            프로그램을 작성하세요. (3 <= N, M <= 8) ( 0은 빈칸, 1은 벽, 2는 바이러스가 있는 위치이다 )
+
+7 7
+2 0 0 0 1 1 0
+0 0 1 0 1 2 0
+0 1 1 0 1 0 0
+0 1 0 0 0 0 0
+0 0 0 0 0 1 1
+0 1 0 0 0 0 0
+0 1 0 0 0 0 0
+
         */
 
+        Scanner scanner = new Scanner(System.in);
+        N = scanner.nextInt();
+        M = scanner.nextInt();
+        map = new int[N][M];
+        temp = new int[N][M];
+
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<M; j++) {
+                map[i][j] = scanner.nextInt();
+            }
+        }
+
+        DFS(0);
+
+        System.out.println(answer);
+
     }
-    
+
+    public static void DFS(int count) {
+        if (count == 3) {
+            for(int i=0; i<N; i++) {
+                for(int j=0; j<M; j++) {
+                    temp[i][j] = map[i][j];
+                }
+            }
+
+            for(int i=0; i<N; i++) {
+                for(int j=0; j<M; j++) {
+                    if (map[i][j] == 2) {
+                        virus(i, j);
+                    }
+                }
+            }
+            answer = Math.max(answer, getScore());
+            return;
+        } 
+        
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<M; j++) {
+                if (map[i][j] == 0) {
+                    map[i][j] = 1;
+                    count += 1;
+                    DFS(count);
+                    map[i][j] = 0;
+                    count -= 1;
+                }
+            }
+        }
+    }
+
+    public static void virus(int x, int y) {
+        int[] dx = {-1, 0, 1, 0};
+        int[] dy = {0, 1, 0, -1};
+
+        for(int i=0; i<4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            
+            if (nx >= 0 && nx < N && ny >= 0 && ny < M) {
+                if (temp[nx][ny] == 0) {
+                    temp[nx][ny] = 2;
+                    virus(nx, ny);
+                }
+            }
+        }
+    }
+
+    public static int getScore() {
+        score=0;
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<M; j++) {
+                if (temp[i][j] == 0) {
+                    score+=1;
+                }
+            }
+        }
+        return score;
+    }
+
 }
