@@ -42,15 +42,12 @@ public class Main2 {
                     break;
                 }
             }
-
             if (!check) {
                 answer += 1;
                 check = false;
             }
         }
-
         System.out.println("list = " + list);
-        
         return answer;
     }
 
@@ -70,12 +67,8 @@ public class Main2 {
 
         visited[i] = true;
 
-        for(int j=1; j<str.length-1; j++) {
-            DFS(str, i-j);
-            DFS(str, i+j);
-        }
+        DFS(str, i-1);
+        DFS(str, i+1);
         
-
     }
-    
 }
