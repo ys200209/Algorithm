@@ -2,6 +2,9 @@ package Greedy;
 import java.util.*;
 
 class Main3 {
+    public static boolean[] visited;
+    public static String[] str;
+    public static String result;
 
     public static void main(String[] args) {
 
@@ -14,49 +17,52 @@ class Main3 {
             solution 함수를 완성하세요
         */
 
-        //System.out.println(solution("1924", 2));
-        //System.out.println(solution("1231234", 3)); // 7, 3 -> 4(index)
-        System.out.println(solution("4177252841", 4));
+        //System.out.println(solution("1924", 2)); // "94"
+        //System.out.println(solution("1231234", 3)); // "3234"
+        System.out.println(solution("4177252841", 4)); // "775841"
 
     }
 
     public static String solution(String number, int k) {
-        String answer = "";
-        int max=0, start=0, end=0, index=0;
-        int[] list = new int[number.length()];
+        int answer=0;
+        str = number.split("");
+        
+        result = "";
 
-        System.out.println("-----------------");
+        for(int i=0; i<str.length; i++) {
+            visited = new boolean[str.length];
+            answer = Math.max(answer, DFS(i, 1, k));
+            result = "";
 
-        for(int i=0; i<list.length; i++) {
-            list[i] = number.charAt(i) - '0';
         }
 
-        for(int i=0; i<number.length()-k-1; i++) {
-            max=0;
-            System.out.println("--i-- = " + i);
-            // i가 0, k가 4일 때, j는 최대 5이어야 함. end는 6.
-            // i가 1, k가 4일 때, j는 최대 6이어야 함. end는 7.
-            end = list.length - k + i; // 10 - 4 + i + a = 6
-                                           // 10 - 4 + i + b = 7 
-            System.out.println("end = " + end);
-            for(int j=start; j<end; j++) {
-                System.out.println("j = " + j);
-                if(max < list[j]) {
-                    max = list[j];
-                    index = j;
-                    
-                }
-                
-            }
-            System.out.println("list["+index+"] = " + list[index]);
-            list[index] = 0;
-            System.out.println("list = " + Arrays.toString(list));
-            answer += Integer.toString(max);
-            start = index+1;
-            System.out.println("answer = " + answer);
+        System.out.println("answer = " + answer);
+        return Integer.toString(answer);
+    }
+
+    public static int DFS(int i, int count, int k) {
+        System.out.println("DFS!");
+        if (count > str.length - k) {
+            System.out.println("count : " + count + ", str.length : " + str.length);
+            System.out.println("result : " + result);
+            System.out.println("return 1");
+            return Integer.parseInt(result);
         }
 
-        return answer;
+        if (i < 0 || i >= str.length) {
+            System.out.println("return 2");
+            return Integer.parseInt(result);
+        }
+
+        if (visited[i] == false) {
+            visited[i] = true;
+            result += str[i];
+            DFS(i++, count++, k);
+            DFS(i--, count++, k);
+        }
+
+        return -1;
+
     }
     
 }
