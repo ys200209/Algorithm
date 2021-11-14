@@ -1,66 +1,90 @@
 import java.util.*;
 
 class Main13_19 {
-    static int N, MAX=-1000000000, MIN=1000000000, result;
-    static int[] N_list, C_list;
+    public static int N, result_min=1000000000, result_max=-1000000000, result, C;
+    public static int[] A, cal;
+    
     
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
+        // 삼성전자 SW 역량테스트
 
-        N = sc.nextInt();
-        N_list = new int[N];
-        C_list = new int[4];
+        Scanner scanner = new Scanner(System.in);
+
+        N = scanner.nextInt();
+        A = new int[N];
+        cal = new int[4];
 
         for(int i=0; i<N; i++) {
-            N_list[i] = sc.nextInt();
+            A[i] = scanner.nextInt();
         }
-
         for(int i=0; i<4; i++) {
-            C_list[i] = sc.nextInt();
+            cal[i] = scanner.nextInt();
         }
 
-        System.out.println(Arrays.toString(N_list));
-        System.out.println(Arrays.toString(C_list));
+        result = A[0];
 
-        for(int i=0; i<4; i++) {
-            if(C_list[i] != 0) {
-                System.out.println("C_list["+i+"] != 0");
-                BFS(C_list, i, 1, N_list[0]);
-            }
-        }
+        DFS(1);
 
-        System.out.println("MAX = " + MAX);
-        System.out.println("MIN = " + MIN);
+        System.out.println(result_max);
+        System.out.println(result_min);
 
     }
 
-    public static int BFS(int[] list, int C_index, int count, int result) {
-        System.out.println("(into) count = " + count);
-        System.out.println("(into) result = " + result);
-        if (list[C_index] <= 0) {
-            return -1;
+    public static void DFS(int index) {
+        if (index == N) {
+            result_min = Math.min(result_min, result);
+            result_max = Math.max(result_max, result);
+            return;
         }
-        if(count >= N) {
-            MAX = Math.max(result, MAX);
-            MIN = Math.min(result, MIN);
-            return result;
-        }
-        
-        if(C_index >= 4) {
-            C_index -= 4;
-        }
-        list[C_index%4] -= 1;
 
-        System.out.println("list = " + Arrays.toString(list));
-        
-        BFS(list, C_index+1, count+1, result+N_list[count]);
-        BFS(list, C_index+1, count+1, result-N_list[count]);
-        BFS(list, C_index+1, count+1, result*N_list[count]);
-        BFS(list, C_index+1, count+1, result/N_list[count]);
-
-        return -1;
-        
+        for(int i=0; i<4; i++) {
+            if (cal[0] != 0) {
+                result += A[index];
+                index += 1;
+                cal[0] -= 1;
+                DFS(index);
+                cal[0] += 1;
+                index -= 1;
+                result -= A[index];
+            }
+            if (cal[1] != 0) {
+                result -= A[index];
+                index += 1;
+                cal[1] -= 1;
+                DFS(index);
+                cal[1] += 1;
+                index -= 1;
+                result += A[index];
+            }
+            if (cal[2] != 0) {
+                result *= A[index];
+                index += 1;
+                cal[2] -= 1;
+                DFS(index);
+                cal[2] += 1;
+                index -= 1;
+                result /= A[index];
+            }
+            if (cal[3] != 0) {
+                if (result < 0) {
+                    result *= -1;
+                    C = result % A[index];
+                    result /= A[index];
+                    result *= -1;
+                } else {
+                    C = result % A[index];
+                    result /= A[index];
+                }
+                index += 1;
+                cal[3] -= 1;
+                DFS(index);
+                cal[3] += 1;
+                index -= 1;
+                result *= A[index];
+                result += C;
+            }
+        }
     }
 
 }
