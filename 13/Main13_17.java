@@ -68,6 +68,7 @@ class Main13_17 {
                 if (nx >= 0 && nx < N && ny >= 0 && ny < N) {
                     if (map[nx][ny] == 0) {
                         map[nx][ny] = virus.getNumber();
+                        
                         queue.offer(new Virus(nx, ny, virus.getNumber()));
                     }
                 }
