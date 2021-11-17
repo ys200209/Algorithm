@@ -9,8 +9,6 @@ public class Market {
       int num = sc.nextInt();
       sc.close();
       
-//      int num = 300;
-      int[] threadFinish = {num};
       boolean choosing[] = new boolean[num];
       int ticket[] = new int[num];
       long beforeTime = System.currentTimeMillis(); //시작시간 측정
@@ -27,11 +25,8 @@ public class Market {
 
       long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
       long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
-      System.out.println("[main 스레드 종료]");
       System.err.println("소요시간(m) : " + secDiffTime);
 
-
-      
    }
 
 
