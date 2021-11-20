@@ -1,71 +1,90 @@
+import java.util.Random;
 import java.util.concurrent.Semaphore;
-import java.util.*;
 
-public class SemaphoreTest {
-    public static int a, sum = 0;
-    public static long startTime;
+public class SemaphoreTest { //수행시간 측정을 위해 만들어둔 클래스
+   public static SomeResourceReader resourceReader = new SomeResourceReader();
+	public static SomeResourceWriter resourceWriter = new SomeResourceWriter();
+	public static Semaphore writer = new Semaphore(1);
+   public static Semaphore reader = new Semaphore(1);
+   public static int criticalValue, readers = 0; // 리더의 수
     
 
+	public static void main(String[] args) {
+		
+		Thread tRead = new Thread(new Runnable() {
+			public void run() {
+				resourceReader.use();
+			}
+		});
+		
+		Thread tWrite = new Thread(new Runnable() {
+			public void run() {
+				resourceWriter.use();
+			}
+		});
+		
+		tRead.start();
+		
+		tWrite.start();
+		
+	}
+	
+}
 
-    public static void main(String[] args) {
-       final SomeResource resource = new SomeResource(1000);
-       Thread t;
-      
-      Scanner sc = new Scanner(System.in);
-      
-      System.out.print("스레드 개수를 입력하세요 : ");
-      a = sc.nextInt(); // 정수를 입력받음
+class SomeResourceReader {
 
-       // 시작 시간 설정
-       startTime = System.currentTimeMillis();
-       for(int i = 1 ; i <= a ; i++) {
-            t = new Thread(new Runnable() {
-                public void run() {
-                    resource.use();
+    public void use() {
+        try {
+            do {
+            	Thread.sleep(new Random().nextInt(1000));
+            	
+            	System.out.println("Reader : " + SemaphoreExam.readers);
+            	
+            	SemaphoreExam.reader.acquire(); // P연산 (wait)
+            	SemaphoreExam.readers += 1;
+               if (SemaphoreExam.readers == 1) {
+               	SemaphoreExam.writer.acquire(); 
+               }
+                SemaphoreExam.reader.release(); // V연산 (signal)
+
+                // Reader 임계 영역 진입
+                
+                SemaphoreExam.reader.acquire(); // wait
+                SemaphoreExam.readers -= 1;
+                if (SemaphoreExam.readers == 0) {
+                	SemaphoreExam.writer.release();
                 }
-            });
-            t.start();
+                SemaphoreExam.reader.release(); // signal
+
+                
+                
+            } while(true);
+            
+        } catch (InterruptedException e) {
+          e.printStackTrace();
         }
-       
     }
- }
+}
 
-
- class SomeResource {
-
-    private final Semaphore semaphore;
-    private final int maxThread;
-    public static StringBuilder sb = new StringBuilder();
-    
-    public SomeResource(int maxThread) {
-       this.maxThread = maxThread;
-       this.semaphore = new Semaphore(maxThread);
-    }
+class SomeResourceWriter {
     
     public void use() {
-       try {
-          semaphore.acquire(); // Thread 가 semaphore에게 시작을 알림 (P연산)
-          
-        //    System.out.println("[" + Thread.currentThread().getName() + "]" 
-        //                            + (maxThread - semaphore.availablePermits()) + "쓰레드가 점유중" );
-        sb.append("[" + Thread.currentThread().getName() + "]" 
-                                    + (maxThread - semaphore.availablePermits()) + "쓰레드가 점유중");
-          // semaphore.availablePermits() 사용가능한 Thread의 숫자
-          
-          SemaphoreTest.sum += 1; // 임계 영역 실행
-          
-          semaphore.release(); // Thread 가 semaphore에게 종료를 알림 (V연산)
+        try {
+            do {
+            	SemaphoreExam.writer.acquire();
 
-          if (SemaphoreTest.sum == SemaphoreTest.a) {
-                System.out.println(sb);
-                System.out.println("finish");
-                // 종료 시간 설정
-                System.out.println("실행 시간 : " + (System.currentTimeMillis()-SemaphoreTest.startTime));
-          }
-          
-       } catch (InterruptedException e) {
-          e.printStackTrace();
-       }
+                // Writer 임계 영역 진입
+            	System.out.println("Writer");
+
+            	Thread.sleep(new Random().nextInt(1000));
+            	
+            	SemaphoreExam.writer.release();
+            } while(true);
+            
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
- }
- 
+
+}
