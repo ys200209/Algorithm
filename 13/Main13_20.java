@@ -8,8 +8,6 @@ public class Main13_20 {
     // public static int[][] teacher;
 
     public static void main(String[] args) {
-
-        // 삼성전자 SW 역량 테스트 (난이도 : 중상)
         
         Scanner scanner = new Scanner(System.in);
         N = scanner.nextInt();
@@ -46,7 +44,6 @@ public class Main13_20 {
                     if (map[i][j].equals("T")) {
                         for(int k=0; k<4; k++) {
                             if (result) return;
-
                             isSearch(i, j, dx[k], dy[k]); // 학생이 발견되지 않을때마다 4방향으로 탐색
                         }
                         
@@ -55,8 +52,6 @@ public class Main13_20 {
                 }
                 
             }
-
-            System.out.println("발견되지 않음");
             result = false;
             return;
         }
