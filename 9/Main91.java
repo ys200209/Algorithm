@@ -1,28 +1,28 @@
 import java.util.*;
 
-public class Main91 {
-	public static final int INF = (int) 1e9;
+public class Main91 {public static final int INF = (int)1e9;
 	public static int n, m, start;
 	public static ArrayList<ArrayList<Node>> graph = new ArrayList<>();
 	public static int[] d = new int[100001];
 	public static boolean[] visited = new boolean[100001];
 	
+
 	public static void main(String[] args) {
 		
-		Scanner sc = new Scanner(System.in);
+		Scanner scanner = new Scanner(System.in);
 		
-		n = sc.nextInt();
-		m = sc.nextInt();
-		start = sc.nextInt();
+		n = scanner.nextInt();
+		m = scanner.nextInt();
+		start = scanner.nextInt();
 		
 		for(int i=0; i<=n; i++) {
 			graph.add(new ArrayList<Node>());
 		}
 		
 		for(int i=0; i<m; i++) {
-			int a = sc.nextInt();
-			int b = sc.nextInt();
-			int c = sc.nextInt();
+			int a = scanner.nextInt();
+			int b = scanner.nextInt();
+			int c = scanner.nextInt();
 			
 			graph.get(a).add(new Node(b, c));
 		}
@@ -35,42 +35,44 @@ public class Main91 {
 	}
 	
 	public static void dijkstra(int start) {
+		
 		d[start] = 0;
 		visited[start] = true;
 		
 		for(int i=0; i<graph.get(start).size(); i++) {
-			d[graph.get(start).get(i).getIndex()] = 
-					graph.get(start).get(i).getDistance();
+			d[i] = graph.get(start).get(i).getDistance();
 		}
 		
-		for(int i=0; i<n-1; i++) {
-			
+		for(int i=0; i<n; i++) {
 			int now = getSmallestNode();
 			visited[now] = true;
 			
 			for(int j=0; j<graph.get(now).size(); j++) {
-				int cost = d[i] + graph.get(now).get(j).getDistance();
+				int cost = d[i] + d[graph.get(now).get(j).getIndex()];
 				if (cost < d[i]) {
-					d[graph.get(now).get(j).getIndex()] = cost;
+					d[i] = graph.get(now).get(j).getDistance();
 				}
-			}	
+			}
 		}
+		
 	}
 	
 	public static int getSmallestNode() {
 		int min_value = INF;
 		int index = 0;
 		
-		for(int i=0; i<=n; i++) {
-			int cost = d[i] + graph.get(index).get(i).getDistance();
-			if (cost < d[i]) {
-				min_value = cost;
-				index = i;
+		for(int i=0; i<n; i++) {
+			for(int j=0; j<graph.get(i).size(); j++) {
+				if (graph.get(i).get(j).getDistance() < min_value) {
+					min_value = graph.get(i).get(j).getDistance();
+					index = i;
+				}
 			}
 		}
 		
 		return index;
 	}
+	
 	
 }
 
