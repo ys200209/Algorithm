@@ -1,29 +1,29 @@
 import java.util.*;
 
 public class Main92 {
-	public static final int INF = (int) 1e9;
+	public static final int INF = (int)1e9;
 	public static int n, m, start;
 	public static ArrayList<ArrayList<Node1>> graph = new ArrayList<>();
-	public static int[] d = new int[100001];
 	public static Queue<Node1> pq = new PriorityQueue<>();
-	
+	public static int[] d = new int[100001];
+
 	
 	public static void main(String[] args) {
 		
-		Scanner sc = new Scanner(System.in);
+		Scanner scanner = new Scanner(System.in);
 		
-		n = sc.nextInt();
-		m = sc.nextInt();
-		start = sc.nextInt();
+		n = scanner.nextInt();
+		m = scanner.nextInt();
+		start = scanner.nextInt();
 		
 		for(int i=0; i<=n; i++) {
 			graph.add(new ArrayList<Node1>());
 		}
 		
 		for(int i=0; i<m; i++) {
-			int a = sc.nextInt();
-			int b = sc.nextInt();
-			int c = sc.nextInt();
+			int a = scanner.nextInt();
+			int b = scanner.nextInt();
+			int c = scanner.nextInt();
 			
 			graph.get(a).add(new Node1(b, c));
 		}
@@ -31,7 +31,6 @@ public class Main92 {
 		Arrays.fill(d, INF);
 		
 		dijkstra(start);
-		
 		
 	}
 	
@@ -43,23 +42,28 @@ public class Main92 {
 		while(!pq.isEmpty()) {
 			Node1 node = pq.poll();
 			int now = node.getIndex();
-			int distance = node.getDistance();
+			int dis = node.getDistance();
 			
-			if (d[now] < distance) continue;
+			if (d[now] < dis) continue;
 			
-			for(int i=0; i<graph.get(now).size(); i++) {
-				int cost = d[now] + graph.get(now).get(i).getDistance();
-				
-				if (cost < d[graph.get(now).get(i).getIndex()]) {
-					d[graph.get(now).get(i).getIndex()] = cost;
-					pq.offer(new Node1(graph.get(now).get(i).getIndex(), cost));
+			for(int j=0; j<graph.get(now).size(); j++) {
+				int cost = d[j] + d[graph.get(now).get(j).getIndex()];
+				if (cost < d[graph.get(now).get(j).getIndex()]) {
+					d[graph.get(now).get(j).getIndex()] = 
+							graph.get(now).get(j).getDistance();
+					pq.offer(new Node1(graph.get(now).get(j).getIndex(), cost));
 				}
 			}
+			
 		}
+		
+		
 	}
+	
+	
 }
 
-class Node1 implements Comparable<Node1>{
+class Node1 implements Comparable<Node1> {
 	
 	private int index;
 	private int distance;
