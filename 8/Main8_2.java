@@ -2,6 +2,7 @@ import java.util.*;
 
 class Main8_2 {
     public static int[] d = new int[30001];
+    public static int result;
 
     public static void main(String[] args) {
         
@@ -16,6 +17,42 @@ class Main8_2 {
         Scanner sc = new Scanner(System.in);
 
         int x = sc.nextInt();
+
+        /*d[x] = x;
+        result = x;
+
+        for(int i=x; i>= 1; i--) {
+            if (d[i] % 5 == 0) d[i/5] = i/5;
+            if (d[i] % 3 == 0) d[i/3] = i/3;
+            d[i-1] = i-1;
+        }
+
+        System.out.println("d[1] = " + d[1]);*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // 다이나믹 프로그래밍(Dynamic Programming) 진행(보텀업)
         for (int i = 2; i <= x; i++) {
