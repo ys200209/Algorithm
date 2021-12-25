@@ -1,67 +1,83 @@
 import java.util.*;
+import java.io.*;
 
 class Main16_5 {
     public static int N;
-    public static long load_sum=0;
-    public static Queue<Integer> load_queue = new LinkedList<>();
-    public static Queue<Integer> price_queue = new LinkedList<>();
-    public static PriorityQueue<Long> result = new PriorityQueue<>();
+    public static int[] cities, price;
+    public static boolean[] visited;
+    public static long sum = 0, price_sum=0, result = (long)1e18;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        // ë°±ì¤€ ì˜¨ë¼ì¸ ì €ì§€ Greedy(16)ì˜ 5ë²ˆ
+        // ¹éÁØ ¿Â¶óÀÎ ÀúÁö Greedy(16)ÀÇ 5¹ø
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         
-        Scanner scanner = new Scanner(System.in);
+        /*N = Integer.parseInt(br.readLine());
 
-        N = scanner.nextInt();
+        cities = new int[N];
+        visited = new boolean[N];
+        price = new int[N-1];
 
-        for(int i=0; i<N-1; i++) { // load
-            load_queue.offer(scanner.nextInt());
-            load_sum += load_queue.peek();
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        for(int i=0; i<N-1; i++) {
+            price[i] = Integer.parseInt(st.nextToken());
+            price_sum += price[i];
         }
 
-        for(int i=0; i<N; i++) { // oil_price
-            price_queue.offer(scanner.nextInt());
+        st = new StringTokenizer(br.readLine(), " ");
+        for(int i=0; i<N; i++) {
+            cities[i] = Integer.parseInt(st.nextToken());
         }
 
+        DFS(0);
+
+
+        System.out.println(result);*/
+
+        br.readLine();
+
+        String[] dis = br.readLine().split(" ");
+        String[] amounts = br.readLine().split(" ");
+
+        long min = Long.parseLong(amounts[0]), tot = 0;
         
+        for (int i = 0; i < dis.length; i++) {
+            long d = Long.parseLong(dis[i]);
+            long a = Long.parseLong(amounts[i]);
 
-        System.out.println(BFS());
+            if(a < min) min = a;
 
+            tot += (min * d);
+        }
+
+        System.out.println(tot);
+    
     }
 
-    public static long BFS() {
+    public static void DFS(int count) {
+        
+        if (count == N-1 || price_sum == 0) {
+            if (result > sum) 
+            result = sum;
+            return;
+        }
 
-        result.offer((long)(price_queue.peek() * load_queue.peek()));
-
-        while(load_queue.size() != 1) {
-            
-            //   [2, 3, 1]
-            // [5, 2, 4, 1]
-            long now = result.poll();
-
-            long price = price_queue.poll();
-
-            long front = now;
-            
-            // now = price * load_queue.peek();
-            load_sum -= load_queue.peek();
-
-            long back = now + (price_queue.peek() * load_sum);
-
-            System.out.println("front : " + front);
-            System.out.println("back : " + back);
-
-            if (front >= back) {
-                result.offer(now + price_queue.peek() * load_queue.poll());
-                System.out.println("result.offer");
-                continue;
+        for(int i=0; i<cities.length-1; i++) {
+            if (!visited[i]) {
+                for(int k=price[count]; k<=price_sum; k++) {
+                    if (k != price[count] && k != price_sum) return;
+                    sum += cities[count] * k;
+                    price_sum -= k;
+                    visited[count] = true;  
+                    count += 1;
+                    DFS(count);
+                    count -= 1;
+                    visited[count] = false;
+                    price_sum += k;
+                    sum -= cities[count] * k;
+                }       
             }
-
-            return front;
         }
-
-        return result.poll();
-
     }
+
 }
