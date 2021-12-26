@@ -1,48 +1,32 @@
 import java.util.*;
+import java.io.*;
 
 class Main15_1 {
-    public static int N, result_0=0, result_1=0;
-    public static long[] cache;
+    public static Integer[][] d = new Integer[41][2];
+    public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static StringBuilder sb = new StringBuilder();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        // ë°±ì¤€ ì˜¨ë¼ì¸ ì €ì§€ Dynamic_Programming(15)ì˜ 1ë²ˆ
+        // ¹éÁØ ¿Â¶óÀÎ ÀúÁö Dynamic_Programming(15)ÀÇ 1¹ø
+        d[0][0] = 1;
+        d[0][1] = 0;
+        d[1][0] = 0;
+        d[1][1] = 1;
 
-        Scanner scanner = new Scanner(System.in);
-
-        N = scanner.nextInt();
-        cache = new long[41];
-
-        System.out.println("cache : " + Arrays.toString(cache));
+        int N = Integer.parseInt(br.readLine());
 
         for(int i=0; i<N; i++) {
-            fibo(scanner.nextInt());
-            sb.append(result_0 + " " + result_1 + "\n");
-            result_0 = 0;
-            result_1 = 0;
-            System.out.println("cache : " + Arrays.toString(cache));
-        }
-
-        System.out.println(sb);
-    }
-
-    public static long fibo(int n) {
-        
-        if (n == 0) {
-            result_0++;
-            return cache[n] = 0;
-        } else if (n == 1) {
-            result_1++;
-            return cache[n] = 1;
-        } else {
-            if (cache[n] == 0) {
-                return cache[n] = fibo(n-2) + fibo(n-1);
-            } else {
-                return cache[n];
+            int number = Integer.parseInt(br.readLine());
+            if (d[number][0] == null) {
+                for(int j=2; j<=number; j++) {
+                    d[j][0] = d[j-2][0] + d[j-1][0];
+                    d[j][1] = d[j-2][1] + d[j-1][1];
+                }
             }
+            sb.append(d[number][0] + " " + d[number][1] + "\n");
         }
-        
+        System.out.println(sb);
     }
     
 }
