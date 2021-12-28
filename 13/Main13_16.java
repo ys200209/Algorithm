@@ -1,112 +1,133 @@
 import java.util.*;
 
 class Main13_16 {
-    public static int N, M, answer=0, score=0;
-    public static int[][] map, temp;
+    public static int N, M, result=0;
+    public static int[][] map, virus, temp;
+
 
     public static void main(String[] args) {
 
         /*
-            - ì‚¼ì„±ì „ìž SW ì—­ëŸ‰í…ŒìŠ¤íŠ¸
+            - »ï¼ºÀüÀÚ SW ¿ª·®Å×½ºÆ®
             
-            ì¸ì²´ì— ì¹˜ëª…ì ì¸ ë°”ì´ëŸ¬ìŠ¤ë¥¼ ì—°êµ¬í•˜ë˜ ì—°êµ¬ì†Œì—ì„œ ë°”ì´ëŸ¬ìŠ¤ê°€ ìœ ì¶œë˜ì—ˆìŠµë‹ˆë‹¤. ë‹¤í–‰ížˆ ë°”ì´ëŸ¬ìŠ¤ëŠ” ì•„ì§ í¼ì§€ì§€ 
-            ì•Šì•˜ê³ , ë°”ì´ëŸ¬ìŠ¤ì˜ í™•ì‚°ì„ ë°•ê¸° ìœ„í•´ ì—°êµ¬ì†Œì— ë²½ì„ ì„¸ìš°ë ¤ê³  í•©ë‹ˆë‹¤.
-            ì—°êµ¬ì†ŒëŠ” í¬ê¸°ê°€ N x Mì¸ ì§ì‚¬ê°í˜•ìœ¼ë¡œ ë‚˜íƒ€ë‚¼ ìˆ˜ ìžˆìœ¼ë©°, ì§ì‚¬ê°í˜•ì€ 1 X 1 í¬ê¸°ì˜ ì •ì‚¬ê°í˜•ìœ¼ë¡œ ë‚˜ëˆ„ì–´ì ¸ ìžˆìŠµë‹ˆë‹¤.
-            ì—°êµ¬ì†ŒëŠ” ë¹ˆì¹¸, ë²½ìœ¼ë¡œ ì´ë£¨ì–´ì ¸ ìžˆìœ¼ë©°, ë²½ì€ ì¹¸ í•˜ë‚˜ë¥¼ ê°€ë“ ì°¨ì§€í•©ë‹ˆë‹¤.
-            ì¼ë¶€ ì¹¸ì€ ë°”ì´ëŸ¬ìŠ¤ê°€ ì¡´ìž¬í•˜ë©°, ì´ ë°”ì´ëŸ¬ìŠ¤ëŠ” ìƒí•˜ì¢Œìš°ë¡œ ì¸ì ‘í•œ ë¹ˆì¹¸ìœ¼ë¡œ ëª¨ë‘ í¼ì ¸ë‚˜ê°ˆ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
-            ìƒˆë¡œ ì„¸ìš¸ ìˆ˜ ìžˆëŠ” ë²½ì˜ ê°œìˆ˜ëŠ” 3ê°œì´ë©°, ê¼­ 3ê°œë¥¼ ì„¸ì›Œì•¼ í•©ë‹ˆë‹¤.
+            ÀÎÃ¼¿¡ Ä¡¸íÀûÀÎ ¹ÙÀÌ·¯½º¸¦ ¿¬±¸ÇÏ´ø ¿¬±¸¼Ò¿¡¼­ ¹ÙÀÌ·¯½º°¡ À¯ÃâµÇ¾ú½À´Ï´Ù. ´ÙÇàÈ÷ ¹ÙÀÌ·¯½º´Â ¾ÆÁ÷ ÆÛÁöÁö 
+            ¾Ê¾Ò°í, ¹ÙÀÌ·¯½ºÀÇ È®»êÀ» ¹Ú±â À§ÇØ ¿¬±¸¼Ò¿¡ º®À» ¼¼¿ì·Á°í ÇÕ´Ï´Ù.
+            ¿¬±¸¼Ò´Â Å©±â°¡ N x MÀÎ Á÷»ç°¢ÇüÀ¸·Î ³ªÅ¸³¾ ¼ö ÀÖÀ¸¸ç, Á÷»ç°¢ÇüÀº 1 X 1 Å©±âÀÇ Á¤»ç°¢ÇüÀ¸·Î ³ª´©¾îÁ® ÀÖ½À´Ï´Ù.
+            ¿¬±¸¼Ò´Â ºóÄ­, º®À¸·Î ÀÌ·ç¾îÁ® ÀÖÀ¸¸ç, º®Àº Ä­ ÇÏ³ª¸¦ °¡µæ Â÷ÁöÇÕ´Ï´Ù.
+            ÀÏºÎ Ä­Àº ¹ÙÀÌ·¯½º°¡ Á¸ÀçÇÏ¸ç, ÀÌ ¹ÙÀÌ·¯½º´Â »óÇÏÁÂ¿ì·Î ÀÎÁ¢ÇÑ ºóÄ­À¸·Î ¸ðµÎ ÆÛÁ®³ª°¥ ¼ö ÀÖ½À´Ï´Ù.
+            »õ·Î ¼¼¿ï ¼ö ÀÖ´Â º®ÀÇ °³¼ö´Â 3°³ÀÌ¸ç, ²À 3°³¸¦ ¼¼¿ö¾ß ÇÕ´Ï´Ù.
 
-            ë²½ 3ê°œë¥¼ ì„¸ìš´ ë’¤, ë°”ì´ëŸ¬ìŠ¤ê°€ í¼ì§ˆ ìˆ˜ ì—†ëŠ” ê³³ì„ ì•ˆì „ ì˜ì—­ì´ë¼ê³  í•  ë•Œ ì§€ë„ì—ì„œ ì•ˆì „ ì˜ì—­ í¬ê¸°ì˜ ìµœëŒ“ê°’ì„ êµ¬í•˜ëŠ”
-            í”„ë¡œê·¸ëž¨ì„ ìž‘ì„±í•˜ì„¸ìš”. (3 <= N, M <= 8) ( 0ì€ ë¹ˆì¹¸, 1ì€ ë²½, 2ëŠ” ë°”ì´ëŸ¬ìŠ¤ê°€ ìžˆëŠ” ìœ„ì¹˜ì´ë‹¤ )
+            º® 3°³¸¦ ¼¼¿î µÚ, ¹ÙÀÌ·¯½º°¡ ÆÛÁú ¼ö ¾ø´Â °÷À» ¾ÈÀü ¿µ¿ªÀÌ¶ó°í ÇÒ ¶§ Áöµµ¿¡¼­ ¾ÈÀü ¿µ¿ª Å©±âÀÇ ÃÖ´ñ°ªÀ» ±¸ÇÏ´Â
+            ÇÁ·Î±×·¥À» ÀÛ¼ºÇÏ¼¼¿ä. (3 <= N, M <= 8) ( 0Àº ºóÄ­, 1Àº º®, 2´Â ¹ÙÀÌ·¯½º°¡ ÀÖ´Â À§Ä¡ÀÌ´Ù )
 
-7 7
-2 0 0 0 1 1 0
-0 0 1 0 1 2 0
-0 1 1 0 1 0 0
-0 1 0 0 0 0 0
-0 0 0 0 0 1 1
-0 1 0 0 0 0 0
-0 1 0 0 0 0 0
-
+            7 7
+            2 0 0 0 1 1 0
+            0 0 1 0 1 2 0
+            0 1 1 0 1 0 0
+            0 1 0 0 0 0 0
+            0 0 0 0 0 1 1
+            0 1 0 0 0 0 0
+            0 1 0 0 0 0 0
         */
 
         Scanner scanner = new Scanner(System.in);
+
         N = scanner.nextInt();
         M = scanner.nextInt();
+
         map = new int[N][M];
-        temp = new int[N][M];
+        virus = new int[N][M];
 
         for(int i=0; i<N; i++) {
             for(int j=0; j<M; j++) {
                 map[i][j] = scanner.nextInt();
+                /*if (map[i][j] == 2) {
+                    virus[i][j] = 2;
+                }*/
             }
         }
 
         DFS(0);
 
-        System.out.println(answer);
+        
+
+        System.out.println("result = " + result);
 
     }
 
-    public static void DFS(int count) {
-        if (count == 3) {
+    public static void DFS(int wall) {
+        if (wall == 3) {
+            temp = new int[N][M];
+
             for(int i=0; i<N; i++) {
                 for(int j=0; j<M; j++) {
                     temp[i][j] = map[i][j];
                 }
             }
-
+            
             for(int i=0; i<N; i++) {
                 for(int j=0; j<M; j++) {
-                    if (map[i][j] == 2) {
-                        virus(i, j);
+                    if (temp[i][j] == 2) {
+                        Virus(i, j);
                     }
                 }
             }
-            answer = Math.max(answer, getScore());
+
+            int score = getScore();
+            result = Math.max(result, score);
+
+            /*System.out.println("-------------");
+            for(int i=0; i<N; i++) {
+                System.out.println(Arrays.toString(temp));
+            }*/
+
             return;
-        } 
-        
+        }
+
         for(int i=0; i<N; i++) {
             for(int j=0; j<M; j++) {
                 if (map[i][j] == 0) {
                     map[i][j] = 1;
-                    count += 1;
-                    DFS(count);
+                    wall += 1;
+                    DFS(wall);
+                    wall -= 1;
                     map[i][j] = 0;
-                    count -= 1;
                 }
             }
         }
     }
 
-    public static void virus(int x, int y) {
-        int[] dx = {-1, 0, 1, 0};
-        int[] dy = {0, 1, 0, -1};
+    public static void Virus(int x, int y) {
 
+        int[] dx = new int[]{-1, 0, 1, 0};
+        int[] dy = new int[]{0, 1, 0, -1};
+
+        // ¹ÙÀÌ·¯½º È®»ê ½ÃÀÛ
         for(int i=0; i<4; i++) {
             int nx = x + dx[i];
             int ny = y + dy[i];
-            
-            if (nx >= 0 && nx < N && ny >= 0 && ny < M) {
-                if (temp[nx][ny] == 0) {
-                    temp[nx][ny] = 2;
-                    virus(nx, ny);
-                }
+
+            if (nx < 0 || nx >= N || ny < 0 || ny >= M) continue;
+
+            if (temp[nx][ny] == 0) {
+                temp[nx][ny] = 2;
+                Virus(nx, ny);
             }
         }
     }
 
     public static int getScore() {
-        score=0;
+        int score = 0;
+
         for(int i=0; i<N; i++) {
             for(int j=0; j<M; j++) {
-                if (temp[i][j] == 0) {
-                    score+=1;
-                }
+                if (temp[i][j] == 0) score+=1;
             }
         }
+
         return score;
     }
+
+
 
 }
