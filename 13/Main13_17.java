@@ -3,8 +3,8 @@ import java.util.*;
 class Main13_17 {
     public static int N, K, S, X, Y;
     public static int[][] map;
+    public static Queue<Virus> pri_Queue = new PriorityQueue<>();
     public static Queue<Virus> queue = new LinkedList<>();
-    public static Queue<Virus> pq = new PriorityQueue<>();
 
     public static void main(String[] args) {
 /*
@@ -22,17 +22,18 @@ class Main13_17 {
 1 2 2
 (0)
 */        
-        Scanner scanner = new Scanner(System.in);
 
+        Scanner scanner = new Scanner(System.in);
         N = scanner.nextInt();
         K = scanner.nextInt();
-        map = new int[N][N];
 
-        for(int i=0; i<N; i++) {
-            for(int j=0; j<N; j++) {
+        map = new int[N+1][N+1];
+
+        for(int i=1; i<=N; i++) {
+            for(int j=1; j<=N; j++) {
                 map[i][j] = scanner.nextInt();
                 if (map[i][j] != 0) {
-                    pq.offer(new Virus(i, j, map[i][j]));
+                    queue.offer(new Virus(map[i][j], i, j));
                 }
             }
         }
@@ -41,119 +42,73 @@ class Main13_17 {
         X = scanner.nextInt();
         Y = scanner.nextInt();
 
-        while(!pq.isEmpty()) {
-            queue.offer(pq.poll()); // 1, 2, 3번 순서대로만 정렬한 후 큐에 담아 연산 시작.
-        }
+        BFS();
 
-        for(int i=0; i<S; i++) {
-            BFS(queue.size());
-        }
-
-        System.out.println("result : " + map[X-1][Y-1]);
+        System.out.println("map(" + X + ", " + Y + ") = " + map[X][Y]);
 
     }
 
-    public static void BFS(int size) {
+    public static void BFS() {
+
+        while(!pri_Queue.isEmpty()) {
+            queue.offer(pri_Queue.poll());
+        }
 
         int[] dx = {-1, 0, 1, 0};
         int[] dy = {0, 1, 0, -1};
 
-        for(int i=0; i<size; i++) {
-            Virus virus = queue.poll();
-
-            for(int j=0; j<4; j++) {
-                int nx = virus.getX() + dx[j];
-                int ny = virus.getY() + dy[j];
-
-                if (nx >= 0 && nx < N && ny >= 0 && ny < N) {
+        for(int t=0; t<S; t++) {
+            int size = queue.size();
+            for(int k=0; k<size; k++) {
+                Virus virus = queue.poll();
+    
+                for(int i=0; i<4; i++) {
+                    int nx = virus.getX() + dx[i];
+                    int ny = virus.getY() + dy[i];
+    
+                    if (nx < 1 || nx > N || ny < 1 || ny > N) continue;
+    
                     if (map[nx][ny] == 0) {
-                        map[nx][ny] = virus.getNumber();
-                        
-                        queue.offer(new Virus(nx, ny, virus.getNumber()));
+                        map[nx][ny] = virus.getVirusNum();
+                        queue.offer(new Virus(map[nx][ny], nx, ny));
                     }
+    
                 }
             }
         }
     }
 }
 
-class Virus implements Comparable<Virus>{
+class Virus implements Comparable<Virus> {
 
+    private int virusNum;
     private int x;
     private int y;
-    private int number;
 
-    public Virus(int x, int y, int number) {
+    public Virus(int virusNum, int x, int y) {
+        this.virusNum = virusNum;
         this.x = x;
         this.y = y;
-        this.number = number;
+    }
+
+    public int getVirusNum() {
+        return this.virusNum;
     }
 
     public int getX() {
-        return x;
+        return this.x;
     }
 
     public int getY() {
-        return y;
-    }
-
-    public int getNumber() {
-        return number;
+        return this.y;
     }
 
     @Override
     public int compareTo(Virus v1) {
-        if (this.number > v1.number) {
-            return 1;
-        }
-        return -1;
-    }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-class Virus implements Comparable<Virus> {
-    public int virus_number;
-    public int[] virus_position;
-
-    public Virus(int virus_number, int[] virus_position) {
-        this.virus_number = virus_number;
-        this.virus_position = virus_position;
-    }
-
-    @Override
-    public int compareTo(Virus v) {
-        if (this.virus_number < v.virus_number) {
+        if (this.virusNum < v1.getVirusNum()) {
             return -1;
         }
         return 1;
     }
 
-    // // 거리(비용)가 짧은 것이 높은 우선순위를 가지도록 설정
-    // @Override
-    // public int compareTo(Node other) {
-    //     if (this.distance < other.distance) {
-    //         return -1;
-    //     }
-    //     return 1;
-    // }
-
-} */
+}
