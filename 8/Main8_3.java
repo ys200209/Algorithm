@@ -9,7 +9,7 @@ class Main8_3 {
 
         /*
             4
-            1 3 1 5
+            1 3 1 5 7 1 8 2
         */
         
         Scanner scanner = new Scanner(System.in);
@@ -35,6 +35,7 @@ class Main8_3 {
         d[1] = Math.max(store[0], store[1]);
 
         for(int i=2; i<store.length; i++) {
+            System.out.println("d["+i+"+1] = " + d[i+1]);
             d[i] = Math.max(d[i-2]+store[i], d[i+1]);
         }
     }
