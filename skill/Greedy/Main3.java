@@ -1,10 +1,8 @@
-package Greedy;
-import java.util.*;
+
 
 class Main3 {
-    public static boolean[] visited;
-    public static String[] str;
-    public static String result;
+    public static int result=0;
+    public static Queue<Integer> queue = new PriorityQueue<>(Collections.reverseOrder());
 
     public static void main(String[] args) {
 
@@ -24,48 +22,39 @@ class Main3 {
     }
 
     public static String solution(String number, int k) {
-        int answer=0;
-        str = number.split("");
-        
-        result = "";
+        String answer = "";
 
-        for(int i=0; i<str.length; i++) {
-            visited = new boolean[str.length];
-            answer = Math.max(answer, DFS(i, 1, k));
-            result = "";
+        for(int i=0; i<number.length(); i++) {
+            queue.offer(number.charAt(i) - '0');
+        }
+
+        while(!queue.isEmpty()) {
+            System.out.println("queue.size() = " + queue.size());
+            int n = queue.poll();
+
+            int front = 0;
+            int back = number.length();
+
+            for(int i=0; i<5; i++) {
+                System.out.println("front : " + front + ", back : " + back);
+                int index = number.substring(front, back).indexOf(Integer.toString(n));
+
+                if (index == -1 || index > number.length() - k) break;
+                
+                answer = number.substring(front, front+k);
+
+                if (result < Integer.parseInt(answer)) result = Integer.parseInt(answer);
+
+                front = index+1;
+
+            }
+            
+            if (result != 0) break;
 
         }
 
-        System.out.println("answer = " + answer);
-        return Integer.toString(answer);
+
+        return Integer.toString(result);
     }
 
-    public static int DFS(int i, int count, int k) {
-        System.out.println("DFS!");
-        if (count > str.length - k) {
-            System.out.println("count : " + count + ", str.length : " + str.length);
-            System.out.println("result : " + result);
-            System.out.println("return 1");
-            return Integer.parseInt(result);
-        }
-
-        if (i < 0 || i >= str.length) {
-            System.out.println("return 2");
-            return Integer.parseInt(result);
-        }
-
-        if (visited[i] == false) {
-            visited[i] = true;
-            result += str[i];
-            DFS(i++, count++, k);
-            DFS(i--, count++, k);
-        }
-
-        return -1;
-
-    }
-    
 }
-
-    
-
