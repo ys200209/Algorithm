@@ -1,12 +1,12 @@
 import java.util.*;
 
 public class Main4 {
-    public static int weight;
-    public static Queue<Integer> queue;
+    public static int total;
+    
 
     public static void main(String[] args) {
 
-        System.out.println(solution(new int[]{70, 50, 80, 50}, 170)); // 3
+        System.out.println(solution(new int[]{70, 50, 80, 50}, 100)); // 3
         System.out.println(solution(new int[]{70, 80, 50}, 100)); // 3
         System.out.println(solution(new int[]{1, 2, 3, 3, 4, 5}, 6)); // 3
 
@@ -14,33 +14,32 @@ public class Main4 {
 
     public static int solution(int[] people, int limit) {
         int answer = 0;
-        weight = 0;
-        queue = new PriorityQueue<>();
+        ArrayList<Integer> list = new ArrayList<>();
         
-        if (people.length == 1) return 1;
-
         for(int i=0; i<people.length; i++) {
-            weight += people[i];
-            queue.offer(people[i]);
+            list.add(people[i]);
         }
 
-        if (weight <= limit) return 1;
-        
-        weight = 0;
-        int result;
-        while(!queue.isEmpty()) {
-            result = queue.poll();
+        Collections.sort(list);
 
-            for(int i=0; i<queue.size(); i++) {
-                if (result + queue.peek() <= limit) {
-                    result += queue.poll();
-                } else break;
+        int front = 0;
+        int back = list.size()-1;
+
+        while(true) {
+            if (front < back) total = list.get(front) + list.get(back);
+            else if (front == back) total = list.get(front);
+            else return answer;
+            
+            if (total > limit) back -= 1;
+            else {
+                front += 1;
+                back -= 1;
             }
+            
+            answer++;
 
-            answer += 1;
         }
 
-        return answer;
     }
     
 }
