@@ -1,108 +1,112 @@
-
+import java.util.*;
 
 public class Main2 {
-    public static int result=0, now=0, answer=(int)1e9;
-    public static int[] name_list, A_list;
-    
+    public static int answer, result;
+    public static int[] name_list, front_list, back_list;
+
     public static void main(String[] args) {
 
-        for(int i=0; i<10; i++) {
-            i += 50;
-            System.out.println("i = " + i);
-        }
-        
-        // System.out.println(solution("JAZ")); // 11
-        // System.out.println(solution("JEROEN")); // 56
-        // System.out.println(solution("JAN")); // 23
-        // System.out.println(solution("ABAAAAAAAAABB")); // 7
+        System.out.println(solution("JAZ")); // 11
+        System.out.println(solution("JEROEN")); // 56
+        System.out.println(solution("JAN")); // 23
+        System.out.println(solution("ABBABAAAAAAAB")); // 13 (16 X)
 
     }
-    
-    public static int solution(String name) {
 
+    public static int solution(String name) {
+        answer = (int)1e9;
+        result = 0;
         name_list = new int[name.length()];
-        A_list = new int[name.length()];
+        front_list = new int[name.length()];
+        back_list = new int[name.length()];
 
         for(int i=0; i<name.length(); i++) {
             name_list[i] = name.charAt(i) - 'A';
+            front_list[i] = 0;
+            back_list[i] = 0;
         }
 
-        front(0); // 앞으로 조이스틱을 이동시킴
-        A_list = new int[name.length()];
-        back(0); // 뒤로 조이스틱을 이동시킴
+        System.out.println("name_list : " + Arrays.toString(name_list));
 
-        
+        search(0);
 
         return answer;
     }
 
-    public static void search() {
-        
+    public static void search(int index) {
+        if (index < 0 || index >= name_list.length) return;
+
+        front(index);
+        back(index);
     }
 
     public static void front(int index) {
-        // answer = (int)1e9;
-        result = 0;
-
+        
         int j;
-        for(int i=index; i<name_list.length; i++) {
-            if (i >= name_list.length) j = i - name_list.length;
-            else j = i;
-            if (name_list[j] <= 13) {
-                result += name_list[j];
-            } else {
-                result += 26 - name_list[j]; // Z는 25이지만 A에서 Z로 한 번 이동하기 위해 +1해주어 26이 됨
-            }
-            A_list[j] = name_list[j];
+        for(int i=0; i<name_list.length; i++) {
+            if (index + i >= name_list.length) j = (index + i) - name_list.length;
+            else j = index + i;
 
-            if (checkList()) {
+            if (name_list[j] != front_list[j]) {
+                if (name_list[j] <= 13) {
+                    result += name_list[j];
+                } else {
+                    result += 26 - name_list[j];
+                }
+                front_list[j] = name_list[j];
+            } 
+
+            if (isEquals(front_list)) {
                 answer = Math.min(answer, result);
                 return;
             }
 
-            result += 1; // 조이스틱을 다음 스펠링인 오른쪽으로 옮기는 작업. 마지막 스펠링은 제외.
+            result += 1; 
 
+            index += 1;
+            search(index);
+            index -= 1;
         }
 
         
     }
 
     public static void back(int index) {
-        result = 0;
+        
+        int j;
+        for(int i=0; i<name_list.length; i++) {
+            if (index - i < 0) j = name_list.length + index - i;
+            else j = index - i;
 
-        for(int i=name_list.length; i>0; i--) {
-            if (i == name_list.length) {
-                if (name_list[0] <= 13) {
-                    result += name_list[0];
+            if (name_list[j] != back_list[j]) {
+                if (name_list[j] <= 13) {
+                    result += name_list[j];
                 } else {
-                    result += 26 - name_list[0];
+                    result += 26 - name_list[j];
                 }
-                A_list[0] = name_list[0];
-            } else {
-                if (name_list[i] <= 13) {
-                    result += name_list[i];
-                } else {
-                    result += 26 - name_list[i];
-                }
-                A_list[i] = name_list[i];
-            }
+                back_list[j] = name_list[j];
+            } 
 
-            if (checkList()) {
+            if (isEquals(back_list)) {
                 answer = Math.min(answer, result);
                 return;
             }
 
-            result += 1; // 조이스틱을 다음 스펠링인 왼쪽으로 옮기는 작업. 마지막 스펠링은 제외.
+            result += 1;
 
+            index -= 1;
+            search(index);
+            index += 1;
         }
-
+        
     }
 
-    public static boolean checkList() { // 조작한 알파벳이 일치하는지 확인
+    public static boolean isEquals(int[] list) { 
         for(int i=0; i<name_list.length; i++) {
-            if (A_list[i] != name_list[i]) return false; // 불일치시 False
+            if (name_list[i] != list[i]) return false;
         }
         return true;
     }
-
+    
 }
+
