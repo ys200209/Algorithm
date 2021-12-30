@@ -2,14 +2,14 @@ import java.security.KeyFactory;
 import java.util.*;
 
 public class Main13_20 {
-    public static boolean result=false;
     public static int N;
     public static String[][] map;
-    // public static int[][] teacher;
+    public static boolean search;
 
     public static void main(String[] args) {
-        
+
         Scanner scanner = new Scanner(System.in);
+        
         N = scanner.nextInt();
         map = new String[N][N];
 
@@ -21,38 +21,26 @@ public class Main13_20 {
 
         DFS(0);
 
-        if (!result) {
-            System.out.println("YES");
-        } else {
-            System.out.println("NO");
-        }
-
-        System.out.println();
         for(int i=0; i<N; i++) {
             System.out.println(Arrays.toString(map[i]));
         }
 
+        if (search) System.out.println("YES");
+        else System.out.println("NO");
     }
 
-    public static void DFS(int obs) {
-        if (obs > 3) {
-            int[] dx = {-1, 0, 1, 0};
-            int[] dy = {0, 1, 0, -1};
+    public static void DFS(int count) {
+        if (count == 3 && !search) {
 
             for(int i=0; i<N; i++) {
                 for(int j=0; j<N; j++) {
                     if (map[i][j].equals("T")) {
-                        for(int k=0; k<4; k++) {
-                            if (result) return;
-                            isSearch(i, j, dx[k], dy[k]); // í•™ìƒì´ ë°œê²¬ë˜ì§€ ì•Šì„ë•Œë§ˆë‹¤ 4ë°©í–¥ìœ¼ë¡œ íƒìƒ‰
-                        }
-                        
+                        if (isSearch(i, j)) continue;
+                        else return;
                     }
-                    
                 }
-                
             }
-            result = false;
+            search = true;
             return;
         }
 
@@ -60,50 +48,35 @@ public class Main13_20 {
             for(int j=0; j<N; j++) {
                 if (map[i][j].equals("X")) {
                     map[i][j] = "O";
-                    obs += 1;
-                    DFS(obs);
-                    if (result) {
-                        result = false;
-                    } else {
-                        System.out.println("Search");
-                        for(int k=0; k<N; k++) {
-                            System.out.println(Arrays.toString(map[k]));
-                        }
-                        return;
-                    }
-                    obs -= 1;
+                    count += 1;
+                    DFS(count);
+                    count -= 1;
                     map[i][j] = "X";
                 }
+                if(search) return;
             }
         }
-
-        
     }
 
-    public static void isSearch(int x, int y, int dx, int dy) { // í•™ìƒì´ ëª¨ë‘ ë°œê²¬ì´ ì•ˆë˜ë©´ false, í•œëª…ì´ë¼ë„ ë°œê²¬ë˜ë©´ true.
+    public static boolean isSearch(int x, int y) {
+        
+        int[] dx = {-1, 0, 1, 0};
+        int[] dy = {0, 1, 0, -1};
 
-        // ì„ ìƒë‹˜ Tì˜ ìœ„ì¹˜ì—ì„œ ê°ê° ë³µë„ë¥¼ ë°”ë¼ë³´ë©° í•™ìƒì„ ì°¾ê¸°. 
-        // ê¸°ë³¸ê°’ì€ return true, ë§Œì•½ ë°œê²¬ëœë‹¤ë©´ return false;
+        int nx, ny;
 
-        int nx = x + dx;
-        int ny = y + dy;
-
-        if (result) return;
-
-        if (nx >= 0 && nx < N && ny >= 0 && ny < N) {
-            if (map[nx][ny].equals("S")) {
-                result = true;
-                return;
+        for(int i=0; i<4; i++) {
+            nx = x;
+            ny = y;
+            while(true) {
+                nx = nx + dx[i];
+                ny = ny + dy[i];
+                if (nx < 0 || nx >= N || ny < 0 || ny >= N) break; // ÇØ´ç Á÷¼± »ó¿¡ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é true
+                if (map[nx][ny].equals("O")) break;
+                else if (map[nx][ny].equals("S")) return false; // Á÷¼± »ó¿¡ ÇÐ»ý°ú ¸¶ÁÖÄ¡¸é false
             }
-            if (map[nx][ny].equals("O")) {
-                return;
-            }
-            if (map[nx][ny].equals("X")) {
-                isSearch(nx, ny, dx, dy);
-            }
-           
+            
         }
-        
+        return true;
     }
-    
 }
