@@ -1,9 +1,8 @@
 import java.util.*;
 
 class Main11_3 {
-    static int zero, one, count;
-    static String[] S;
-    static String point;
+    static int answer = (int)1e9;
+    static String S, str;
 
     public static void main(String[] args) {
 
@@ -14,26 +13,45 @@ class Main11_3 {
             그러나 처음부터 0000000으로 한번만에 뒤집을 수도 있다.
             최소 횟수를 출력하시오.
 
-            16:05 -> 16:15 (20분)
         */
 
         Scanner scanner = new Scanner(System.in);
 
-        S = scanner.next().split("");
-        count = 0;
-        point = S[0]; // "0" Or "1"
+        S = scanner.nextLine();
 
-        for(int i=1; i<S.length; i++) {
-            if ( point.equals("0") && S[i].equals("1") ) {
-                point = "1";
-                zero++;
-            } else if (point.equals("1") && S[i].equals("0")) {
-                point = "0";
-                one++;
+        zeroToOne();
+        oneToZero();
+
+        System.out.println(answer);
+
+    }
+
+    public static void zeroToOne() {
+        int result = 0;
+        for(int i=1; i<S.length(); i++) {
+            if (S.charAt(i-1) == S.charAt(i)) continue;
+            else if (S.charAt(i-1)-'0' == 0 && S.charAt(i)-'0' == 1) {
+                result += 1;
             }
         }
 
-        System.out.println( zero >= one ? one : zero );
+        if (S.charAt(S.length()-1) == 0) result += 1; 
+
+        answer = Math.min(answer, result);
+    }
+
+    public static void oneToZero() {
+        int result = 0;
+        for(int i=1; i<S.length(); i++) {
+            if (S.charAt(i-1) == S.charAt(i)) continue;
+            else if ((S.charAt(i-1)-'0' == 1) && S.charAt(i)-'0' == 0) {
+                result += 1;
+            }
+        }
+
+        if (S.charAt(S.length()-1) == 1) result += 1; 
+
+        answer = Math.min(answer, result);
     }
 
 }
