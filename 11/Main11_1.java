@@ -1,11 +1,11 @@
 import java.util.*;
 
 class Main11_1 {
-    static int N, count, index, value, fail;
-    static int[] list;
+    public static int N, result=0;
+    public static int[] list;
+    public static boolean[] visited;
 
     public static void main(String[] args) {
-
         /*
             모험가가 N명 있다. N명의 모험가를 대상으로 '공포도'를 측정했는데, '공포도'가 높은 모험가는 쉽게 공포를 느껴
             위험 상황에서 제대로 대처할 능력이 떨어진다. 구성원을 안전하게 구성하고자 
@@ -17,9 +17,15 @@ class Main11_1 {
         */
 
         Scanner scanner = new Scanner(System.in);
+/*
 
+5
+2 3 1 2 2
+
+*/
         N = scanner.nextInt();
         list = new int[N];
+        visited = new boolean[N];
 
         for(int i=0; i<N; i++) {
             list[i] = scanner.nextInt();
@@ -27,27 +33,23 @@ class Main11_1 {
 
         Arrays.sort(list);
 
-        System.out.println("list = " + Arrays.toString(list));
+        int number = 0;
+        int index = 0;
 
-        index = 0;
-        fail = 0;
+        // System.out.println(Arrays.toString(list));
 
-        while(true) {
-            if (index >= N) break;
-            value = list[index] + fail;
-            if (index+value-1 >= N) break;
-
-            if( list[index+value-1] <= value) {
-                count++;
-                index += value; // [1, 2, 2, 2, 3]
-                fail = 0;
-            } else {
-                fail++;
-            } 
-            
+        for(int i=0; i<N; i++) {
+            number = list[index];
+            if (list[index + number - 1] <= number) {
+                index += number;
+                result += 1;
+            }
         }
 
-        System.out.println(count);
+        System.out.println(result);
+
+    
+
 
     }
     
