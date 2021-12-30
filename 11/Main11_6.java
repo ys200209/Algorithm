@@ -32,12 +32,10 @@ class Main11_6 {
     }
     
     public static int solution(int[] food_times, long k) {
-        long size = food_times.length; // 최단 시간 음식부터 줄여나갈때 남아있는 음식의 갯수
+        long size = food_times.length;
         long total = 0;
         long extract = 0; 
         int result = -1;
-        
-        System.out.println("-------------------------------------------------------------");
         PriorityQueue<Food> pq = new PriorityQueue<>();
 
         for(int i=0; i<food_times.length; i++) {
@@ -46,15 +44,12 @@ class Main11_6 {
         }
 
         if (total <= k) {
-            System.out.println("total <= k.  return -1;");
             return -1;
         }
 
         while( size * (pq.peek().getTime() - extract) <= k ) {
             k -= size * (pq.peek().getTime() - extract);
-            System.out.println("k = " + k);
             extract = pq.peek().getTime();
-            System.out.println("extract = " + extract);
             pq.poll();
             size -= 1;
         }
@@ -70,30 +65,19 @@ class Main11_6 {
                 return Integer.compare(o1.getNumber(), o2.getNumber());
             }
         });
-
-        for(int i=0; i<arrayList.size(); i++) {
-            System.out.print(arrayList.get(i).getNumber() + " ");
-        }
-        System.out.println(" ");
-
-        System.out.println("result = " + result);
         
         while( result == -1 ) {
             for(int i=0; i<arrayList.size(); i++) {
                 if (k == 0 && arrayList.get(i).getTime() != 0) {
                     result = arrayList.get(i).getNumber();
-                    System.out.println("result = " + result + ", break.");
                     break;
                 }
     
                 if (arrayList.get(i).getTime() != 0) {
                     k -= 1;
                 }
-                System.out.println("k = " + k);
             }
         }
-
-        System.out.println("result = " + result);
 
         return result;
     }
