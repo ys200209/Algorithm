@@ -49,12 +49,12 @@ class Main11_6 {
 
         while( size * (pq.peek().getTime() - extract) <= k ) {
             k -= size * (pq.peek().getTime() - extract);
-            extract = pq.peek().getTime();
-            pq.poll();
+            extract = pq.poll().getTime();
             size -= 1;
         }
 
         ArrayList<Food> arrayList = new ArrayList<>();
+
         while( !pq.isEmpty() ) {
             arrayList.add(pq.poll());
         }
@@ -66,17 +66,28 @@ class Main11_6 {
             }
         });
         
+        // 0 ~ N 까지의 수 중에서 하나.
+        // 
+
         while( result == -1 ) {
-            for(int i=0; i<arrayList.size(); i++) {
-                if (k == 0 && arrayList.get(i).getTime() != 0) {
-                    result = arrayList.get(i).getNumber();
-                    break;
-                }
-    
-                if (arrayList.get(i).getTime() != 0) {
-                    k -= 1;
-                }
+            if (arrayList.size() > k) {
+                result = arrayList.get((int)k).getNumber();
+            } else {
+                k %= arrayList.size();
+                result = arrayList.get((int)k).getNumber();
             }
+            /*for(int i=0; i<arrayList.size(); i++) {
+                    // {2, 2, 2, 15, 2}
+    
+                    if (k == 0 && arrayList.get(i).getTime() != 0) {
+                        result = arrayList.get(i).getNumber();
+                        break;
+                    }
+        
+                    if (arrayList.get(i).getTime() != 0) {
+                        k -= 1;
+                    }
+                } */
         }
 
         return result;
