@@ -2,7 +2,7 @@ import java.util.*;
 
 class Main12_8 {
     static int sum=0;
-    static String S, result="";
+    static String S;
     static Queue<String> queue = new PriorityQueue<>();
     
     public static void main(String[] args) {
