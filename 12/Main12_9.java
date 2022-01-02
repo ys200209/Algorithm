@@ -1,7 +1,6 @@
 import java.util.*;
 
 class Main12_9 {
-    
 
     public static void main(String[] args) {
 
@@ -16,60 +15,45 @@ class Main12_9 {
         
         */
         
-        //System.out.println(solution("aabbaccc")); // 8(aabbaccc) -> 7(2a2ba3c)
+        System.out.println(solution("aabbaccc")); // 8(aabbaccc) -> 7(2a2ba3c)
         System.out.println(solution("ababcdcdababcdcd")); // 16(ababcbcbababcbcb) -> 9(2ababcbcb)
-        //System.out.println(solution("abcabcdede")); //  10(abcabcdede) -> 8(2abcdede)
-        //System.out.println(solution("abcabcabcabcdededededede")); // 24 -> 14
-        //System.out.println(solution("xababcdcdababcdcd")); // 17 -> 17
-        //System.out.println(solution("a"));
+        System.out.println(solution("abcabcdede")); //  10(abcabcdede) -> 8(2abcdede)
+        System.out.println(solution("abcabcabcabcdededededede")); // 24 -> 14
+        System.out.println(solution("xababcdcdababcdcd")); // 17 -> 17
+        System.out.println(solution("aaabbbabcde")); // 
+        System.out.println(solution("aaaaaaaaaaaabcd")); // 6
 
     }
 
     public static int solution(String s) {
-        int min = 1000, count=1, start=0, end;
-        String str, result="";
+        int answer = (int)1e9;
+        String word=null;
+        int count, result=0;
 
-        for(int i=1; i<s.length()/2; i++) { // i 개씩 묶는다고 가정
-            result="";
-            start = 0;
-            end = i;
-            
-            str = s.substring(start, end);
-            //result += s.substring(start, end);
-            for(int j=i; j<s.length(); j+=i) { // 처음부터 i개씩 묶기
-                start = start + i;
-                end = start + i;
-                System.out.println("1. start = " + start + ", end = " + end);
-                if (end < s.length()) {
-                    System.out.println("str = " + str + ", s.substring = " + s.substring(start, end));
-                    if (str.equals(s.substring(start, end))) {
-                        count += 1;
-                        System.out.println("count = " + count);
-                    } else {
-                        if (count != 1) {
-                            result += count + str;
-                            count = 1;
-                        } else {
-                            result += str;
-                        }
-                        str = s.substring(start, end);
-                    }
-                } else {
-                    result += s.substring(start-i, s.length());
+        if (s.length() == 1) return 1;
+
+        for(int i=s.length()/2; i>=1; i--) {
+            result = 0;
+            count = 1;
+            for(int j=i; j<=s.length(); j+=i) {
+                word = s.substring(j-i, j);
+                
+                if (j+i > s.length()) {
+                    result += s.length() - j;
+                    result += count == 1 ? word.length() : word.length() + Integer.toString(count).length();
                     break;
                 }
-                
+
+                if (word.equals(s.substring(j, j+i))) {
+                    count+=1;
+                    continue;
+                } else {
+                    result += count == 1 ? word.length() : word.length() + Integer.toString(count).length();
+                    count=1;
+                }
             }
-            System.out.println("-----------------result = " + result);
-            if (min > result.length()) {
-                min = result.length();
-            }
+            answer = Math.min(answer, result);
         }
-
-        
-        System.out.println("min = " + min);
-
-        return min;
+        return answer;
     }
-    
 }
