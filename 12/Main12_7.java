@@ -1,29 +1,27 @@
 import java.util.*;
 
 class Main12_7 {
-    static String[] N;
-    static int front, back;
-
+    static int N, front=0, back=0;
+    static String[] str;
+    
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
-        N = scanner.next().split("");
-        front = 0;
-        back = 0;
+        N = scanner.nextInt();
+        str = Integer.toString(N).split("");
 
-        for (int i=0; i<N.length/2; i++) {
-            front += Integer.parseInt(N[i]);
-        }
-        for(int i=N.length/2; i<N.length; i++) {
-            back += Integer.parseInt(N[i]);
+        for(int i=0; i <str.length; i++) {
+            if (i < str.length/2) {
+                front += Integer.parseInt(str[i]);
+            } else {
+                back += Integer.parseInt(str[i]);
+            }
         }
 
-        if (front == back) {
-            System.out.println("LUCKY");
-        } else {
-            System.out.println("READY");
-        }
+        if (front == back) System.out.println("LUCKY");
+        else System.out.println("READY");
 
     }
+
 }
