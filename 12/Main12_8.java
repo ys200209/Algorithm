@@ -1,33 +1,30 @@
 import java.util.*;
 
 class Main12_8 {
-    static String s, result="";
-    static int num;
-
+    static int sum=0;
+    static String S, result="";
+    static Queue<String> queue = new PriorityQueue<>();
+    
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
-        s = scanner.next();
-        num = 0;
+        S = scanner.next();
 
-        ArrayList<String> list = new ArrayList<>();
-        for(int i=0; i<s.length(); i++) {
-            if (s.charAt(i) >= 'A') {
-                list.add(s.substring(i, i+1));
+        for(int i=0; i<S.length(); i++) {
+            if (S.charAt(i) - '0' <= 9) {
+                sum += S.charAt(i) - '0';
             } else {
-                num += Integer.parseInt(s.substring(i, i+1));
+                queue.offer(S.substring(i, i+1));
             }
         }
-
-        Collections.sort(list, (o1, o2) -> o1.compareTo(o2));
-
-        for(int i=0; i<list.size(); i++) {
-            result += list.get(i);
+        
+        while(!queue.isEmpty()) {
+            System.out.print(queue.poll());
         }
 
-        System.out.println(result + num);
-        
+        System.out.println(sum);
+
     }
 
 }
