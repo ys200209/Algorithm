@@ -1,10 +1,9 @@
 import java.util.*;
 
 class Main12_10 {
-    static int start_x;
-    static int start_y;
-    static int end_x;
-    static int end_y;
+    public static int newSize;
+    public static int[][] resultKey, newLock, newKey;
+    public static boolean bingo;
 
     public static void main(String[] args) {
 
@@ -20,88 +19,68 @@ class Main12_10 {
 
     }
 
-    // 2차원 리스트 90도 회전하기
-    public static int[][] rotateMatrixBy90Degree(int[][] a) {
-        int n = a.length;
-        int m = a[0].length;
-        int[][] result = new int[n][m]; // 결과 리스트
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                result[j][n - i - 1] = a[i][j]; 
-                // a[0][0] = result[0][2];
-                // a[2][1] = result[1][0];
-            }
-        }
-        return result;
-    }
-
-    // 자물쇠의 중간 부분이 모두 1인지 확인
-    public static boolean check(int[][] newLock) {
-        int lockLength = newLock.length / 3;
-        for (int i = lockLength; i < lockLength * 2; i++) {
-            for (int j = lockLength; j < lockLength * 2; j++) {
-                if (newLock[i][j] != 1) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     public static boolean solution(int[][] key, int[][] lock) {
-        int n = lock.length;
-        int m = key.length;
-        // 자물쇠의 크기를 기존의 3배로 변환
-        int[][] newLock = new int[n * 3][n * 3];
-        // 새로운 자물쇠의 중앙 부분에 기존의 자물쇠 넣기
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                newLock[i + n][j + n] = lock[i][j];
+        newSize = lock.length;
+        newLock = new int[newSize * 3][newSize * 3];
+        
+        resultKey = new int[newSize][newSize];
+        
+        for(int i=0; i<lock.length; i++) {
+            for(int j=0; j<lock.length; j++) {
+                newLock[newSize+i][newSize+j] = lock[i][j];
+                resultKey[i][j] = key[i][j];
             }
         }
 
-        System.out.println("---------- [Lock] ----------");
-        for(int i=0; i<newLock.length; i++) {
-            System.out.println(Arrays.toString(newLock[i]));
+        for(int i=1; i < newSize * 2 + 1; i++) {
+            for(int j=1; j < newSize * 2 + 1; j++) {
+                if (insertKey(i, j, key, newLock)) return true;
+            }
         }
 
-        System.out.println("--------- [Key] ---------");
-        for(int i=0; i<newLock.length; i++) {
-            System.out.println(Arrays.toString(key[i]));
+        return false;
+    }
+
+    public static int[][] rotateKey90(int[][] key) {
+        int[][] rotKey = new int[key.length][key[0].length];
+
+        for(int i=0; i<key.length; i++) {
+            for(int j=0; j<key.length; j++) {
+                rotKey[j][key.length - i - 1] = key[i][j];
+            }
         }
 
-        // 4가지 방향에 대해서 확인하기
-        for (int rotation = 0; rotation < 4; rotation++) {
-            key = rotateMatrixBy90Degree(key); // 열쇠 회전
-            for (int x = 0; x < n * 2; x++) {
-                for (int y = 0; y < n * 2; y++) {
-                    // 자물쇠에 열쇠를 끼워 넣기
-                    System.out.println("x = " + x + ", y = " + y);
-                    for (int i = 0; i < m; i++) {
-                        for (int j = 0; j < m; j++) {
-                            System.out.println("key["+i+"]["+j+"] = " + key[i][j]);
-                            System.out.println("newLock["+x+"+"+i+"]["+y+"+"+j+"] = " + newLock[x + i][y + j]);
-                            newLock[x + i][y + j] += key[i][j];
-                            
-                        }
-                    }
-                    // 새로운 자물쇠에 열쇠가 정확히 들어 맞는지 검사
+        return rotKey;
+    }
 
-                    for(int i=0; i<newLock.length; i++) {
-                        System.out.println(Arrays.toString(newLock[i]));
-                    }
+    public static boolean insertKey(int x, int y, int[][]key, int[][] lock) {
 
-                    if (check(newLock)) return true;
-                    // 자물쇠에서 열쇠를 다시 빼기
-                    for (int i = 0; i < m; i++) {
-                        for (int j = 0; j < m; j++) {
-                            newLock[x + i][y + j] -= key[i][j];
-                        }
-                    }
-                    System.out.println("finish");
+        for(int k=0; k<4; k++) {
+            bingo = true;
+            resultKey = rotateKey90(resultKey);
+            newKey = new int[newSize * 3][newSize * 3];
+
+            for(int i=0; i<resultKey.length; i++) {
+                for(int j=0; j<resultKey.length; j++) {
+                    newKey[i+x][j+y] = resultKey[i][j];
                 }
             }
+
+            for(int i=key.length; i<key.length * 2; i++) {
+                for(int j=key.length; j<key.length * 2; j++) {
+                    if (lock[i][j] == 0 && newKey[i][j] == 0) {
+                        bingo = false;
+                        break;
+                    }
+                    else if (lock[i][j] == 1 && newKey[i][j] == 1) {
+                        bingo = false;
+                        break;
+                    }
+                }
+            }
+            if (bingo) return true;
         }
+
         return false;
     }
     
