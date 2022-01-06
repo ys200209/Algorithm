@@ -1,177 +1,141 @@
 import java.util.*;
 
 class Main12_11 {
-    static int N, K, row, column, L, time=1, pos_index=0, vector_index=0;
-    static int[][] map, pos;
-    static String[][] vector;
-    static String vec, second;
-    static Queue<Snake> snake;
-    static Snake last_Snake;
+    static int N, K, move, time=0, result=0, now_x, now_y;
+    static int[][] map;
+    static Queue<Snake> queue = new LinkedList<>();
 
     public static void main(String[] args) {
 
         /*
-            - ì‚¼ì„±ì „ì SW ì—­ëŸ‰í…ŒìŠ¤íŠ¸
+            - »ï¼ºÀüÀÚ SW ¿ª·®Å×½ºÆ®
 
-            'Dummy'ë¼ëŠ” ë„ìŠ¤ ê²Œì„ì´ ìˆë‹¤.ì´ ê²Œì„ì—ëŠ” ë±€ì´ ë‚˜ì™€ì„œ ê¸°ì–´ ë‹¤ë‹ˆëŠ”ë° ì‚¬ê³¼ë¥¼ ë¨¹ìœ¼ë©´ ë±€ ê¸¸ì´ê°€ ëŠ˜ì–´ë‚©ë‹ˆë‹¤.
-            ë±€ì´ ì´ë¦¬ì €ë¦¬ ê¸°ì–´ ë‹¤ë‹ˆë‹¤ê°€ ë²½ ë˜ëŠ” ìê¸° ìì‹ ì˜ ëª¸ê³¼ ë¶€ë”ªíˆë©´ ê²Œì„ì´ ëë‚©ë‹ˆë‹¤.
-            ê²Œì„ì€ NxN ì •ì‚¬ê° ë³´ë“œ ìœ„ì—ì„œ ì§„í–‰ë˜ê³  ëª‡ëª‡ ì¹¸ì—ëŠ” ì‚¬ê³¼ê°€ ë†“ì—¬ì ¸ ìˆìŠµë‹ˆë‹¤. ë³´ë“œì˜ ìƒí•˜ì¢Œìš° ëì—ëŠ”
-            ë²½ì´ ìˆìŠµë‹ˆë‹¤. ê²Œì„ì„ ì‹œì‘í•  ë•Œ ë±€ì€ ë§¨ ìœ„ ë§¨ ì¢Œì¸¡ì— ìœ„ì¹˜í•˜ê³  ë±€ì˜ ê¸¸ì´ëŠ” 1ì…ë‹ˆë‹¤.
-            ë±€ì€ ì²˜ìŒì— ì˜¤ë¥¸ìª½ì„ í–¥í•©ë‹ˆë‹¤.
+            'Dummy'¶ó´Â µµ½º °ÔÀÓÀÌ ÀÖ´Ù.ÀÌ °ÔÀÓ¿¡´Â ¹ìÀÌ ³ª¿Í¼­ ±â¾î ´Ù´Ï´Âµ¥ »ç°ú¸¦ ¸ÔÀ¸¸é ¹ì ±æÀÌ°¡ ´Ã¾î³³´Ï´Ù.
+            ¹ìÀÌ ÀÌ¸®Àú¸® ±â¾î ´Ù´Ï´Ù°¡ º® ¶Ç´Â ÀÚ±â ÀÚ½ÅÀÇ ¸ö°ú ºÎµúÈ÷¸é °ÔÀÓÀÌ ³¡³³´Ï´Ù.
+            °ÔÀÓÀº NxN Á¤»ç°¢ º¸µå À§¿¡¼­ ÁøÇàµÇ°í ¸î¸î Ä­¿¡´Â »ç°ú°¡ ³õ¿©Á® ÀÖ½À´Ï´Ù. º¸µåÀÇ »óÇÏÁÂ¿ì ³¡¿¡´Â
+            º®ÀÌ ÀÖ½À´Ï´Ù. °ÔÀÓÀ» ½ÃÀÛÇÒ ¶§ ¹ìÀº ¸Ç À§ ¸Ç ÁÂÃø¿¡ À§Ä¡ÇÏ°í ¹ìÀÇ ±æÀÌ´Â 1ÀÔ´Ï´Ù.
+            ¹ìÀº Ã³À½¿¡ ¿À¸¥ÂÊÀ» ÇâÇÕ´Ï´Ù.
 
-            - ì´ë™ ê·œì¹™
-            1. ë±€ì€ ëª¸ê¸¸ì´ë¥¼ ëŠ˜ë ¤ ë¨¸ë¦¬ë¥¼ ë‹¤ìŒì¹¸ì— ìœ„ì¹˜ì‹œí‚¨ë‹¤.
-            2. ë§Œì•½ ì´ë™í•œ ì¹¸ì— ì‚¬ê³¼ê°€ ìˆë‹¤ë©´, ê·¸ ì¹¸ì— ìˆë˜ ì‚¬ê³¼ê°€ ì—†ì–´ì§€ê³  ê¼¬ë¦¬ëŠ” ì›€ì§ì´ì§€ ì•ŠìŠµë‹ˆë‹¤.
-            3. ë§Œì•½ ì‚¬ê³¼ê°€ ì—†ë‹¤ë©´, ëª¸ê¸¸ì´ë¥¼ ì¤„ì—¬ì„œ ê¼¬ë¦¬ê°€ ìœ„ì¹˜í•œ ì¹¸ì„ ë¹„ì›Œì¤ë‹ˆë‹¤.
+            - ÀÌµ¿ ±ÔÄ¢
+            1. ¹ìÀº ¸ö±æÀÌ¸¦ ´Ã·Á ¸Ó¸®¸¦ ´ÙÀ½Ä­¿¡ À§Ä¡½ÃÅ²´Ù.
+            2. ¸¸¾à ÀÌµ¿ÇÑ Ä­¿¡ »ç°ú°¡ ÀÖ´Ù¸é, ±× Ä­¿¡ ÀÖ´ø »ç°ú°¡ ¾ø¾îÁö°í ²¿¸®´Â ¿òÁ÷ÀÌÁö ¾Ê½À´Ï´Ù.
+            3. ¸¸¾à »ç°ú°¡ ¾ø´Ù¸é, ¸ö±æÀÌ¸¦ ÁÙ¿©¼­ ²¿¸®°¡ À§Ä¡ÇÑ Ä­À» ºñ¿öÁİ´Ï´Ù.
 
-            ì‚¬ê³¼ì˜ ìœ„ì¹˜ì™€ ë±€ì˜ ì´ë™ ê²½ë¡œê°€ ì£¼ì–´ì§ˆ ë•Œ ì´ ê²Œì„ì´ ëª‡ ì´ˆì— ëë‚˜ëŠ”ì§€ ê³„ì‚°í•˜ì„¸ìš”.
+            »ç°úÀÇ À§Ä¡¿Í ¹ìÀÇ ÀÌµ¿ °æ·Î°¡ ÁÖ¾îÁú ¶§ ÀÌ °ÔÀÓÀÌ ¸î ÃÊ¿¡ ³¡³ª´ÂÁö °è»êÇÏ¼¼¿ä.
+            ('L'Àº ¿ŞÂÊ, 'D'´Â ¿À¸¥ÂÊÀÌ´Ù)
         */
 
         Scanner scanner = new Scanner(System.in);
 
-        N = scanner.nextInt(); // N : ë³´ë“œì˜ í¬ê¸°
-        K = scanner.nextInt(); // K : ì‚¬ê³¼ì˜ ê°œìˆ˜
-        // apple_Location = new int[K][2]; // ì‚¬ê³¼ì˜ ì¢Œí‘œ
+        N = scanner.nextInt();
+        K = scanner.nextInt();
+
         map = new int[N+1][N+1];
-        pos = new int[][]{{1,0}, {0,1}, {-1,0}, {0,-1}};
-        snake = new LinkedList<>();
-        last_Snake = new Snake(1, 1);
-        snake.offer(last_Snake);
-        
-        for(int i=0; i<=N; i++) { // ë§µì„ ë¡œë”©í•œë‹¤.
-            for(int j=0; j<=N; j++) {
-                map[i][j] = 0;
-            }
-        }
-        System.out.println(map.length);
-        System.out.println(map[0].length);
 
-        for(int i=0; i<K; i++) { // ì‚¬ê³¼ì˜ ìœ„ì¹˜ë¥¼ ë§µì— ê¸°ë¡í•œë‹¤.
-            row = scanner.nextInt();
-            column = scanner.nextInt();
-            map[row][column] = 1;
+        for(int i=0; i<K; i++) {
+            int x = scanner.nextInt();
+            int y = scanner.nextInt();
+            map[x][y] = 1;
         }
 
-        
-        L = scanner.nextInt();
-        vector = new String[L][2];
-        for(int i=0; i<L; i++) {
-            second = scanner.next();
-            vec = scanner.next();
-            vector[i][0] = second;
-            vector[i][1] = vec;
+        map[1][1] = 2;
+        now_x = 1;
+        now_y = 1;
+        queue.offer(new Snake(now_x, now_y));
+
+        move = scanner.nextInt();
+
+        int[] dx = {0, 1, 0, -1};
+        int[] dy = {1, 0, -1, 0};
+        int turn_index = 0;
+
+        int front=0;
+        String turn="";
+        for(int i=0; i<move; i++) {
+            front = scanner.nextInt();
+            turn = scanner.next();
+
+            // System.out.println("front = " + front + ", turn = " + turn + ", turn_index = " + turn_index);
+
+            for(int j=0; j<front - result; j++) {
+                result += 1;
+
+                int nx = now_x + dx[turn_index];
+                int ny = now_y + dy[turn_index];
+
+                if (nx <= 0 || nx > N || ny <= 0 || ny > N) {
+                    System.out.println("result = " + result);
+                    return;
+                }
+
+                if (map[nx][ny] == 0) {
+                    queue.offer(new Snake(nx, ny));
+                    Snake snake = queue.poll();
+                    int poll_x = snake.getX();
+                    int poll_y = snake.getY();
+                    map[nx][ny] = 2;
+                    map[poll_x][poll_y] = 0;
+                } else if (map[nx][ny] == 1) {
+                    queue.offer(new Snake(nx, ny));
+                    map[nx][ny] = 2;
+                } else {
+                    System.out.println("result = " + result);
+                    return;
+                }
+                now_x = nx;
+                now_y = ny;
+
+            }
+                
+            if (turn.equals("D")) turn_index = turn_index+1 >= 4 ? 0 : turn_index + 1;
+            else turn_index = turn_index-1 < 0 ? 4 : turn_index - 1;
+
         }
-
-        /*for(int i=0; i<vector.length; i++) {
-            System.out.println("vector[i][0] = " + vector[i][0]);
-            for(int j=time; j<Integer.parseInt(vector[i][0]); j++) {
-                System.out.println("í˜„ì¬ ìœ„ì¹˜1 : [" + last_Snake.getX() + ", " + last_Snake.getY() + "]");
-                if ( last_Snake.getX()+pos[pos_index][1] > N || last_Snake.getX()+pos[pos_index][1] < 1 || 
-                last_Snake.getY()+pos[pos_index][0] > N || last_Snake.getY()+pos[pos_index][0] < 1 ) {
-                    System.out.println("break. 1");
-                    System.out.println(time+1);
-                    return; // ë±€ì˜ ë™ì„ ì´ ë§µ ë°–ìœ¼ë¡œ ì›€ì§ì˜€ì„ë•Œ ì¤‘ì§€.
-                }
-                if ( map[(last_Snake.getX()+pos[pos_index][1])][(last_Snake.getY()+pos[pos_index][0])] == 2 ) { 
-                    System.out.println("map[" + (last_Snake.getX()+pos[pos_index][1]) + ", " + (last_Snake.getY()+pos[pos_index][0]) + "] == 2");
-                    System.out.println("break. 2");
-                    System.out.println(time+1);
-                    return; // ë±€ì´ ìê¸° ëª¸ì— ë¶€ë”ªíˆë©´ ì¤‘ì§€.
-                }
-            
-                if ( map[last_Snake.getX()+pos[pos_index][1]][last_Snake.getY()+pos[pos_index][0]] == 0 ) {
-                    // ì¼ë°˜ ë•…ì„ ë°Ÿì•˜ë‹¤ë©´ ë±€ì„ ì›€ì§ì¸ë‹¤.
-                    System.out.println("move 1");
-                    last_Snake = new Snake(last_Snake.getX()+pos[pos_index][1], last_Snake.getY()+pos[pos_index][0]);
-                    snake.offer(last_Snake);
-                    Snake tail = snake.poll();
-                    map[last_Snake.getX()][last_Snake.getY()] = 2;
-                    map[tail.getX()][tail.getY()] = 0;
-
-                    time++;
-                } else if ( map[last_Snake.getX()+pos[pos_index][1]][last_Snake.getY()+pos[pos_index][0]] == 1 ) {
-                    // ì‚¬ê³¼ë¥¼ ë¨¹ì—ˆë‹¤ë©´ ë±€ì˜ ë¨¸ë¦¬ë¥¼ ëŠ˜ë¦°ë‹¤.
-                    System.out.println("move 2");
-                    last_Snake = new Snake(last_Snake.getX()+pos[pos_index][1], last_Snake.getY()+pos[pos_index][0]);
-                    snake.offer(last_Snake);
-                    map[last_Snake.getX()][last_Snake.getY()] = 2;
-                    time++;
-                }
-
-            }
-
-            System.out.println("-rotate-");
-            for(int k=0; k<=N; k++) {
-                System.out.println(Arrays.toString(map[k]));
-            }
-
-            if (vector[i][1].equals("D")) {
-                pos_index ++;
-            } else {
-                pos_index --;
-            }
-            
-            if (pos_index > 3) {
-                pos_index = 0;
-            } else if (pos_index < 0) {
-                pos_index = 3;
-            }
-        }*/
 
         while(true) {
-            System.out.println("í˜„ì¬ ìœ„ì¹˜1 : [" + last_Snake.getX() + ", " + last_Snake.getY() + "]");
-                if ( last_Snake.getX()+pos[pos_index][1] > N || last_Snake.getX()+pos[pos_index][1] < 1 || 
-                last_Snake.getY()+pos[pos_index][0] > N || last_Snake.getY()+pos[pos_index][0] < 1 ) {
-                    System.out.println("break. 1");
-                    System.out.println(time+1);
-                    break; // ë±€ì˜ ë™ì„ ì´ ë§µ ë°–ìœ¼ë¡œ ì›€ì§ì˜€ì„ë•Œ ì¤‘ì§€.
-                }
-                if ( map[(last_Snake.getX()+pos[pos_index][1])][(last_Snake.getY()+pos[pos_index][0])] == 2 ) { 
-                    System.out.println("map[" + (last_Snake.getX()+pos[pos_index][1]) + ", " + (last_Snake.getY()+pos[pos_index][0]) + "] == 2");
-                    /*if (last_Snake.getX()+pos[pos_index][1] != snake.peek().getX() ||
-                    last_Snake.getY()+pos[pos_index][0] != snake.peek().getY()) {
-                        System.out.println("break. 2");
-                        System.out.println(time+1);
-                        return; // ë±€ì´ ìê¸° ëª¸ì— ë¶€ë”ªíˆë©´ ì¤‘ì§€.
-                        // ë±€ì´ ì›€ì§ì„ì— ë”°ë¼ ê¼¬ë¦¬ë„ ì›€ì§ì¼ ê²½ìš°ì—ëŠ” ê·¸ëŒ€ë¡œ ì§„í–‰. (ì˜ëª»ë¨)
-                    }*/
-                    System.out.println("break. 2");
-                    System.out.println(time+1);
-                    break; // ë±€ì´ ìê¸° ëª¸ì— ë¶€ë”ªíˆë©´ ì¤‘ì§€.
-                }
-            
-                if ( map[last_Snake.getX()+pos[pos_index][1]][last_Snake.getY()+pos[pos_index][0]] == 0 ) {
-                    // ì¼ë°˜ ë•…ì„ ë°Ÿì•˜ë‹¤ë©´ ë±€ì„ ì›€ì§ì¸ë‹¤.
-                    System.out.println("move 1");
-                    last_Snake = new Snake(last_Snake.getX()+pos[pos_index][1], last_Snake.getY()+pos[pos_index][0]);
-                    snake.offer(last_Snake);
-                    Snake tail = snake.poll();
-                    map[last_Snake.getX()][last_Snake.getY()] = 2;
-                    map[tail.getX()][tail.getY()] = 0;
+            int nx = now_x + dx[turn_index];
+            int ny = now_y + dy[turn_index];
 
-                    time++;
-                } else if ( map[last_Snake.getX()+pos[pos_index][1]][last_Snake.getY()+pos[pos_index][0]] == 1 ) {
-                    // ì‚¬ê³¼ë¥¼ ë¨¹ì—ˆë‹¤ë©´ ë±€ì˜ ë¨¸ë¦¬ë¥¼ ëŠ˜ë¦°ë‹¤.
-                    System.out.println("move 2");
-                    last_Snake = new Snake(last_Snake.getX()+pos[pos_index][1], last_Snake.getY()+pos[pos_index][0]);
-                    snake.offer(last_Snake);
-                    map[last_Snake.getX()][last_Snake.getY()] = 2;
-                    time++;
-                }
+            if (nx <= 0 || nx > N || ny <= 0 || ny > N) {
+                System.out.println("result = " + result);
+                return;
+            }
+
+            if (map[nx][ny] == 0) {
+                queue.offer(new Snake(nx, ny));
+                Snake snake = queue.poll();
+                int poll_x = snake.getX();
+                int poll_y = snake.getY();
+                map[nx][ny] = 2;
+                map[poll_x][poll_y] = 0;
+            } else if (map[nx][ny] == 1) {
+                queue.offer(new Snake(nx, ny));
+                map[nx][ny] = 2;
+            } else {
+                System.out.println("result = " + result);
+                return;
+            }
+            
+            now_x = nx;
+            now_y = ny;
+
 
         }
-        for(int i=0; i<=N; i++) {
+
+            
+
+        /*for(int i=0; i<=N; i++) {
             System.out.println(Arrays.toString(map[i]));
         }
 
-        System.out.println(time);
+        System.out.println("result = " + result);*/
 
     }
 
 }
 
 class Snake {
-
+    
     private int x;
     private int y;
 
@@ -181,187 +145,11 @@ class Snake {
     }
 
     public int getX() {
-        return x;
+        return this.x;
     }
 
     public int getY() {
-        return y;
+        return this.y;
     }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
-        K = sc.nextInt();
-        map = new int[N][N];
-        queue = new LinkedList<>();
-        map[0][0] = 2;
-        queue.offer(new int[][]{{0,0}});
-        pos = new int[]{0,0};
-        dx_dy = new int[][]{{0,1},{1,0},{0,-1},{-1,0}}; // 
-        vector = 0;
-        // K_pos = new int[K][2];
-
-        for(int i=0; i<K; i++) {
-            x = sc.nextInt();
-            y = sc.nextInt();
-            map[x][y] = 1;
-        }
-        L = sc.nextInt();
-        L_pos = new String[L][2];
-
-        for(int i=0; i<L; i++) {
-            L_pos[i][0] = sc.next();
-            L_pos[i][1] = sc.next();
-        }
-
-        for(int i=0; i<N; i++) {
-            System.out.println(Arrays.toString(map[i]));
-        }
-
-        for(int i=0; i<L; i++) {
-            System.out.println("i = " + i);
-            if(!move(queue.peek(), L_pos[i][0], L_pos[i][1])) {
-                break;
-            }
-            for(int j=0; j<N; j++) {
-                System.out.println(Arrays.toString(map[j]));
-            }
-            //System.out.println("result = " + result);
-        }
-
-        System.out.println("result = " + result);
-    }
-
-    public static boolean move(int[][] position, String x, String y) {
-        if(vector >= 4) {
-            vector = 0;
-        } else if (vector < 0) {
-            vector = 3;
-        }
-
-        System.out.println(" : " + x);
-
-        for(int i=0; i<Integer.parseInt(x)-time_stamp; i++) {
-            dx = dx_dy[vector][0];
-            dy = dx_dy[vector][1];
-            
-            System.out.println("queue.peek() = [" + queue.peek()[0][0]+"]["+queue.peek()[0][1]+"], queue.size() = " + queue.size());
-            if(queue.peek()[0][0]+dx < 0 || queue.peek()[0][0]+dx >= N ||
-                queue.peek()[0][1]+dy < 0 || queue.peek()[0][1]+dy >= N) {
-                    System.out.println("IndexOutOfBounsException. dx : " + dx + ", dy : " + dy);
-                    return false;
-            }
-            System.out.println("map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] = " 
-                                        + map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy]);
-
-            if (map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] == 1) { // 
-                snake_size++;
-                result++;
-                map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] = 2;
-                queue.offer(new int[][]{{queue.peek()[0][0]+dx,queue.peek()[0][1]+dy}});
-            } else if (map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] == 2) { // 
-                return false;
-            } else { // 
-                result++;
-                map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] = 2;
-                queue.offer(new int[][]{{queue.peek()[0][0]+dx,queue.peek()[0][1]+dy}});
-                int[][] pop = queue.poll();
-                map[pop[0][0]][pop[0][1]] = 0;
-            }
-        }
-        if(y.equals("D")) vector++;
-        else vector--;
-
-        if(x.equals(L_pos[L-1][0])) { // 
-            dx = dx_dy[vector][0];
-            dy = dx_dy[vector][1];
-            while(true) {
-                if(queue.peek()[0][0]+dx < 0 || queue.peek()[0][0]+dx >= N ||
-                queue.peek()[0][1]+dy < 0 || queue.peek()[0][1]+dy >= N) { // 
-                    break;
-                }
-                if (map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] == 1) { // Apple
-                    snake_size++;
-                    result++;
-                    map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] = 2;
-                    queue.offer(new int[][]{{queue.peek()[0][0]+dx,queue.peek()[0][1]+dy}});
-                } else if (map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] == 2) { //
-                    result++;
-                    return false;
-                } else { //
-                    result++;
-                    map[queue.peek()[0][0]+dx][queue.peek()[0][1]+dy] = 2;
-                    queue.offer(new int[][]{{queue.peek()[0][0]+dx,queue.peek()[0][1]+dy}});
-                    int[][] pop = queue.poll();
-                    map[pop[0][0]][pop[0][1]] = 0;
-                }
-            }
-        }
-        
-        time_stamp = Integer.parseInt(x);
-        return true;
-    }
-    
-}
-*/
