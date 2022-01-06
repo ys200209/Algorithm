@@ -24,9 +24,7 @@ public class Main15_5 {
         for(int i=0; i<3; i++) {
             result = Math.min(result, d[N][i]);
         }
-
         System.out.println(result);
-        
     }
 
     public static int[] TopDown(int index) {
