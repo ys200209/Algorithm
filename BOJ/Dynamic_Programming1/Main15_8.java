@@ -1,35 +1,42 @@
 import java.util.*;
+import java.io.*;
 
 public class Main15_8 {
-    public static int X;
-    public static int[] d;
+    static int N;
+    static int[] d;
+    
+    public static void main(String[] args) throws IOException {
 
-    public static void main(String[] args) {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        Scanner scanner = new Scanner(System.in);
-        X = scanner.nextInt();
-        d = new int[X+1];
+        N = Integer.parseInt(br.readLine());
+        d = new int[N+1];
 
-        d[1] = 0;
+        TopDown(N);
 
-        for(int i=2; i<=X; i++) {
-            if (d[i] == 0) {
-                d[i] = d[i-1] + 1;
+        System.out.println(Arrays.toString(d));
 
-                if (i % 2 == 0) {
-                    d[i] = Math.min(d[i], d[i/2] + 1);
-                }
-
-                if (i % 3 == 0) {
-                    d[i] = Math.min(d[i], d[i/3]+1);
-                }
-            }
-            
-        }
-
-        System.out.println(d[X]);
-
+        System.out.println(d[N]);
 
     }
-    
+
+    public static int TopDown(int index) {
+        if (index == 1) return 0;
+
+        if (d[index] == 0) {
+
+            d[index] = TopDown(index-1)+1;
+            
+            if (index % 3 == 0) {
+                d[index] = Math.min(d[index], TopDown(index/3)+1); // Math.min(d[index], );
+            }
+            if (index % 2 == 0) {
+                d[index] = Math.min(d[index], TopDown(index/2)+1); //Math.min(d[index], );
+            }
+
+        }
+
+        return d[index];
+    }
+
 }
