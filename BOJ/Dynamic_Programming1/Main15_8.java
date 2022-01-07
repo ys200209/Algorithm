@@ -3,14 +3,15 @@ import java.io.*;
 
 public class Main15_8 {
     static int N;
-    static int[] d;
+    static Integer[] d;
     
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         N = Integer.parseInt(br.readLine());
-        d = new int[N+1];
+        d = new Integer[N+1];
+        d[1] = 0;
 
         TopDown(N);
 
@@ -23,15 +24,16 @@ public class Main15_8 {
     public static int TopDown(int index) {
         if (index == 1) return 0;
 
-        if (d[index] == 0) {
-
-            d[index] = TopDown(index-1)+1;
+        if (d[index] == null) {
             
-            if (index % 3 == 0) {
-                d[index] = Math.min(d[index], TopDown(index/3)+1); // Math.min(d[index], );
-            }
-            if (index % 2 == 0) {
-                d[index] = Math.min(d[index], TopDown(index/2)+1); //Math.min(d[index], );
+            if (index % 6 == 0) {
+                d[index] = Math.min(TopDown(index-1), Math.min(TopDown(index/3), TopDown(index/2))) + 1;
+            } else if (index % 3 == 0) {
+                d[index] = Math.min(TopDown(index/3), TopDown(index-1)) + 1;
+            } else if (index % 2 == 0) {
+                d[index] = Math.min(TopDown(index/2), TopDown(index-1)) + 1;
+            } else {
+                d[index] = TopDown(index-1)+1;
             }
 
         }
