@@ -1,41 +1,49 @@
 import java.util.*;
 
 public class Main15_10 {
-    public static int N, result;
-    public static int[] list, d;
+    static int N;
+    static int[] juice, d;
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
         N = scanner.nextInt();
-        list = new int[N+1];
+        juice = new int[N+1];
         d = new int[N+1];
 
         for(int i=1; i<=N; i++) {
-            list[i] = scanner.nextInt();
+            juice[i] = scanner.nextInt();
         }
 
-        d[1] = list[1];
+        TopDown(N);
+
+        /*d[1] = juice[1];
         if (N > 1) {
-            d[2] = list[1] + list[2];
+            d[2] = juice[1] + juice[2];
         }
 
         for(int i=3; i<=N; i++) {
-            d[i] = Math.max((Math.max(d[i-3] + list[i-1], d[i-2]) + list[i]), d[i-1]);
-        }
+            d[i] = Math.max(d[i], Math.max(d[i-2], d[i-3] + juice[i-1]) + juice[i]);
+        }*/
 
-        // System.out.println("list = " + Arrays.toString(list));
+        System.out.println(Arrays.toString(d));
 
-        // System.out.println("d = " + Arrays.toString(d));
-
-        result = d[0];
-        for(int i=1; i<=N; i++) {
-            result = Math.max(result, d[i]);
-        }
-
-        System.out.println(result);
+        System.out.println(d[N]);
 
     }
-    
+
+    public static int TopDown(int index) {
+        if (index <= 1) return d[index] = juice[index];
+        if (index == 2) return d[index] = juice[index-1] + juice[index];
+
+        if (d[index] == 0) {
+            return d[index] = Math.max(Math.max(TopDown(index-2), TopDown(index-3)+juice[index-1] + juice[index]), 
+                            TopDown(index-1));
+        }
+
+        return d[index];
+    }
+
+
 }
