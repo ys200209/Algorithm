@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Main21_2 {
-    static int MIN, MAX, N, M, count=0;
+    static int MIN, MAX, N, M, high, low;
     static int[] A, B;
     static boolean[] visited;
     static StringBuilder sb = new StringBuilder();
@@ -42,10 +42,14 @@ public class Main21_2 {
                 continue;
             }
 
-            binarySearch(B[i], 0, N/2, N-1);
+            low = 0;
+            high = 0;
 
-            sb.append(count+" ");
-            count = 0;
+            binarySearch(B[i], 0, (N-1)/2, N-1);
+
+            System.out.println(B[i] + " : " + low + " ~ " + high);
+
+            sb.append((high-low+1)+" ");
         }
 
         System.out.println(sb);
@@ -53,19 +57,29 @@ public class Main21_2 {
     }
 
     public static void binarySearch(int target, int front, int mid, int back) {
-        if (front == mid || back == mid) {
-            if (!visited[front] && A[front] == target) {
-                visited[front] = true;
-                count += 1;
-            } else if (!visited[back] && A[back] == target) {
-                visited[back] = true;
-                count += 1;
-            }
+        System.out.println("target : " + target + ", front : " + front + ", mid : " + mid + ", back : " + back);
+        
+        if (mid <= front || mid >= back) {
             return;
         }
-        
 
-        if (mid < 0 || mid >= N || visited[mid] ) return;
+        if (A[mid] == target) {
+            if (A[front] == target) low = front;
+            else {
+                low = mid;
+                binarySearch(target, front, (front+mid)/2, mid);
+            }
+            
+            if (A[back] == target) high = back;
+            else {
+                high = mid+1;
+                binarySearch(target, mid, (mid+back)/2, back);
+            }
+            
+            return;
+        }
+
+        
 
         if (A[mid] < target) {
             front = mid;
@@ -75,15 +89,8 @@ public class Main21_2 {
             back = mid;
             mid = (front + back) / 2;
             binarySearch(target, front, mid, back);
-        } else {
-            count += 1;
-            visited[mid] = true;
-            binarySearch(target, front, mid-1, back);
-            binarySearch(target, front, mid+1, back);
-            visited[mid] = false;
-            visited[front] = false;
-            visited[back] = false;
         }
+
     }
 
 }
