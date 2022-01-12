@@ -1,42 +1,72 @@
 import java.util.*;
+import java.io.*;
 
 public class Main15_14 {
-    static int start, checkPoint1=0, checkPoint2=-1, len, result=0;
-    static String str, str1, str2;
+    static int result=0;
+    static String temp1, temp2, str="";
+    static String[] A, B;
+    static boolean[] visited;
+    static HashSet<String> set = new HashSet<>();
+    
+    public static void main(String[] args) throws IOException {
 
-    public static void main(String[] args) {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        Scanner scanner = new Scanner(System.in);
-
-        str1 = scanner.next();
-        str2 = scanner.next();
-
-        for(int i=str1.length(); i>1; i--) {
-            len = 0;
-            str = "";
-            start = 0;
-
-            for(int j=i; j<=str1.length(); j++) {
-
-                if (checkPoint1 >= str2.length()) break;
-                
-                // System.out.println("start = " + start + ", j = " + j + ", str1.substring(start, j) = " + str1.substring(start, j));
-                if (str1.substring(start, j).indexOf(str2.substring(checkPoint1, str2.length())) != -1 && 
-                        str1.substring(start, j).indexOf(str2.substring(checkPoint1, str2.length())) > checkPoint2) {
-                    checkPoint1 = j;
-                    len += j - start; 
-                    System.out.println("checkPoint1 = " + checkPoint1);
-                }
-                
-                
-                start++;
-            }
-            result = Math.max(result, len);
+        temp1 = br.readLine();
+        temp2 = br.readLine();
+        if (temp1.length() >= temp2.length()) { // 더 긴 문자열을 A에 담도록.
+            A = temp1.split("");
+            B = temp2.split("");
+        } else {
+            A = temp2.split("");
+            B = temp1.split("");
         }
         
-        if (result == 0) System.out.println("1");
-        else System.out.println(result);
+        visited = new boolean[B.length];
+        DFS(0, 0);
+        visited = new boolean[B.length];
+        str = "";
+        search(0, 0);
 
+        System.out.println(result);
     }
-    
+
+    public static void DFS(int index, int count) {
+        if (count == B.length) return;
+
+        for(int i=index; i<B.length; i++) {
+            for(int j=i; j<B.length; j++) {
+                if (!visited[j]) {
+                    visited[j] = true;
+                    str += B[j];
+                    count += 1;
+                    set.add(str);
+                    DFS(j, count);
+                    count -= 1;
+                    str = str.substring(0, str.length()-1);
+                    visited[j] = false;
+                } 
+            }
+        }
+    }
+
+    public static void search(int index, int count) {
+        if (count == B.length) return;
+
+        for(int i=index; i<A.length; i++) {
+            for(int j=i; j<A.length; j++) {
+                if (!visited[j]) {
+                    visited[j] = true;
+                    str += A[j];
+                    count += 1;
+                    result = set.contains(str) ? Math.max(str.length(), result) : result;
+                    search(j, count);
+                    count -= 1;
+                    str = str.substring(0, str.length()-1);
+                    visited[j] = false;
+                } 
+            }
+        }
+    }
+
 }
