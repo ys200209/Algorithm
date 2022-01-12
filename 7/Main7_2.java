@@ -1,11 +1,12 @@
 import java.util.*;
+import java.io.*;
 
 class Main7_2 {
-    static int N, M, result;
-    static int[] N_List, M_List;
-    static String str = "";
+    static int N, M;
+    static int[] A, B;
+    static StringBuilder sb = new StringBuilder();
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         /* 
             A의 전자 매장에는 부품이 N개 있다. 각 부품은 정수 형태의 고유한 번호가 있다. 어느 날 손님이
@@ -19,30 +20,52 @@ class Main7_2 {
             -> no yes yes
         */
 
-        Scanner sc = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        N = sc.nextInt();
-        N_List = new int[1000001];
-        for(int i=0; i<N; i++) {
-            N_List[i] = sc.nextInt();
+        N = Integer.parseInt(br.readLine());
+        A = new int[N];
+
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        int i = 0;
+        while(st.hasMoreTokens()) {
+            A[i] = Integer.parseInt(st.nextToken());
+            i++;
+        }
+        Arrays.sort(A);
+
+        M = Integer.parseInt(br.readLine());
+        B = new int[M];
+
+        st = new StringTokenizer(br.readLine(), " ");
+        i = 0;
+        while(st.hasMoreTokens()) {
+            B[i] = Integer.parseInt(st.nextToken());
+            i++;
         }
 
-        M = sc.nextInt();
-        M_List = new int[M];
-        for(int i=0; i<M; i++) {
-            M_List[i] = sc.nextInt();
+        for(i=0; i<M; i++) {
+            if (binarySearch(B[i], 0, (N-1) / 2, N-1)) sb.append("yes ");
+            else sb.append("no ");
         }
 
-        Arrays.sort(N_List);
-        Arrays.sort(M_List);
+        System.out.println(sb);
+    }
 
-        for(int i=0; i<M; i++) {
-            System.out.println("i = " + i);
-            System.out.println("N_List[M_List[i]] = " + N_List[M_List[i]]);
+    public static boolean binarySearch(int target, int front, int mid, int back) {
+        if (front > back) return false;
+
+        if (A[mid] == target) return true;
+        else if (A[mid] > target) {
+            back = mid-1;
+            mid = (front + back) / 2;
+            return binarySearch(target, front, mid, back);
+        } else {
+            front = mid+1;
+            mid = (front + back) / 2;
+            return binarySearch(target, front, mid, back);
         }
-
-        System.out.println(str);
 
     }
+
 
 }
