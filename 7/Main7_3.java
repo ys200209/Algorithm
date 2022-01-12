@@ -1,11 +1,12 @@
 import java.util.*;
+import java.io.*;
 
 class Main7_3 {
-    static int N, M, H;
-    static int[] list;
-    //static int start, end, mid;
+    static int N, M, MIN, MAX, slice, result=0;
+    static int[] A;
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException {
 
         /*
             A는 떡집을 운영하고 있으며 A네 떡볶이 떡은 길이가 일정하지 않다. 대신에 한 봉지 안에 들어가는 떡의
@@ -22,44 +23,56 @@ class Main7_3 {
             -> 15
         */
 
-        Scanner sc = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        N = sc.nextInt();
-        M = sc.nextInt();
 
-        list = new int[N];
-        
-        for(int i=0; i<N; i++) {
-            list[i] = sc.nextInt();
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+
+        A = new int[N];
+
+        st = new StringTokenizer(br.readLine(), " ");
+
+        int i=0;
+        while(st.hasMoreTokens()) {
+            A[i] = Integer.parseInt(st.nextToken());
+            i++;
         }
 
-        Arrays.sort(list);
+        Arrays.sort(A);
 
-        System.out.println("list = " + Arrays.toString(list));
-        int result = binarySearch(list, M, list[0], list[N-1]);
+        MIN = A[0];
+        MAX = A[A.length-1];
+
+        result = binarySearch(M, MIN, MAX);
 
         System.out.println("result = " + result);
 
+
     }
 
-    public static int binarySearch(int[] arr, int target, int start, int end) {
-        
-        int mid = (start+end) / 2;
-        int sum = 0;
-        
+    public static int binarySearch(int target, int front, int back) {
+        int mid = (front+back) / 2;
 
-        for(int i=0; i<arr.length; i++) {
-            sum += arr[i] > mid ? arr[i]-mid : 0;
-        }   
-        if (sum > M) { // 9 > 7
-            return binarySearch(arr, target, mid+1, end); // 일치값이 존재하지 않을 경우 해당 함수와
-        } else if (sum < M) {
-            return binarySearch(arr, target, start, mid-1); // 아래 함수가 서로 무한 반복되며 수행될 가능성
-        } else if (sum == M) {
-            return mid;
+        if (front > back) return -1;
+        
+        slice = 0;
+        System.out.println("mid : " + mid);
+        for(int i=0; i<N; i++) {
+            slice += A[i] - mid > 0 ? A[i] - mid : 0; 
         }
+        System.out.println("slice : " + slice);
 
-        return -1;
+        if (slice < M) {
+            return binarySearch(target, front, mid-1);
+        } else if (slice > M) {
+            result = slice;
+            return binarySearch(target, mid+1, back);
+        }
+        
+        else return mid;
     }
+
 
 }
