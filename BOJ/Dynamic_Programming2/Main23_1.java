@@ -2,10 +2,10 @@ import java.io.*;
 import java.util.*;
 
 public class Main23_1 {
-    static int T, K;
-    static int[] d;
-    static ArrayList<Integer> A;
-
+    public static int T, K, result=(int)1e9;
+    public static int[] A;
+    public static Integer[] d;
+    
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -14,32 +14,34 @@ public class Main23_1 {
 
         for(int i=0; i<T; i++) {
             K = Integer.parseInt(br.readLine());
-            A = new ArrayList<>();
-            d = new int[K+1];
-            A.add(0);
-
+            A = new int[K+1];
+            d = new Integer[K+1];
+            
             StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-            int j=0;
+            int j=1;
             while(st.hasMoreTokens()) {
-                A.add(Integer.parseInt(st.nextToken()));
+                A[j] = Integer.parseInt(st.nextToken());
                 j++;
             }
 
-            Collections.sort(A, Collections.reverseOrder());
-            
+            d[1] = A[1];
 
-            d[1] = A.get(1);
-
-            for(j=2; j<=K; j++) {
-                d[j] = d[j-1] + A.get(j);
+            for(j=1; j<=K; j++) {
+                for(int x=1; x<=K; x++) {
+                    if (d[j] == null) {
+                        d[j] = d[j-1] + A[j];
+                    } else {
+                        d[j] = Math.min(d[j], d[j-1]+A[j]);
+                    }
+                }
             }
 
-            System.out.println(Arrays.toString(d));
-
+            System.out.println("d : " + Arrays.toString(d));
         }
-        
-
 
     }
-    
+
+
+
+
 }
