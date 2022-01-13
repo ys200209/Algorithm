@@ -26,46 +26,45 @@ class Main7_2 {
         A = new int[N];
 
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-        int i = 0;
+
+        int i=0;
         while(st.hasMoreTokens()) {
             A[i] = Integer.parseInt(st.nextToken());
             i++;
         }
-        Arrays.sort(A);
 
         M = Integer.parseInt(br.readLine());
         B = new int[M];
-
+        
         st = new StringTokenizer(br.readLine(), " ");
-        i = 0;
+
+        i=0;
         while(st.hasMoreTokens()) {
             B[i] = Integer.parseInt(st.nextToken());
             i++;
         }
 
         for(i=0; i<M; i++) {
-            if (binarySearch(B[i], 0, (N-1) / 2, N-1)) sb.append("yes ");
+            if (binarySearch(B[i], 0, N-1)) sb.append("yes ");
             else sb.append("no ");
         }
 
         System.out.println(sb);
+        
     }
 
-    public static boolean binarySearch(int target, int front, int mid, int back) {
+    public static boolean binarySearch(int target, int front, int back) {
         if (front > back) return false;
 
-        if (A[mid] == target) return true;
-        else if (A[mid] > target) {
-            back = mid-1;
-            mid = (front + back) / 2;
-            return binarySearch(target, front, mid, back);
+        int mid = (front + back) / 2;
+
+        if (A[mid] > target) {
+            return binarySearch(target, front, mid-1);
+        } else if (A[mid] < target) {
+            return binarySearch(target, mid+1, back);
         } else {
-            front = mid+1;
-            mid = (front + back) / 2;
-            return binarySearch(target, front, mid, back);
+            return true;
         }
-
     }
-
 
 }
