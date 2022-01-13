@@ -40,39 +40,32 @@ class Main7_3 {
             i++;
         }
 
-        Arrays.sort(A);
-
-        MIN = A[0];
         MAX = A[A.length-1];
 
-        result = binarySearch(M, MIN, MAX);
+        binarySearch(M, 0, MAX);
 
-        System.out.println("result = " + result);
+        System.out.println(result);
+
 
 
     }
 
-    public static int binarySearch(int target, int front, int back) {
-        int mid = (front+back) / 2;
+    public static void binarySearch(int target, int front, int back) {
+        if (front > back) return;
 
-        if (front > back) return -1;
-        
+        int mid = (front + back) / 2;
         slice = 0;
-        System.out.println("mid : " + mid);
-        for(int i=0; i<N; i++) {
-            slice += A[i] - mid > 0 ? A[i] - mid : 0; 
+        for(int j=0; j<N; j++) {
+            slice += A[j] - mid < 0 ? 0 : A[j] - mid;
         }
-        System.out.println("slice : " + slice);
 
-        if (slice < M) {
-            return binarySearch(target, front, mid-1);
-        } else if (slice > M) {
-            result = slice;
-            return binarySearch(target, mid+1, back);
+        if (target > slice) {
+            binarySearch(target, front, mid-1);
+        } else {
+            result = mid;
+            binarySearch(target, mid+1, back);
         }
-        
-        else return mid;
+
     }
-
 
 }
