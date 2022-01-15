@@ -9,6 +9,7 @@ public class Main15_28 {
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         N = Integer.parseInt(br.readLine());
         A = new int[N];
 
@@ -20,13 +21,14 @@ public class Main15_28 {
         }
 
         binarySearch(0, N-1);
-        
+
         if (exist) System.out.println(result);
         else System.out.println("-1");
+        
     }
 
     public static void binarySearch(int front, int back) {
-        if (front > back || exist) return;
+        if (front > back) return;
 
         int mid = (front + back) / 2;
 
@@ -40,4 +42,5 @@ public class Main15_28 {
         }
 
     }
+
 }
