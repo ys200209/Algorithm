@@ -2,9 +2,9 @@ import java.util.*;
 import java.io.*;
 
 public class Main21_2 {
-    static int MIN, MAX, N, M, high, low;
+    static int N, M, MIN, MAX, lower, upper;
     static int[] A, B;
-    static boolean[] visited;
+    static boolean exist;
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
@@ -13,7 +13,6 @@ public class Main21_2 {
 
         N = Integer.parseInt(br.readLine());
         A = new int[N];
-        visited = new boolean[N];
 
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         int i = 0;
@@ -37,60 +36,53 @@ public class Main21_2 {
         MAX = A[N-1];
 
         for(i=0; i<M; i++) {
+            exist = false;
             if (B[i] < MIN || B[i] > MAX) {
                 sb.append("0 ");
                 continue;
             }
 
-            low = 0;
-            high = 0;
+            lowerSearch(B[i], 0, N-1);
+            upperSearch(B[i], 0, N-1);
 
-            binarySearch(B[i], 0, (N-1)/2, N-1);
-
-            System.out.println(B[i] + " : " + low + " ~ " + high);
-
-            sb.append((high-low+1)+" ");
+            if (exist) sb.append((upper-lower+1)+" ");
+            else sb.append("0 ");
         }
 
         System.out.println(sb);
         
     }
 
-    public static void binarySearch(int target, int front, int mid, int back) {
-        System.out.println("target : " + target + ", front : " + front + ", mid : " + mid + ", back : " + back);
-        
-        if (mid <= front || mid >= back) {
-            return;
+    public static void lowerSearch(int target, int front, int back) {
+        if (front > back) return;
+
+        int mid = (front + back) / 2;
+
+        if (A[mid] > target) {
+            lowerSearch(target, front, mid-1);
+        } else if (A[mid] < target) {
+            lowerSearch(target, mid+1, back);
+        } else {
+            exist = true;
+            lower = mid;
+            lowerSearch(target, front, mid-1);
         }
 
-        if (A[mid] == target) {
-            if (A[front] == target) low = front;
-            else {
-                low = mid;
-                binarySearch(target, front, (front+mid)/2, mid);
-            }
-            
-            if (A[back] == target) high = back;
-            else {
-                high = mid+1;
-                binarySearch(target, mid, (mid+back)/2, back);
-            }
-            
-            return;
+    }
+
+    public static void upperSearch(int target, int front, int back) {
+        if (front > back) return;
+
+        int mid = (front + back) / 2;
+
+        if (A[mid] > target) {
+            upperSearch(target, front, mid-1);
+        } else if (A[mid] < target) {
+            upperSearch(target, mid+1, back);
+        } else {
+            upper = mid;
+            upperSearch(target, mid+1, back);
         }
-
-        
-
-        if (A[mid] < target) {
-            front = mid;
-            mid = (front + back) / 2;
-            binarySearch(target, front, mid, back);
-        } else if (A[mid] > target) {
-            back = mid;
-            mid = (front + back) / 2;
-            binarySearch(target, front, mid, back);
-        }
-
     }
 
 }
