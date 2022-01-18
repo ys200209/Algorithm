@@ -1,9 +1,10 @@
 import java.util.*;
 
 public class Main14_5 {
-    static int N, result=0;
+    static int N, nx, ny, result=0;
     static int[][] map;
     static boolean[] visited;
+    static int[] dx = {-1, -1}, dy = {-1, 1};
     
     public static void main(String[] args) {
 
@@ -22,6 +23,10 @@ public class Main14_5 {
     public static void DFS(int count) {
         if (count == N) {
             
+            /*System.out.println("-----------------");
+            for(int i=0; i<N; i++) {
+                System.out.println(Arrays.toString(map[i]));
+            }*/
             result += 1;
             return;
         }
@@ -42,14 +47,10 @@ public class Main14_5 {
         }
     }
 
-    public static boolean searchQueen(int x, int y) {  
-        int[] dx = {-1, -1};
-        int[] dy = {-1, 1};
-
+    public static boolean searchQueen(int x, int y) {
         for(int i=0; i<2; i++) {
-            int nx = x;
-            int ny = y;
-
+            nx = x;
+            ny = y;
             while(true) {
                 nx += dx[i];
                 ny += dy[i];
