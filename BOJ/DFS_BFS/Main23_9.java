@@ -2,71 +2,103 @@ import java.io.*;
 import java.util.*;
 
 public class Main23_9 {
-    static int width, height, result=(int)1e9;
+    static int N, M, result;
+    static int[][] temp;
     static String[][] map;
-    static boolean[][] visited;
+    static Queue<Move> queue = new LinkedList<>();
+ 
+    public static void main(String[] args) {
 
-    public static void main(String[] args) throws IOException {
+        Scanner scanner = new Scanner(System.in);
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        N = scanner.nextInt();
+        M = scanner.nextInt();
+        map = new String[N][M];
+        temp = new int[N][M];
 
-        width = Integer.parseInt(st.nextToken());
-        height = Integer.parseInt(st.nextToken());
-
-        map = new String[width][height]; 
-        visited = new boolean[width][height]; 
-
-        for(int i=0; i<width; i++) {
-            map[i] = br.readLine().split("");
+        for(int i=0; i<N; i++) {
+            map[i] = scanner.next().split("");
+            for(int j=0; j<M; j++) {
+                temp[i][j] = 0;
+            }
         }
 
-        DFS(0, 0, 0, 1);
-        
-        if (result > width * height) result = -1;
+        temp[0][0] = 1;
 
-        System.out.println(result);
-
-    }
-
-    public static void DFS(int x, int y, int wall_break, int count) {
-
-        if (visited[x][y]) return;
-
-        if (x == width-1 && y == height-1) {
-            result = Math.min(result, count);
+        if (N == 1 && M == 1) {
+            System.out.println("1");
             return;
         }
 
-        int[] dx = {-1, 0, 1, 0};
-        int[] dy = {0, -1, 0, 1};
-        
-        for(int i=0; i<4; i++) {
-            int nx = dx[i] + x;
-            int ny = dy[i] + y;
+        queue.offer(new Move(0, 0, 0));
 
-            if (nx < 0 || nx >= width || ny < 0 || ny >= height) continue;
+        int result = BFS();
 
-            if ("0".equals(map[nx][ny])) {
-                visited[x][y] = true;
-                count += 1;
-                DFS(nx, ny, wall_break, count);
-                count -= 1;
-                visited[x][y] = false;
-            }
-            else if ("1".equals(map[nx][ny])) {
-                if (wall_break == 0) {
-                    visited[x][y] = true;
-                    wall_break += 1;
-                    count += 1;
-                    DFS(nx, ny, wall_break, count);
-                    wall_break -= 1;
-                    count -= 1;
-                    visited[x][y] = false;
-                }  
-            } 
+        for(int i=0; i<N; i++) {
+            System.out.println(Arrays.toString(temp[i]));
         }
-        
+
+        System.out.println(result);
     }
     
+    public static int BFS() {
+        int[] dx = {-1, 0, 1, 0};
+        int[] dy = {0, 1, 0, -1};
+
+        while(!queue.isEmpty()) {
+            Move move = queue.poll();
+            int x = move.getX();
+            int y = move.getY();
+
+            for(int i=0; i<4; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+
+                if (nx < 0 || nx >= N || ny < 0 || ny >= M) continue;
+
+                // if (temp[nx][ny] >= temp[x][y]) continue;
+
+                if (map[nx][ny].equals("1")) {
+                    if (move.getWallBreak() == 1) continue;
+                    else {
+                        queue.offer(new Move(nx, ny, 1));
+                    }
+                } else {
+                    queue.offer(new Move(nx, ny, move.getWallBreak()));
+                }
+                temp[nx][ny] = temp[x][y] + 1;
+
+                if (temp[N-1][M-1] != 0) {
+                    return temp[N-1][M-1];
+                }
+            }
+        }
+        return -1;
+    }
+}
+
+class Move {
+
+    private int x;
+    private int y;
+    private int wallBreak;
+
+    public Move(int x, int y, int wallBreak) {
+        this.x = x;
+        this.y = y;
+        this.wallBreak = wallBreak;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getWallBreak() {
+        return wallBreak;
+    }
+
 }
