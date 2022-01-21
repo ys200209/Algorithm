@@ -1,10 +1,9 @@
 import java.util.*;
 
 public class Main14_7 {
-    static int N, MAX=0, MIN=(int)1e9;
+    static long MAX=(long)-1e9, MIN=(long)1e9;
+    static int N;
     static int[] A, cal;
-    static boolean[] visited;
-
     
     public static void main(String[] args) {
 
@@ -13,7 +12,6 @@ public class Main14_7 {
         N = scanner.nextInt();
         A = new int[N];
         cal = new int[4];
-        visited = new boolean[N];
 
         for(int i=0; i<N; i++) {
             A[i] = scanner.nextInt();
@@ -23,79 +21,35 @@ public class Main14_7 {
             cal[i] = scanner.nextInt();
         }
 
-        DFS(A[0], 0);
-        visited[0] = true;
+        DFS(A[0], 1);
 
         System.out.println(MAX);
         System.out.println(MIN);
 
     }
 
-    public static void DFS(int result, int count) {
-        
-        if (count == N-1) {
-            MAX = Math.max(MAX, result);
-            MIN = Math.min(MIN, result);
+    public static void DFS(long num, int count) {
+        if (count == A.length) {
+            MAX = Math.max(MAX, num);
+            MIN = Math.min(MIN, num);
             return;
         }
 
-        for(int i=1; i<N; i++) {
-            if (!visited[i]) {
-                visited[i] = true;
-                for(int j=0; j<4; j++) {
-                    if (cal[j] != 0 && j == 0) {
-                        cal[j] -= 1;
-                        result += A[i];
-                        count += 1;
-                        DFS(result, count);
-                        count -= 1;
-                        result -= A[i];
-                        cal[j] += 1;
-                    } else if (cal[j] != 0 && j == 1) {
-                        cal[j] -= 1;
-                        result -= A[i];
-                        count += 1;
-                        DFS(result, count);
-                        count -= 1;
-                        result += A[i];
-                        cal[j] += 1;
-                    } else if (cal[j] != 0 && j == 2) {
-                        cal[j] -= 1;
-                        result *= A[i];
-                        count += 1;
-                        DFS(result, count);
-                        count -= 1;
-                        result /= A[i];
-                        cal[j] += 1;
-                    } else if (cal[j] != 0 && j == 3) {
-                        cal[j] -= 1;
-                        if (result < 0 && A[i] > 0) {
-                            result *= -1;
-                            int c = result % A[i];
-                            result /= A[i];
-                            result *= -1;
-                            count += 1;
-                            DFS(result, count+1);
-                            count -= 1;
-                            result *= -1;
-                            result = result * A[i] + c;
-                            result *= -1;
-                        } else {
-                            int c = result % A[i];
-                            result /= A[i];
-                            count += 1;
-                            DFS(result, count+1);
-                            count -= 1;
-                            result = result * A[i] + c;
-                        }
-                        cal[j] += 1;
-                    }
+        for(int i=0; i<4; i++) {
+            if (cal[i] != 0) {
+                cal[i] -= 1;
+                if (i == 0) {
+                    DFS(num + A[count], count+1);
+                } else if (i == 1) {
+                    DFS(num - A[count], count+1);
+                } else if (i == 2) {
+                    DFS(num * A[count], count+1);
+                } else {
+                    if (num < 0 && A[count] > 0) DFS(((num*-1)/A[count])*-1, count+1);
+                    else DFS(num/A[count], count+1);
                 }
-                visited[i] = false;
+                cal[i] += 1;
             }
         }
-
-
     }
-
 }
