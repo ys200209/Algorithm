@@ -1,14 +1,14 @@
 import java.util.*;
 
 public class Main22_4 {
-    public static Queue<Integer> queue1 = new PriorityQueue<>();
-    public static Queue<Integer> queue2 = new PriorityQueue<>();
-    public static int N, x;
+    public static Queue<Integer> frontQueue = new PriorityQueue<>(Collections.reverseOrder());
+    public static Queue<Integer> backQueue = new PriorityQueue<>();
+    public static int N, x, mid=(int)1e9;
     public static StringBuilder sb = new StringBuilder();
     
     public static void main(String[] args) {
 
-        // ë°±ì¤€ ì˜¨ë¼ì¸ ì €ì§€ ìš°ì„ ìˆœìœ„ í(22)ì˜ 4ë²ˆ
+        // ¹éÁØ ¿Â¶óÀÎ ÀúÁö ¿ì¼±¼øÀ§ Å¥(22)ÀÇ 4¹ø
         Scanner scanner = new Scanner(System.in);
 
         N = scanner.nextInt();
@@ -16,12 +16,29 @@ public class Main22_4 {
         for(int i=0; i<N; i++) {
             x = scanner.nextInt();
 
-            // queue.offer(x);
+            if (mid > x) {
+                if (frontQueue.size() - backQueue.size() == 1) backQueue.offer(frontQueue.poll());
+
+                if (!frontQueue.isEmpty() && frontQueue.peek() > x) backQueue.offer(frontQueue.poll());
+
+                frontQueue.offer(x);
+            } else { // ÀÌÀü°ªº¸´Ù Å©°Å³ª °°Àº °ªÀÌ¶ó¸é backQueue¿¡ »ğÀÔ
+                backQueue.offer(x);
+                if (backQueue.size() - frontQueue.size() >= 1) {
+                    frontQueue.offer(backQueue.poll());
+                }
+            }
+
+            mid = x;
+
+            sb.append(frontQueue.peek() + "\n");
+
+            System.out.println("front.size() : " + frontQueue.size() + ", back.size() : " + backQueue.size());
+
         }
 
-
-
+        System.out.println("---------[result]---------");
+        System.out.println(sb);
 
     }
 }
-
