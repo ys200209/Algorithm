@@ -63,7 +63,7 @@ public class Main25_1 {
 			
 		}
 	}
-
+ 
 }
 
 class Node2 implements Comparable<Node2>{
