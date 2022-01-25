@@ -19,7 +19,6 @@ public class Main15_14501 {
             T[i] = Integer.parseInt(st.nextToken());
             P[i] = Integer.parseInt(st.nextToken());
         }
-        
 
         for(int i=1; i<=N+1; i++) {
             if (dp[i] < result) dp[i] = result;
