@@ -2,71 +2,35 @@ import java.util.*;
 import java.io.*;
 
 public class Main15_14 {
-    static int result=0;
-    static String temp1, temp2, str="";
     static String[] A, B;
-    static boolean[] visited;
-    static HashSet<String> set = new HashSet<>();
+    static int[][] d;
     
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        temp1 = br.readLine();
-        temp2 = br.readLine();
-        if (temp1.length() >= temp2.length()) { // 더 긴 문자열을 A에 담도록.
-            A = temp1.split("");
-            B = temp2.split("");
-        } else {
-            A = temp2.split("");
-            B = temp1.split("");
-        }
         
-        visited = new boolean[B.length];
-        DFS(0, 0);
-        visited = new boolean[B.length];
-        str = "";
-        search(0, 0);
+        A = br.readLine().split("");
+        B = br.readLine().split("");
 
-        System.out.println(result);
-    }
+        d = new int[A.length+1][B.length+1];
 
-    public static void DFS(int index, int count) {
-        if (count == B.length) return;
-
-        for(int i=index; i<B.length; i++) {
-            for(int j=i; j<B.length; j++) {
-                if (!visited[j]) {
-                    visited[j] = true;
-                    str += B[j];
-                    count += 1;
-                    set.add(str);
-                    DFS(j, count);
-                    count -= 1;
-                    str = str.substring(0, str.length()-1);
-                    visited[j] = false;
-                } 
+        for(int i=1; i<=A.length; i++) {
+            for(int j=1; j<=B.length; j++) {
+                if (A[i-1].equals(B[j-1])) {
+                    d[i][j] = d[i-1][j-1] + 1;
+                } else {
+                    d[i][j] = Math.max(d[i-1][j], d[i][j-1]);
+                }
             }
         }
-    }
 
-    public static void search(int index, int count) {
-        if (count == B.length) return;
+        /*for(int i=1; i<=A.length; i++) {
+            System.out.println(Arrays.toString(d[i]));
+        }*/
 
-        for(int i=index; i<A.length; i++) {
-            for(int j=i; j<A.length; j++) {
-                if (!visited[j]) {
-                    visited[j] = true;
-                    str += A[j];
-                    count += 1;
-                    result = set.contains(str) ? Math.max(str.length(), result) : result;
-                    search(j, count);
-                    count -= 1;
-                    str = str.substring(0, str.length()-1);
-                    visited[j] = false;
-                } 
-            }
-        }
+        System.out.println(d[A.length][B.length]);
+
+
     }
 
 }
