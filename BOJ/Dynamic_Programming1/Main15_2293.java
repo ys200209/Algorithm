@@ -16,20 +16,12 @@ public class Main15_2293 {
 
         for(int i=1; i<=N; i++) {
             coin[i] = scanner.nextInt();
-            if (coin[i] == K) dp[1] = 1;
         }
 
-        for(int i=2; i<=K; i++) { // 1~K원 까지의 경우의 수를 DP 배열에 등록
-            
-            
-            for(int j=1; j<=N; j++) {
-                if (dp[i] == 0) {
-                    // dp[i] += K
-                    
-                }
+        for(int i=1; i<=N; i++) {
+            for(int j=coin[i]; j<=K; j++) {
+                dp[j] = dp[j - coin[i]] + 1;
             }
-
-
         }
 
         System.out.println(Arrays.toString(dp));
