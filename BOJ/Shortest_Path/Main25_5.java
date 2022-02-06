@@ -45,7 +45,7 @@ public class Main25_5 {
 		
 		for(int i=1; i<=N; i++) {
 			for(int j=1; j<=N; j++) {
-				if (graph[i][j] == INF) sb.append("0 ");
+				if (graph[i][j] == INF) sb.append("0 "); 
 				else sb.append(graph[i][j] + " ");
 			}
 			sb.append("\n");
