@@ -1,31 +1,22 @@
+import java.io.*;
 import java.util.*;
 
 public class Main15_2293 {
-    static int N, K;
+    static int N, K, result=0;
     static int[] coin, dp;
-    // static int[][] ;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Scanner scanner = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        N = scanner.nextInt();
-        K = scanner.nextInt();
-        coin = new int[N+1]; // 101
-        dp = new int[K+1]; // 10001
+        N = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
 
-        for(int i=1; i<=N; i++) {
-            coin[i] = scanner.nextInt();
-        }
+        coin = new int[N+1];
+        dp = new int[K+1];
 
-        for(int i=1; i<=N; i++) {
-            for(int j=coin[i]; j<=K; j++) {
-                dp[j] = dp[j - coin[i]] + 1;
-            }
-        }
-
-        System.out.println(Arrays.toString(dp));
-
+        
         
     }
     
