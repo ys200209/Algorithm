@@ -2,36 +2,34 @@ import java.io.*;
 import java.util.*;
 
 public class Main7_5 {
-    static int result=0;
-    static int[] spell;
-    static String[] str;
+    static int count=0;
+    static String[] S;
+    static Map<String, Integer> map = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
+        String answer = "";
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        str = br.readLine().split("");
-        spell = new int[26*2];
+        S = br.readLine().toUpperCase().split("");
 
-        for(int i=0; i<str.length; i++) {
-            if ((int)str[i].charAt(0) <= 90) {
-                spell[(int)str[i].charAt(0) - 'A'] += 1;
-            } else {
-                spell[26 + (int)str[i].charAt(0) - 'a'] += 1;
+        for(int i=0; i<S.length; i++) {
+            if (map.get(S[i]) == null) map.put(S[i], 1);
+            else map.put(S[i], map.get(S[i]) + 1);
+        }
+
+        for(String str : map.keySet()) {
+            if (map.get(str) > count) {
+                answer = "";
+                answer += str;
+                count = map.get(str);
+            } else if (map.get(str) == count) {
+                answer += str;
             }
         }
 
-        for(int i=1; i<spell.length; i++) {
-            if (spell[result] > 1 && spell[result] == spell[i]) {
-                System.out.println("?");
-                return;
-            }
-            result = spell[result] < spell[i] ? i : result;
-        }
-
-        result = result <= 25 ? result : result - 26;
-
-        System.out.println((char)(65+result));
+        if (answer.length() == 1) System.out.println(answer);
+        else System.out.println("?");
 
     }
 
