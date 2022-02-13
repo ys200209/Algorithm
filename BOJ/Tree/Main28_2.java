@@ -2,47 +2,64 @@ import java.util.*;
 import java.io.*;
 
 public class Main28_2 {
-    static int N;
-    static ArrayList<ArrayList<Integer>> graph = new ArrayList<ArrayList<Integer>>();
+    static int V, MAX=0, d=0;
+    static ArrayList<Node> graph = new ArrayList<Node>();
     static Queue<Integer> queue = new LinkedList<>();
-    static int[] parents;
+    static boolean[][] visited;
 
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        N = Integer.parseInt(br.readLine());
-        parents = new int[N+1];
+        V = Integer.parseInt(br.readLine());
+        graph = new int[V+1][V+1];
 
-        for(int i=0; i<=N; i++) {
-            graph.add(new ArrayList<>());
+        for(int i=0; i<=V; i++) {
+            //graph.add(new ArrayList<>());
         }
 
-        for(int i=1; i<=N-1; i++) {
+        for(int i=1; i<=V; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
+            st.nextToken();
 
-            graph.get(a).add(b);
-            graph.get(b).add(a);
+            while(true) {
+                int node = Integer.parseInt(st.nextToken());
+                if (node == -1) break;
+                int distance = Integer.parseInt(st.nextToken());
+
+                graph.get(i).add(new Node(node, distance));
+                // 1 (2)-> 3 (3)-> 4 (4)-> 2 -> 3
+            }
+        }
+        
+        visited = new boolean[N];
+        DFS(1, 0); // (node, dis);
+
+        for(Node n1 : graph) {
+            // System.out.println
         }
 
-        DFS(1, 0);
+        System.out.println("MAX : " + MAX);
+        
+    }
+    
 
-        System.out.println("----------------");
-        for(int i=2; i<=N; i++) {
-            System.out.println(parents[i]);
+    public static void DFS(int node, int dis) {
+        if (dis > MAX) {
+            MAX = dis;
+            return;
         }
+
+        for(int i=1; i<=V; i++) {
+            if (!visited[node][i]) {
+                visited[node][i] = true;
+                DFS()
+                visited[node][i] = false;
+            }
+        }
+
     }
 
-    public static void DFS(int start, int parent) {
-        parents[start] = parent;
-        
-        for(int node : graph.get(start)) {
-            if (node != parent) DFS(node, start);
-        }
-
-    }   
 }
 
 class Node {
