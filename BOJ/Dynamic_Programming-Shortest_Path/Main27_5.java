@@ -23,9 +23,8 @@ public class Main27_5 {
 
             int police1_distance = Math.abs(police1.row - x) + Math.abs(police1.column - y);
             int police2_distance = Math.abs(police2.row - x) + Math.abs(police2.column - y);
-
-
             
+
             if (police1_distance < police2_distance) {
                 movePolice1(x, y);
             } else if (police1_distance > police2_distance) {
