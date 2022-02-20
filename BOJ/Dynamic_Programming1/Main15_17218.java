@@ -10,7 +10,7 @@ public class Main15_17218 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         s1 = br.readLine();
         s2 = br.readLine();
-        dp = new String[41][41];
+        dp = new String[s1.length()+1][s2.length()+1];
 
         for(int i=0; i<dp.length; i++) {
             Arrays.fill(dp[i], "");
@@ -26,7 +26,11 @@ public class Main15_17218 {
             }
         }
 
-        System.out.println(dp[s1.length()][s2.length()]);
+        for(int i=0; i<dp.length; i++) {
+            System.out.println(Arrays.toString(dp[i]));
+        }
+        
+
 
     }
 
