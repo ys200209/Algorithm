@@ -16,21 +16,17 @@ public class Main_11652 {
 
             map.put(num, map.getOrDefault(num, 0) + 1);
 
-            if (map.get(result) == null) {
-                result = num;
-                continue;
+            System.out.println("map.get(result) = " + map.get(result));
+
+            if (map.get(result) == null) result = num;
+            else if (map.get(result) < map.get(num)) result = num;
+            else if (map.get(result) == map.get(num)) {
+                result = Math.min(result, num);
             }
-            
-            if (map.get(result) == map.get(num) && result > num) {
-                result = num; 
-                continue;
-            }
-            
-            if (map.get(result) < map.get(num)) result = num;
         }
 
-        for(long num : map.keySet()) {
-            System.out.println(num + " : " + map.get(num));
+        for(long n : map.keySet()) {
+            System.out.println(n + " : " + map.get(n));
         }
 
         System.out.println(result);
