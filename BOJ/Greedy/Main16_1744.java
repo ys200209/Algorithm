@@ -2,44 +2,45 @@ import java.util.*;
 import java.io.*;
 
 public class Main16_1744 {
-    static int N, result=0;
-    static int[] A;
+    static long result=0;
+    static int N;
+    static boolean isZero;
+    static Queue<Integer> minusQueue = new PriorityQueue<>();
+    static Queue<Integer> plusQueue = new PriorityQueue<>(Collections.reverseOrder());
 
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         N = Integer.parseInt(br.readLine());
-        A = new int[N];
 
         for(int i=0; i<N; i++) {
-            A[i] = Integer.parseInt(br.readLine());
+            int num = Integer.parseInt(br.readLine());
+            if (num < 0) minusQueue.offer(num);
+            else if (num == 0) isZero = true;
+            else plusQueue.offer(num);
+        }
+        
+        while(minusQueue.size() > 1) {
+            result += (minusQueue.poll() * minusQueue.poll());
+        }
+        if (!minusQueue.isEmpty()) { // 음수의 갯수가 홀수일때 result에 더하면 손해기 때문에
+            if (!isZero) result += minusQueue.poll(); // 0이 존재하면 0을 곱해서 상쇄시킴 (해당 조건문은 0이 없을때.)
         }
 
-        if (N == 1) {
-            System.out.println(A[0]);
-            return;
-        }
-
-        Arrays.sort(A);
-
-        // System.out.println(Arrays.toString(A));
-        int index = N-2;
-        while(index >= 0) {
-            if (A[index] > 1) {
-                result += A[index] * A[index+1];
-                index-=2;
-            } else if (A[index] == 0) {
-                result += A[index+1];
-                index-=1;
+        while(plusQueue.size() > 1) {
+            int num1 = plusQueue.poll();
+            int num2 = plusQueue.poll();
+            if (num1 + num2 >= num1 * num2) {
+                result += num1;
+                plusQueue.offer(num2);
             } else {
-                result += Math.max(A[index]*A[index+1], A[index]+A[index+1]);
-                index-=2;
+                result += (num1 * num2);
             }
-            
         }
-
+        if (!plusQueue.isEmpty()) result += plusQueue.poll();
+        
         System.out.println(result);
-
+        
     }
 }
