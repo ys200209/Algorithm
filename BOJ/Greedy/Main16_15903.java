@@ -2,8 +2,9 @@ import java.util.*;
 import java.io.*;
 
 public class Main16_15903 {
-    static int N, M, result=0;
-    static Queue<Integer> pq = new PriorityQueue<>();
+    static long result=0;
+    static int N, M;
+    static Queue<Long> pq = new PriorityQueue<>();
     
     
     public static void main(String[] args) throws IOException {
@@ -16,11 +17,11 @@ public class Main16_15903 {
         
         st = new StringTokenizer(br.readLine(), " ");
         while(st.hasMoreTokens()) {
-            pq.offer(Integer.parseInt(st.nextToken()));
+            pq.offer(Long.parseLong(st.nextToken()));
         }
 
         for(int i=0; i<M; i++) {
-            int sum = pq.poll() + pq.poll();
+            long sum = pq.poll() + pq.poll();
             pq.offer(sum);
             pq.offer(sum);
         }
