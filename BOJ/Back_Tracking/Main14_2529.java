@@ -25,6 +25,7 @@ public class Main14_2529 {
         DFS(0);
 
         System.out.println(MAX + "\n" + MIN);
+
     }
 
     public static void DFS(int count) {
