@@ -1,46 +1,47 @@
 import java.util.*;
+import java.io.*;
 
 public class Main15_11 {
-    static int N, result=1;
-    static int[] A, d;
+    static int N;
+    static int[][] A;
+    static int[] dp;
+    
+    public static void main(String[] args) throws IOException {
 
-    public static void main(String[] args) {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
+        A = new int[N+1][2];
+        dp = new int[N+1];
 
-        Scanner scanner = new Scanner(System.in);
-
-        N = scanner.nextInt();
-        A = new int[N+1];
-        d = new int[N+1];
-
+        StringTokenizer st;
         for(int i=1; i<=N; i++) {
-            A[i] = scanner.nextInt();
-            d[i] = 1;
-        }
-
-        for(int i=1; i<=N; i++) {
-            for(int j=i-1; j>0; j--) {
-                if (A[i] > A[j] && d[i] < d[j] + 1) {
-                    d[i] = d[j] + 1;
-                    result = Math.max(result, d[i]);
-                }
-            }
-        }
-
-        System.out.println(Arrays.toString(d));
-
-        System.out.println(result);
-
-    }
-
-    /*public static int TopDown(int index) {
-        if (index == 1) return d[index];
-
-        if (d[index] == 1) {
-            d[index] = 
+            st = new StringTokenizer(br.readLine(), " ");
+            
+            A[i][0] = Integer.parseInt(st.nextToken());
+            A[i][1] = Integer.parseInt(st.nextToken());
         }
         
-        return d[index];
-    }*/
+        Arrays.sort(A, new Comparator<int[]>() {
+
+            @Override
+            public int compare(int[] arr1, int[] arr2) {
+                return arr1[0] - arr2[0];
+            }
+        });
+        
+        for(int i=1; i<=N; i++) {
+            dp[i] = 1;
+
+            for(int j=1; j<i; j++) {
+                if (A[i][1] > A[j][1]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+
+            System.out.println("i : " + i + ", " + Arrays.toString(dp));
+        }
+
+    }
 
 
 }
