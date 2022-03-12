@@ -49,7 +49,7 @@ class Tree {
             if (!left.equals(".")) rootNode.leftNode = new Node(left);
             if (!right.equals(".")) rootNode.rightNode = new Node(right);
         } else {
-            search(rootNode, root, left, right);
+            search(rootNode, root, left, right); 
         }
     }
 
