@@ -7,8 +7,8 @@ public class Main_SK_2 {
     public static void main(String[] args) throws IOException {
 
         //System.out.println(solution(5, true));
-        //System.out.println(solution(6, false));
-        System.out.println(solution(10, true));
+        System.out.println(solution(6, false));
+        //System.out.println(solution(10, true));
 
     }
 
