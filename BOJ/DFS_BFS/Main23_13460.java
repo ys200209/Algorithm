@@ -2,14 +2,14 @@ import java.util.*;
 import java.io.*;
 
 public class Main23_13460 {
-    static RED redBall;
-    static BLUE blueBall;
-    static int[] PASS = new int[2];
-    static int[] dx = {-1, 1, 0, 0}; // ╩С, го, аб, ©Л
+    static RED red;
+    static BLUE blue;
+    static int[] dx = {-1, 1, 0, 0};
     static int[] dy = {0, 0, -1, 1};
-    static int N, M, result=0;
+    static int N, M, result=-1;
     static String[][] board;
-    static Queue<Point> queue = new LinkedList<>();
+    static boolean[][] visited;
+    static Queue<Game> queue = new LinkedList<>();
     
     public static void main(String[] args) throws IOException {
 
@@ -18,158 +18,155 @@ public class Main23_13460 {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         board = new String[N][M];
+        visited = new boolean[N][M];
 
         for(int i=0; i<N; i++) {
             board[i] = br.readLine().split("");
             for(int j=0; j<M; j++) {
-                if (board[i][j].equals("R")) redBall = new RED("R", i, j, new boolean[N][M], false);
+                if (board[i][j].equals("R")) red = new RED(i, j, false);
 
-                if (board[i][j].equals("B")) blueBall = new BLUE("B", i, j, new boolean[N][M], false);
-
-                if (board[i][j].equals("O")) {
-                    PASS[0] = i;
-                    PASS[1] = j;
-                }
+                if (board[i][j].equals("B")) blue = new BLUE(i, j, false);
             }
         }
 
-        queue.offer(new Point(board, redBall, blueBall, 0));
-        result = BFS();
+        System.out.println("[MOVE before]");
+        System.out.println("RED : (" + red.x + ", " + red.y + ")");
+        System.out.println("BLUE : (" + blue.x + ", " + blue.y + ")");
 
-        System.out.println("result : " + result);
-        
+        BFS(red, blue);
+
     }
 
-    public static int BFS() {
+    public static void BFS(RED red, BLUE blue) {
+        queue.offer(new Game(red, blue));
+        visited[red.x][red.y] = true;
 
         while(!queue.isEmpty()) {
-            Point point = queue.poll();
-            int rx = point.redBall.x;
-            int ry = point.redBall.y;
-            int bx = point.blueBall.x;
-            int by = point.blueBall.y;
+            Game game = queue.poll();
+            RED redBall = game.redBall;
+            BLUE blueBall = game.blueBall;
 
-            if (point.count > 10) continue;
+            int rx = redBall.x;
+            int ry = redBall.y;
+            int bx = blueBall.x;
+            int by = blueBall.y;
 
             for(int i=0; i<4; i++) {
-                int nx = rx + dx[i];
-                int ny = ry + dy[i];
+                int nrx = rx + dx[i];
+                int nry = ry + dy[i];
 
-                if (nx < 0 || nx >= N || ny < 0 || ny >= M) continue;
+                if (nrx < 0 || nrx >= N || nry < 0 || nry >= M) continue;
 
-                if (point.redBall.visited[nx][ny]) continue;
-                
-                point = MOVE(point, "R", i);
+                if (visited[nrx][nry]) continue;
 
-                if (point != null) {
-                    if (point.redBall.visited[PASS[0]][PASS[1]]) {
-                        if (point.blueBall.visited[PASS[0]][PASS[1]]) return -1;
-                        else return point.count;
-                    }
+                if (board[nrx][nry].equals("#")) continue; // ?? ?? ???? ?? 
 
-                    queue.offer(new Point(point.board, point.redBall, point.blueBall, point.count+1));
+                Game g;
+                if (board[nrx][nry].equals("B")) { // BLUE ??? ?????
+                    g = MOVE(redBall, blueBall, i, false);
+                } else {
+                    g = MOVE(redBall, blueBall, i, true);
                 }
-            }   
+                
+                if (g == null) System.out.println("return Null::");
+                else {
+                    System.out.println("[MOVE after] - " + i);
+                    System.out.println("RED : (" + g.redBall.x + ", " + g.redBall.y + ")");
+                    System.out.println("BLUE : (" + g.blueBall.x + ", " + g.blueBall.y + ")");
+                    System.out.println();
+                }
+                
+
+            }
+
+            break;
+
         }
 
-        return -1;
     }
 
-    public static Point MOVE(Point point, String color, int vector) {
+    public static Game MOVE(RED redBall, BLUE blueBall, int vector, boolean firstRED) {
+        int nrx = redBall.x + dx[vector];
+        int nry = redBall.y + dy[vector];
+        int nbx = blueBall.x + dx[vector];
+        int nby = blueBall.y + dy[vector];
 
-        if (color.equals("R")) {
-            int nx = point.redBall.x + dx[vector];
-            int ny = point.redBall.y + dy[vector];
-
-            int blueCount = 0;
+        if (firstRED) { // ???? ?? ??? ??. (???? ?? ??? ???? ???? ???.)
             while(true) {
-                if (nx < 0 || nx >= N || ny < 0 || ny >= M) return point;
+                if (!board[nrx][nry].equals(".") && !board[nrx][nry].equals("O") &&
+                    !board[nbx][nby].equals(".") && !board[nbx][nby].equals("O")) break;
 
-                if (point.board[nx][ny].equals("#")) return point;
+                if (visited[nrx][nry]) return null;
+                    
+                
+                    if (nrx >= 0 || nrx < N || nry >= 0 || nry < M) { // ?? ?? ?? ? ??
+                        if (board[nrx][nry].equals("O")) redBall.isPass = true;
 
-                if (point.redBall.visited[nx][ny]) return null;
+                        if (board[nrx][nry].equals(".") && board[nrx][nry].equals("O")) {
+                            redBall.x = nrx;
+                            redBall.y = nry;
+                            nrx += dx[vector];
+                            nry += dy[vector];
+                        }
+                        
 
-                if (point.board[nx][ny].equals("B")) {
-                    if (blueCount == 1) return point;
-                    MOVE(point, "B", vector);
-                    blueCount++;
-                    continue;
-                }
+                        if (nbx >= 0 || nbx < N || nby >= 0 || nby < M) {
+                            if (board[nbx][nby].equals("O")) blueBall.isPass = true;
+                            blueBall.x = nbx;
+                            blueBall.y = nby;
+                            nbx += dx[vector];
+                            nby += dy[vector];
+                        }
+                        
+                    }
 
-                point.redBall.visited[nx][ny] = true;
-                point.board[nx - dx[vector]][ny - dy[vector]] = ".";
-                point.board[nx][ny] = "R";
-                nx += dx[vector];
-                ny += dy[vector];
             }
-
         } else {
-            int nx = point.blueBall.x + dx[vector];
-            int ny = point.blueBall.y + dy[vector];
-
             while(true) {
-                if (nx < 0 || nx >= N || ny < 0 || ny >= M) return point;
-
-                if (point.board[nx][ny].equals("#")) return point;
-
-                point.blueBall.visited[nx][ny] = true;
-                point.board[nx - dx[vector]][ny - dy[vector]] = ".";
-                point.board[nx][ny] = "B";
-                nx += dx[vector];
-                ny += dx[vector];
+                
             }
         }
+
+        redBall.x -= dx[vector];
+        redBall.y -= dx[vector];
+        blueBall.x -= dx[vector];
+        blueBall.y -= dx[vector];
+
+        return new Game(redBall, blueBall);
     }
 
 }
 
-class Point {
-
-    String[][] board;
+class Game {
     RED redBall;
     BLUE blueBall;
-    int count;
 
-    public Point(String[][] board, RED redBall, BLUE blueBall, int count) {
-        this.board = board;
+    public Game(RED redBall, BLUE blueBall) {
         this.redBall = redBall;
         this.blueBall = blueBall;
-        this.count = count;
     }
-
 }
 
 class RED {
-
-    String color;
     int x;
     int y;
-    boolean[][] visited; 
     boolean isPass;
 
-    public RED(String color, int x, int y, boolean[][] visited, boolean isPass) {
-        this.color = color;
+    public RED(int x, int y, boolean isPass) {
         this.x = x;
         this.y = y;
-        this.visited = visited;
         this.isPass = isPass;
     }
 }
 
 class BLUE {
-
-    String color;
     int x;
     int y;
-    boolean[][] visited;
     boolean isPass;
 
-    public BLUE(String color, int x, int y, boolean[][] visited, boolean isPass) {
-        this.color = color;
+    public BLUE(int x, int y, boolean isPass) {
         this.x = x;
         this.y = y;
-        this.visited = visited;
         this.isPass = isPass;
     }
-
 }
