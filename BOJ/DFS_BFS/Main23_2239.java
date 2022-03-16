@@ -3,149 +3,82 @@ import java.io.*;
 
 public class Main23_2239 {
     static int[][] board, result;
+    static int zero = 0;
+    static StringBuilder sb = new StringBuilder();
     
     public static void main(String[] args) throws IOException {
 
-        board = new int[10][10];
-        result = new int[10][10];
+        board = new int[9][9];
+        result = new int[9][9];
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        for(int i=1; i<=9; i++) {
+        for(int i=0; i<9; i++) {
             String[] str = br.readLine().split("");
-            for(int j=1; j<=9; j++) {
-                board[i][j] = Integer.parseInt(str[j-1]);
+            for(int j=0; j<9; j++) {
+                board[i][j] = Integer.parseInt(str[j]);
+                if (board[i][j] == 0) zero++;
             }
         }
-        
-        Divide(1, 1, 9);
 
-        System.out.println("[board]");
-        for(int i=1; i<=9; i++) {
-            System.out.println(Arrays.toString(board[i]));
+        for(int i=0; i<9; i++) {
+            // System.out.println(Arrays.toString(board[i]));
         }
 
+        DFS(0);
+        
     }
 
-    public static void Divide(int row, int column, int size) {
-        if (size == 3) {
-
-            int count = 0;
-            for(int i=row; i<row+size; i++) {
-                for(int j=column; j<column+size; j++) {
-                    if (board[i][j] == 0) count++;
+    public static void DFS(int count) {
+        if (count == zero) {
+            for(int i=0; i<9; i++) {
+                for(int j=0; j<9; j++) {
+                    sb.append(board[i][j]);
                 }
+                sb.append("\n");
             }
-
-            DFS(row, column, 0, count);
-
-            /*System.out.println("[result]");
-            for(int i=0; i<=9; i++) {
-                System.out.println(Arrays.toString(result[i]));
-            }*/
-
-            return;
+            System.out.println(sb);
+            System.exit(0);
         }
-
-        size /= 3;
-        Divide(row, column, size);
-        Divide(row, column+size, size);
-        Divide(row, column+(size*2), size);
-        Divide(row+size, column, size);
-        Divide(row+size, column+size, size);
-        Divide(row+size, column+(size*2), size);
-        Divide(row+(size*2), column, size);
-        Divide(row+(size*2), column+size, size);
-        Divide(row+(size*2), column+(size*2), size);
-
-
-    }
-
-    public static boolean DFS(int row, int column, int now, int count) {
-        if (now == count) {
-            setResult(board);
-            return true;
-        }
-
-
-        boolean[] square = getSquare(row, column);
-        /*boolean[] w = getWidth(row);
-        boolean[] h = getHeight(column);
-
-        System.out.println("row : " + row + ", column " + column);
-        System.out.println(Arrays.toString(w));
-        System.out.println(Arrays.toString(h));
-        System.out.println(Arrays.toString(square));*/
-
-        
-        for(int i=row; i<row+3; i++) {
-            boolean[] width = null;
-            for(int j=column; j<column+3; j++) {
+        for(int i=0; i<9; i++) {
+            for(int j=0; j<9; j++) {
                 if (board[i][j] == 0) {
-                    width = getWidth(i);
-                    boolean[] height = getHeight(j);
-                    
                     for(int k=1; k<=9; k++) {
-                        if (!width[k] && !height[k] && !square[k]) {
-                            // System.out.println("k : " + k);
+                        if (Row(j, k) && Column(i, k) && Square(i, j, k)) {
                             board[i][j] = k;
-                            width[k] = true;
-                            height[k] = true;
-                            square[k] = true;
-                            if (DFS(row, column, now+1, count)) return true;
-                            width[k] = false;
-                            height[k] = false;
-                            square[k] = false;
+                            DFS(count+1);
                             board[i][j] = 0;
                         }
                     }
-                    
-
+                    return;
                 }
             }
         }
-
-
-        return false;
     }
 
-    public static boolean[] getWidth(int row) {
-        boolean[] v = new boolean[10];
+    public static boolean Row(int column, int num) {
         
-        for(int i=1; i<=9; i++) {
-            v[board[row][i]] = true;
+        for(int i=0; i<9; i++) {
+            if (board[i][column] == num) return false;
         }
-
-        return v;
+        return true;
     }
 
-    public static boolean[] getHeight(int column) {
-        boolean[] v = new boolean[10];
-
-        for(int i=1; i<=9; i++) {
-            v[board[i][column]] = true;
+    public static boolean Column(int row, int num) {
+        for(int i=0; i<9; i++) {
+            if (board[row][i] == num) return false;
         }
-        
-        return v;
+        return true;
     }
 
-    public static boolean[] getSquare(int row, int column) {
-        boolean[] v = new boolean[10];
-
-        for(int i=row; i<row+3; i++) {
-            for(int j=column; j<column+3; j++) {
-                v[board[i][j]] = true;
+    public static boolean Square(int row, int column, int num) {
+        for(int i=row/3*3; i<row/3*3+3; i++) {
+            for(int j=column/3*3; j<column/3*3+3; j++) {
+                // System.out.println("i : " + i + ", j : " + j + ", num : " + num);
+                if (board[i][j] == num) return false;
             }
         }
-        
-        return v;
-    }
 
-    public static void setResult(int[][] temp) {
-        for(int i=1; i<=9; i++) {
-            for(int j=1; j<=9; j++) {
-                result[i][j] = temp[i][j];
-            }
-        }
+        return true;
     }
 
 }
