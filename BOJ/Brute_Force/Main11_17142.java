@@ -6,9 +6,10 @@ public class Main11_17142 {
     static int[] dy = {0, -1, 0, 1};
     static int N, M, zeroCount=0, result=(int)1e9;
     static int[][] board;
-    static ArrayList<Virus> virusList = new ArrayList<>(); // 모든 바이러스의 위치를 담은 리스트
-    static ArrayList<Virus> virusSelect = new ArrayList<>(); // 선택한 최대 M개의 바이러스 객체가 담긴 리스트
-    static Queue<Virus> virusQueue;
+    static ArrayList<Virus> virusList = new ArrayList<>();
+    static ArrayList<Virus> virusSelect = new ArrayList<>();
+    static boolean[][] visited;
+    static Queue<Virus> pq = new PriorityQueue<>();
     
     public static void main(String[] args) throws IOException {
 
@@ -29,20 +30,22 @@ public class Main11_17142 {
             }
         }
 
-        for(int i=0; i<N; i++) {
-            System.out.println(Arrays.toString(board[i]));
-        }
-
-        System.out.println("zeroCount : " + zeroCount);
         DFS(0, 0);
 
-        System.out.println("result : " + result);
+        if (result == (int)1e9) System.out.println("-1");
+        else System.out.println(result);
     }
 
     public static void DFS(int index, int count) {
         if (count == M) {
-            // 바이러스 확산
+            visited = new boolean[N][N];
+            for(Virus v : virusSelect) {
+                visited[v.x][v.y] = true;
+                pq.offer(v);
+            }
+
             BFS();
+
             return;
         }
 
@@ -54,20 +57,15 @@ public class Main11_17142 {
     }
 
     public static void BFS() {
-        boolean[][] visited = new boolean[N][N];
-        virusQueue = new LinkedList<>();
-        for(Virus virus : virusSelect) {
-            virusQueue.offer(virus);
-            visited[virus.x][virus.y] = true;
-        }
+        int time = 0;
+        int zero = 0;
 
-        int zero=0;
-        int second=0;
-
-        while(!virusQueue.isEmpty()) {
-            Virus virus = virusQueue.poll();
+        while(!pq.isEmpty()) {
+            Virus virus = pq.poll();
             int x = virus.x;
             int y = virus.y;
+
+            time = virus.count;
 
             for(int i=0; i<4; i++) {
                 int nx = x + dx[i];
@@ -77,39 +75,34 @@ public class Main11_17142 {
 
                 if (visited[nx][ny]) continue;
 
-                if (board[nx][ny] == 0) {
-                    virusQueue.offer(new Virus(nx, ny, virus.count+1));
-                    visited[nx][ny] = true;
-                    second = virus.count+1;
-                    zero++;
-                }
+                if (board[nx][ny] == 1) continue;
 
-                
+                visited[nx][ny] = true;
+                if (board[nx][ny] == 2) continue;
+
+                pq.offer(new Virus(nx, ny, virus.count+1));
+                zero++;
             }
         }
-
-        if (zero != zeroCount && result == (int)1e9) result = -1;
-        else result = Math.min(result, second);
-
+        if (zeroCount == zero) result = Math.min(result, time);
     }
-
 }
 
-class Virus/* implements Comparable<Virus> */{
+class Virus implements Comparable<Virus> {
 
     int x;
     int y;
-    int count;
+    int count=0;
 
     public Virus(int x, int y, int count) {
         this.x = x;
         this.y = y;
         this.count = count;
     }
-/*
+
     @Override
     public int compareTo(Virus v1) {
         return this.count - v1.count;
     }
-*/
+
 }
