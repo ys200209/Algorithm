@@ -1,120 +1,65 @@
 import java.util.*;
 
-class Main2021_2 {
-    public static int[] key, lock;
-    
+public class Main2021_2 {
+    static int[][] board;
+
     public static void main(String[] args) {
 
-        // 2021 Dev-Matching: 웹 백엔드 개발자 코딩테스트 2번 문제
-
-        // solution(new int[][]{{0, 0, 0}, {1, 0, 0}, {0, 1, 1}}, new int[][]{{1, 1, 1}, {1, 1, 0}, {1, 0, 1}});
-        solution(new int[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}}, new int[][]{{1, 1, 1}, {1, 1, 0}, {1, 0, 1}});
+        System.out.println(solution(6, 6, new int[][]{{2,2,5,4},{3,3,6,6},{5,1,6,3}}));
 
     }
+    
+    public static int[] solution(int rows, int columns, int[][] queries) {
+        int[] answer = {};
 
-    public static boolean solution(int[][] key, int[][] lock) {
-        boolean answer = true;
+        board = new int[rows+1][columns+1];
 
-        System.out.println("- [key] -");
-        for(int i=0; i<key.length; i++) {
-            System.out.println(Arrays.toString(key[i]));
+        for(int i=0; i<rows; i++) {
+            for(int j=1; j<=columns; j++) {
+                board[i+1][j] = i * rows + j;
+            }
+            System.out.println(Arrays.toString(board[i]));
         }
 
-        // key = rotateKey(key);
-        
-        System.out.println("- [rotateKey] -");
-        for(int i=0; i<key.length; i++) {
-            System.out.println(Arrays.toString(key[i]));
+        for(int i=0; i<queries.length; i++) {
+            int[] arr = queries[i];
+
+            rotate(arr[0], arr[1], arr[2], arr[3]);
         }
+
 
         return answer;
     }
 
+    public static void rotate(int x1, int y1, int x2, int y2) {
+        System.out.println("(" + x1 + ", " + y1 + ") -> (" + x2 + ", " + y2 + ")");
+        show();
 
+        int temp;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-    public static int[][] rotateKey(int[][] key) {
-
-        int N = key.length;
-        int[] k = new int[N];
-        int[][] list = new int[N][N];
-
-        for(int i=0; i<N; i++) {
-            k = key[i];
-            for(int j=0; j<N; j++) { // [1][0] -> [0][1]
-                list[j][N - i - 1] = key[i][j];
+        for(int i=x1; i<=x2; i++) {
+            for(int j=y1; j<=y2; j++) {
+                if (i == x1 || i == x2 || j == y1 || j == y2) {
+                    // [0, 0] -> [0, 1]
+                    // [0, 1] -> [0, 2]
+                    // [0, 2] -> [1, 2]
+                    // [1, 2] -> [2, 2]
+                    // [2, 2] -> [2, 3]
+                    // [2, 3] -> [3, 3]
+                    System.out.println("(for) (" + i + ", " + j + ") -> (x"  + ", " + (j+i-1) + ")");
+                    // board[i][j] = board[][j+i-1];
+                }
             }
         }
 
-        return list;
-  
+        show();
     }
-*/
 
-
-
-
-
-
-
-
-
-
-
-    /*
-    // 2차원 리스트 90도 회전하기
-    public static int[][] rotateMatrixBy90Degree(int[][] a) {
-        int n = a.length;
-        int m = a[0].length;
-        int[][] result = new int[n][m]; // 결과 리스트
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                result[j][n - i - 1] = a[i][j]; 
-                // a[0][0] = result[0][2];
-                // a[2][1] = result[1][0];
-            }
+    public static void show() {
+        System.out.println("\n-------------[show]------------");
+        for(int i=0; i<board.length; i++) {
+            System.out.println(Arrays.toString(board[i]));
         }
-        return result;
     }
-    */
 
 }
