@@ -9,7 +9,7 @@ public class Main15_2293 {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-
+        
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
         coin = new int[N];
@@ -19,15 +19,15 @@ public class Main15_2293 {
             coin[i] = Integer.parseInt(br.readLine());
         }
 
-        dp[0] = 1;
+        // dp[0] = 1;
+
         for(int i=0; i<N; i++) {
+            dp[coin[i]] += 1;
             for(int j=coin[i]; j<=K; j++) {
-                dp[j] = dp[j] + dp[j-coin[i]];
+                dp[j] = dp[j] + dp[j - coin[i]];
             }
             System.out.println(Arrays.toString(dp));
         }
-
-        
         
     }
     
