@@ -3,79 +3,47 @@ import java.io.*;
 
 public class Main15_10942 {
     static int N, M;
-    static String[] A, tree;
+    static int[] A;
+    static boolean[][] dp;
     static StringBuilder sb = new StringBuilder();
-    
+
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
-        A = new String[N+1];
-        tree = new String[N*4];
+        A = new int[N+1];
+        dp = new boolean[N+1][N+1];
 
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         int i=1;
         while(st.hasMoreTokens()) {
-            A[i] = st.nextToken();
+            A[i] = Integer.parseInt(st.nextToken());
             i++;
         }
 
-        init(1, N, 1);
-        // System.out.println(Arrays.toString(tree));
+        Dynamic();
 
         M = Integer.parseInt(br.readLine());
-
         for(i=0; i<M; i++) {
             st = new StringTokenizer(br.readLine(), " ");
-            int X = Integer.parseInt(st.nextToken());
-            int Y = Integer.parseInt(st.nextToken());
+            int start = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken());
 
-            if (i==0){
-                if (X > Y) sb.append(Search(1, N, 1, Y, X));
-                else sb.append(Search(1, N, 1, X, Y)); 
-            } else {
-                if (X > Y) sb.append("\n" + Search(1, N, 1, Y, X));
-                else sb.append("\n" + Search(1, N, 1, X, Y)); 
-            }
-
-            
+            sb.append((dp[start][end] ? "1" : "0") + "\n");
         }
         System.out.println(sb);
     }
 
-    public static String init(int start, int end, int node) {
-        if (start == end) return tree[node] = A[start];
+    public static void Dynamic() {
+        for(int i=1; i<=N; i++) dp[i][i] = true; // 한 글자 팰린드롬 true
 
-        int mid = (start + end) / 2;
-        return tree[node] = init(start, mid, node*2) + init(mid+1, end, node*2+1);
-    }
+        for(int i=1; i<=N-1; i++) if (A[i] == A[i+1]) dp[i][i+1] = true; // 두 글자 같은 팰린드롬 true
 
-    public static String Search(int start, int end, int node, int left, int right) {
-        if (start > right || end < left) return "";
-
-        if (start >= left && end <= right) return tree[node];
-
-        int mid = (start + end) / 2;
-        String S = Search(start, mid, node*2, left, right) + Search(mid+1, end, node*2+1, left, right);
-
-        if (node != 1) return S;
-
-        if (S.length() % 2 == 0) { // 팰린드롬이 짝수라면
-            int front = S.length()/2-1;
-            int back = S.length()/2;
-            for(int i=back; i<S.length(); i++) {
-                if (S.charAt(front) != S.charAt(back)) return "0";
-                front--;
-            }
-        } else {
-            int front = S.length()/2-1;
-            int back = S.length()/2+1;
-            for(int i=back; i<S.length(); i++) {
-                if (S.charAt(front) != S.charAt(back)) return "0";
-                front--;
+        for(int i=2; i<N; i++){ 
+            for(int j=1; j<=N-i; j++){
+                if(A[j] == A[j + i] && dp[j + 1][j + i - 1]) dp[j][j + i] = true;
             }
         }
-        return "1";
     }
 
 }
