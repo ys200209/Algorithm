@@ -8,12 +8,11 @@ public class Main16_12904 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
 
-        int sum = 0;
-
+        StringBuilder sb = new StringBuilder();
         for(int i=1; i<=N; i++) {
-            sum += i;
+            sb.append(i + "\n");
         }
 
-        System.out.println(sum);
+        System.out.println(sb);
     }
 }
