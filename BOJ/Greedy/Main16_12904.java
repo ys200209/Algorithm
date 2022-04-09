@@ -11,6 +11,10 @@ public class Main16_12904 {
         int N = Integer.parseInt(br.readLine());
 
         for(int i=0; i<N; i++) {
+            for(int j=1; j<=N-i-1; j++) {
+                sb.append(" ");
+            }
+
             for(int j=0; j<=i; j++) {
                 sb.append("*");
             }
