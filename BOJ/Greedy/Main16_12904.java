@@ -2,24 +2,44 @@ import java.util.*;
 import java.io.*;
 
 public class Main16_12904 {
+    static int N, X;
+    static int[] list;
+    static StringBuilder sb = new StringBuilder();
     
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        int N = Integer.parseInt(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        X = Integer.parseInt(st.nextToken());
 
-        for(int i=0; i<N; i++) {
-            for(int j=1; j<=N-i-1; j++) {
-                sb.append(" ");
-            }
+        list = new int[N+1];
 
-            for(int j=0; j<=i; j++) {
-                sb.append("*");
-            }
-            sb.append("\n");
+        st = new StringTokenizer(br.readLine(), " ");
+        int i=1;
+        while(st.hasMoreTokens()) {
+            list[i] = Integer.parseInt(st.nextToken());
+            i++;
         }
+
+        binarySearch(1, N);
+
         System.out.println(sb);
     }
+
+    public static void binarySearch(int start, int end) {
+        if (start >= end) return;
+
+        int mid = (start + end) / 2;
+
+        binarySearch(start, mid);
+
+        if (list[mid] < X) sb.append(list[mid] + " ");
+        
+        binarySearch(mid+1, end);
+
+        
+    }
+
 }
