@@ -7,7 +7,7 @@ public class Main16_12904 {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
-        int MIN=(int)1e9, MAX=0;
+        int MIN=(int)1e9, MAX=-(int)1e9;
 
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         while(st.hasMoreTokens()) {
