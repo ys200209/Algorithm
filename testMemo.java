@@ -4,6 +4,7 @@ import java.io.*;
 public class testMemo {
     static String text = "";
     static String[] list;
+    static Map<String, String> memoMap = new HashMap<>();
     static ArrayList<String> quesList = new ArrayList<>();
     static ArrayList<String> answerList = new ArrayList<>();
 
@@ -25,14 +26,20 @@ public class testMemo {
         }
 
         list = text.split("\\[");
-        System.out.println("size : " + list.length);
-        for(int i=0; i<list.length; i++) {
-            quesList.add("[" + list[i].split("->")[0]);
 
-            if (list[i].split("->").length > 1) answerList.add(list[i].split("->")[1]);
+        for(int i=0; i<list.length; i++) {
+            if (list[i].split("->").length > 1) {
+                memoMap.put(("[" + list[i].split("->")[0]), list[i].split("->")[1]);
+            }
+        }
+        
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        for(String quest : memoMap.keySet()) {
+            System.out.print(quest);
+            br.readLine();
+            System.out.print("-> " + memoMap.get(quest));
+            br.readLine();
         }
 
-        System.out.println("quesList : " + quesList);
-        System.out.println("answerList : " + answerList);
     }
 }
