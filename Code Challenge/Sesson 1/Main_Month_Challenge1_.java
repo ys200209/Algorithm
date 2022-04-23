@@ -8,4 +8,8 @@ class Main_Month_Challenge1_ {
 
     }
 
+    public static int solution() {
+        return -1;
+    }
+
 }
