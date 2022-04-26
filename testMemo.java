@@ -2,6 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class testMemo {
+    static int count = 1; 
     static String text = "";
     static String[] list;
     static Map<String, String> memoMap = new HashMap<>();
@@ -34,11 +35,12 @@ public class testMemo {
         }
         
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        for(String quest : memoMap.keySet()) {
-            System.out.print(quest);
+        for(String quest : memoMap.keySet()) { // 161 개의 질문
+            System.out.print(count + " : " + quest);
             br.readLine();
             System.out.print("-> " + memoMap.get(quest));
             br.readLine();
+            count++;
         }
 
     }
