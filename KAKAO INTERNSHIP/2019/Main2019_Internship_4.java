@@ -65,7 +65,7 @@ class Main2019_Internship_4 {
 
 class Stone {
 
-    int front;
+    int front;          
     int back;
 
     public Stone(int front, int back) {
