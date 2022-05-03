@@ -126,7 +126,7 @@ public class Main23_13460 {
                 
             }
         }
-
+    
         redBall.x -= dx[vector];
         redBall.y -= dx[vector];
         blueBall.x -= dx[vector];
