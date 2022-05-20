@@ -2,86 +2,30 @@ import java.util.*;
 import java.io.*;
 
 public class Main14_1062 {
-    static int N, K, answer=0;
-    static boolean[] visited;
-    static ArrayList<String> words = new ArrayList<>();
-    static Map<String, Integer> map = new HashMap<>();
-    static ArrayList<Map.Entry<String, Integer>> list;
-    
+    static Map<Integer, Integer> xMap = new HashMap<>();
+    static Map<Integer, Integer> yMap = new HashMap<>();
+
     public static void main(String[] args) throws IOException {
-
+        
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-
-        N = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(st.nextToken()) - 5;
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer st;
         
-        visited = new boolean[26];
+        int[] nums = new int[3];
+        while(true) {
+            st = new StringTokenizer(br.readLine(), " " );
 
-        for(int i=0; i<N; i++) {
-            String word = replaceWord(br.readLine());
-            if (word.equals("")) answer++;
-            else {
-                words.add(word);
-                for(String w : word.split("")) {
-                    if (!visited[w.charAt(0) - 'a']) map.put(w, map.getOrDefault(w, 0) + 1);
-                } 
-            }
-        }
-        
-        list = new ArrayList<>(map.entrySet());
-        Collections.sort(list, (entry1, entry2) -> {
-            return entry2.getValue() - entry1.getValue();
-        });
+            nums[0] = Integer.parseInt(st.nextToken());
+            nums[1] = Integer.parseInt(st.nextToken());
+            nums[2] = Integer.parseInt(st.nextToken());
+            
+            Arrays.sort(nums);
 
-        DFS(0, 0);
+            if (nums[0] == 0 && nums[1] == 0 && nums[2] == 0) break;
 
-        System.out.println(answer);
-    }
-
-    public static String replaceWord(String word) {
-        word.replace("a", "");
-        word.replace("n", "");
-        word.replace("t", "");
-        word.replace("i", "");
-        word.replace("c", "");
-
-        visited['a' - 'a'] = true;
-        visited['n' - 'a'] = true;
-        visited['t' - 'a'] = true;
-        visited['i' - 'a'] = true;
-        visited['c' - 'a'] = true;
-
-        return word;
-    }
-
-    public static void DFS(int index, int count) {
-        if (count >= K) {
-            int word_cnt = 0;
-
-            for(String w : words) {
-                if (checkWord(w)) word_cnt++;
-            }
-
-            answer = Math.max(answer, word_cnt);
-            return;
+            sb.append(Math.pow(nums[2], 2) == Math.pow(nums[0], 2) + Math.pow(nums[1], 2) ? "right\n" : "wrong\n");
         }
 
-        for(int i=index; i<list.size(); i++) {
-            if (!visited[list.get(i).getKey().charAt(0) - 'a']) { // 없는 것만
-                visited[list.get(i).getKey().charAt(0) - 'a'] = true;
-                DFS(i+1, count+1);
-                visited[list.get(i).getKey().charAt(0) - 'a'] = false;
-            }
-        }
-        
+        System.out.println(sb);
     }
-
-    public static boolean checkWord(String word) {
-        for(int i=0; i<word.length(); i++) {
-            if (!visited[word.charAt(i) - 'a']) return false;
-        }
-        return true;
-    }
-
 }
