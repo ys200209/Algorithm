@@ -2,111 +2,98 @@ import java.util.*;
 import java.io.*;
 
 public class Main11_14503 {
-    static int[] dx = {-1, 0, 1, 0};
-    static int[] dy = {0, 1, 0, -1}; // 북, 동, 남, 서 (차례대로 오른쪽으로 회전)
-    static int N, M, r, c, vector, result=0;
-    static Robot robot;
-    static int[][] map;
+    static int[] dx = {1, 0, -1, 0}; // [북, 동, 남, 서] ( 0-1-2-3 )
+    static int[] dy = {0, 1, 0, -1};
+    static int N, M, count=0;
+    static int[][] room;
+    static Robot rb;
     static boolean[][] visited;
-    
+
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-        map = new int[N][M];
-        visited = new boolean[N][M];
+        room = new int[N+1][M+1];
+        visited = new boolean[N+1][M+1];
 
-        st = new StringTokenizer(br.readLine(), " ");
-        r = Integer.parseInt(st.nextToken());
-        c = Integer.parseInt(st.nextToken());
-        vector = Integer.parseInt(st.nextToken());
+        st = new StringTokenizer(br.readLine());
+        int r = Integer.parseInt(st.nextToken());
+        int c = Integer.parseInt(st.nextToken());
+        int d = Integer.parseInt(st.nextToken());
+        rb = new Robot(r, c, d);
 
-        for(int i=0; i<N; i++) {
-            st = new StringTokenizer(br.readLine(), " ");
-            int j=0;
-            while(st.hasMoreTokens()) {
-                map[i][j] = Integer.parseInt(st.nextToken());
-                j++;
+        for(int i=1; i<=N; i++) {
+            st = new StringTokenizer(br.readLine());
+            for(int j=1; j<=M; j++) {
+                room[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-        robot = new Robot(r, c);
+        visited[r][c] = true;
+        DFS();
 
-        Search();
-
-        for(int i=0; i<N; i++) {
-            System.out.println(Arrays.toString(map[i]));
-        }
-        System.out.println("result : " + result);
+        System.out.println("count : " + count);
     }
 
-    public static void Search() {
-        
-        int x = robot.x;
-        int y = robot.y;
-        int count=0;
-        visited[x][y] = true;
-        result++;
+    public static void DFS() {
+        clean();
 
-        while(true) {
-            if (count == 4) {
-                System.out.println("count = 4");
-                int nv = vector <= 1 ? 2-vector : vector-2;
-                int nnx = robot.x + dx[nv];
-                int nny = robot.y + dy[nv];
-                
-                if (map[nnx][nny] == 1) {
-                    System.out.println("nnx : " + nnx + ", nny : " + nny + " vector : " + nv + ", return;");
-                    return;
-                }
-
-                robot.x = nnx;
-                robot.y = nny;
-                count=0;
-                System.out.println("(back) robot x : " + robot.x + ", robot y : " + robot.y);
-                continue;
-            }
-            vector = vector == 0 ? 3 : vector-1;
-            int nx = robot.x + dx[vector];
-            int ny = robot.y + dy[vector];
-
-            System.out.println("nx : " + nx + ", ny : " + ny);
-
-            if (visited[nx][ny]) {
-                count++;
-                continue;
-            }
-
-            if (map[nx][ny] == 1) {
-                count++;
-                System.out.println("map["+nx+"]["+ny+"] : " + map[nx][ny] + ", vector : " + vector);
-                continue;
-            }
-            
-            visited[nx][ny] = true;
-            robot.x = nx;
-            robot.y = ny;
-            count = 0;
-            result++;
-            map[nx][ny] = result;
-
-            System.out.println("robot x : " + robot.x + ", robot y : " + robot.y);
-
-        }
+        if (first()) DFS();
     }
 
+    public static void clean() {
+        visited[rb.x][rb.y] = true;
+        count += 1;
+    }
+
+    public static boolean first() {
+        for(int i=1; i<=4; i++) {
+            int vector = rb.vector - i < 0 ? rb.vector - i + 4 : rb.vector - i;
+
+            int nx = rb.x + dx[vector];
+            int ny = rb.y + dy[vector];
+
+            if (room[nx][ny] == 1) continue;
+
+            if (!visited[nx][ny]) {
+                rb.x = nx;
+                rb.y = ny;
+                rb.vector = vector;
+                return true;
+            }
+        }
+
+        if (!second()) return false;
+        else return true;
+    }
+
+    public static boolean second() {
+        int vector = rb.vector - 2 < 2 ? rb.vector + 2 : rb.vector - 2;
+
+        int nx = rb.x + dx[vector];
+        int ny = rb.y + dy[vector];
+
+        if (room[nx][ny] == 1) return false;
+        else {
+            rb.x = nx;
+            rb.y = ny;
+            return true;
+        }
+    }
 }
 
 class Robot {
 
     int x;
     int y;
+    int vector;
 
-    public Robot(int x, int y) {
+    public Robot(int x, int y, int vector) {
         this.x = x;
         this.y = y;
+        this.vector = vector;
     }
-
 }
