@@ -2,11 +2,10 @@ import java.util.*;
 import java.io.*;
 
 public class Main30_16398 {
-    static long result=0;
-    static int N;
+    static int N, result=0;
     static Queue<Node> pq = new PriorityQueue<>();
     static int[] parents;
-    
+
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -14,8 +13,10 @@ public class Main30_16398 {
         N = Integer.parseInt(br.readLine());
         parents = new int[N+1];
 
-        for(int i=1; i<=N; i++) parents[i] = i;
-
+        for(int i=1; i<=N; i++) {
+            parents[i] = i;
+        }
+        
         for(int i=1; i<=N; i++) {
             st = new StringTokenizer(br.readLine(), " ");
             int j=1;
@@ -25,7 +26,6 @@ public class Main30_16398 {
                     j++;
                     continue;
                 }
-
                 pq.offer(new Node(i, j, dis));
                 j++;
             }
@@ -33,14 +33,15 @@ public class Main30_16398 {
 
         while(!pq.isEmpty()) {
             Node node = pq.poll();
-            int A = node.from;
-            int B = node.to;
+            int A = node.start;
+            int B = node.end;
 
             if (!union(A, B)) result += node.distance;
         }
+
         System.out.println(result);
     }
-
+    
     public static boolean union(int A, int B) {
         int rootA = find(A);
         int rootB = find(B);
@@ -62,13 +63,13 @@ public class Main30_16398 {
 
 class Node implements Comparable<Node> {
 
-    int from;
-    int to;
+    int start;
+    int end;
     int distance;
 
-    public Node (int from, int to, int distance) {
-        this.from = from;
-        this.to = to;
+    public Node(int start, int end, int distance) {
+        this.start = start;
+        this.end = end;
         this.distance = distance;
     }
 
@@ -76,5 +77,5 @@ class Node implements Comparable<Node> {
     public int compareTo(Node node) {
         return this.distance - node.distance;
     }
-
+    
 }
