@@ -2,30 +2,23 @@ import java.util.*;
 import java.io.*;
 
 public class Main14_1062 {
-    static Map<Integer, Integer> xMap = new HashMap<>();
-    static Map<Integer, Integer> yMap = new HashMap<>();
-
     public static void main(String[] args) throws IOException {
         
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
-        StringTokenizer st;
-        
-        int[] nums = new int[3];
-        while(true) {
-            st = new StringTokenizer(br.readLine(), " " );
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-            nums[0] = Integer.parseInt(st.nextToken());
-            nums[1] = Integer.parseInt(st.nextToken());
-            nums[2] = Integer.parseInt(st.nextToken());
-            
-            Arrays.sort(nums);
+        int N = Integer.parseInt(st.nextToken());
+        int W = Integer.parseInt(st.nextToken());
+        int H = Integer.parseInt(st.nextToken());
 
-            if (nums[0] == 0 && nums[1] == 0 && nums[2] == 0) break;
+        double MAX = Math.sqrt((Math.pow(W, 2) + Math.pow(H, 2)));
 
-            sb.append(Math.pow(nums[2], 2) == Math.pow(nums[0], 2) + Math.pow(nums[1], 2) ? "right\n" : "wrong\n");
+        for(int i=0; i<N; i++) {
+            int len = Integer.parseInt(br.readLine());
+
+            sb.append(len > MAX ? "NE\n" : "DA\n");
         }
-
         System.out.println(sb);
     }
 }
