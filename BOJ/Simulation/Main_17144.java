@@ -40,6 +40,8 @@ public class Main_17144 {
                     dusts.offer(new Dust(i, j, board[i][j], 0));
                     visited[i][j] = true;
                 }
+                
+                j++;
             }
         }
 

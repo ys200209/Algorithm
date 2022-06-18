@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Main_15683 {
-    static int[] dx = {0, -1, 0, 1};
+    static int[] dx = {0, -1, 0, 1}; // 차례대로 (동, 북, 서, 남) 감시
     static int[] dy = {1, 0, -1, 0};
     static int N, M;
     static int[][] board;
@@ -42,17 +42,17 @@ public class Main_15683 {
     public static void DFS(int index, int count) {
         if (count == list.size()) {
             
-            visited = new boolean[N][M];
+            visited = new boolean[N][M]; // 감시되는 영역을 표시하기 위한 배열
 
-            for(int i=0; i<list.size(); i++) {
+            for(int i=0; i<list.size(); i++) { // CCTV의 번호별로 탐색하는 영역을 지정해주는 반복문
                 CCTV cctv = list.get(i);
 
-                if (cctv.number == 1) {
+                if (cctv.number == 1) { // 1번 CCTV는 한 가지 방향만을 감시한다.
                     observe(cctv, cctv.vector);
-                } else if (cctv.number == 2) {
+                } else if (cctv.number == 2) { // 2번 CCTV는 서로 반대되는 방향을 감시한다.
                     observe(cctv, cctv.vector);
                     observe(cctv, (cctv.vector+2)%4);
-                } else {
+                } else { // 3,4,5번 CCTV는 각 (번호-1) 개의 방향을 감시한다. (물론 dx, dy 배열은 차례대로 감시되도록 배열을 만들었음)
                     for(int j=0; j<cctv.number-1; j++) {
                         observe(cctv, (cctv.vector+j)%4);
                     }
@@ -81,7 +81,7 @@ public class Main_15683 {
 
     }
 
-    public static void observe(CCTV cctv, int vector) {
+    public static void observe(CCTV cctv, int vector) { // 보는 방향에 따라 감시하는 부분을 표시하는 메서드
         int nx = cctv.x;
         int ny = cctv.y;
         visited[nx][ny] = true;
@@ -98,7 +98,7 @@ public class Main_15683 {
         }
     }
 
-    public static int safe() {
+    public static int safe() { // 사각지대를 구하는 메서드
         int count = 0;
 
         for(int i=0; i<N; i++) {
