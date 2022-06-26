@@ -5,7 +5,7 @@ class Main23_7 {
     static int N, M, H;
     static int[][] box;
  
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");

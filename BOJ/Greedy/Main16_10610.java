@@ -13,7 +13,6 @@ public class Main16_10610 {
         N = Integer.toString(scanner.nextInt()).split("");
         visited = new boolean[N.length];
 
-        DFS(0);
 
         if (result == 0) System.out.println("-1");
         else System.out.println(result);

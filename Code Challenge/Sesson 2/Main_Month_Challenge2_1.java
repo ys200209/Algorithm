@@ -1,4 +1,4 @@
-public class Main1 {
+public class Main_Month_Challenge2_1 {
 
     public static void main(String[] args) {
 

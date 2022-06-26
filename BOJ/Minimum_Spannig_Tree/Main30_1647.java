@@ -2,8 +2,8 @@ import java.util.*;
 import java.io.*;
 
 public class Main30_1647 {
-    static long result = 0;
-    static int N, M;
+    static StringBuilder sb = new StringBuilder();
+    static int N, M, result=0;
     static int[] parents;
     static Node[] nodes;
     static Queue<Node> pq = new PriorityQueue<>();
@@ -14,7 +14,9 @@ public class Main30_1647 {
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
+
         parents = new int[N+1];
+        nodes = new Node[N+1];
 
         for(int i=0; i<=N; i++) parents[i] = i;
 
@@ -23,25 +25,23 @@ public class Main30_1647 {
             int A = Integer.parseInt(st.nextToken());
             int B = Integer.parseInt(st.nextToken());
             int C = Integer.parseInt(st.nextToken());
-
+            
             pq.offer(new Node(A, B, C));
         }
 
         while(!pq.isEmpty()) {
             Node node = pq.poll();
+
             int A = node.from;
             int B = node.to;
 
-            
-
-            if (!union(A, B)) {
+            if (union(A, B)) {
                 result += node.distance;
-                System.out.println(A + " - " + B + ", " + node.distance);
             }
+
         }
 
-        System.out.println(result);
-
+        System.out.println("result : " + result);
     }
 
     public static boolean union(int A, int B) {
@@ -56,7 +56,7 @@ public class Main30_1647 {
     }
 
     public static int find(int root) {
-        if (parents[root] == root) return root;
+        if (root == parents[root]) return root;
 
         return parents[root] = find(parents[root]);
     }
@@ -77,7 +77,7 @@ class Node implements Comparable<Node> {
 
     @Override
     public int compareTo(Node node) {
-        return this.distance - node.distance;
+        return this.distance = node.distance;
     }
 
 }

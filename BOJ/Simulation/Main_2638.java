@@ -50,7 +50,7 @@ public class Main_2638 {
                 System.out.println(Arrays.toString(board[i]));
             }*/
 
-            result++; // 녹을 얼음이 없어도 무조건 1은 더하게 되므로 초기화 값으로 -1을 주었음
+            result++; 
         }
     }
 

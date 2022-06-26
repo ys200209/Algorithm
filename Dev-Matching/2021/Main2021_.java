@@ -8,6 +8,8 @@ public class Main2021_ {
 
     }
     
-
+    public static int solution() {
+        return -1;
+    }
 
 }

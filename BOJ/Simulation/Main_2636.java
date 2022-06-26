@@ -41,7 +41,7 @@ public class Main_2636 {
             visited = new boolean[N][M];
             
             BFS(0, 0);
-            isFuse = fuse();
+            isFuse = fupse();
 
             resultHour++;
         }
