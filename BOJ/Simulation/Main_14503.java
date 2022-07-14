@@ -2,15 +2,24 @@ import java.util.*;
 import java.io.*;
 
 public class Main_14503 {
-    static int[] dx = {-1, 0, 1, 0}; // 북, 동, 남, 서 (시계방향)
+    static int[] dx = {-1, 0, 1, 0}; // 북, 동, 남, 서
     static int[] dy = {0, 1, 0, -1};
-    static int N, M;
+    static int N, M, result=0;
     static int[][] board;
+    static Robot rb;
     static boolean[][] visited;
-    static int count=0;
+    static boolean isBreak = false;
     
     public static void main(String[] args) throws IOException {
 
+        init();
+
+        logic();
+
+        System.out.println(result);
+    }
+
+    public static void init() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
@@ -20,9 +29,10 @@ public class Main_14503 {
         visited = new boolean[N][M];
 
         st = new StringTokenizer(br.readLine(), " ");
-        Robot robot = new Robot(
-            Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())
-        );
+        int R = Integer.parseInt(st.nextToken());
+        int C = Integer.parseInt(st.nextToken());
+        int D = Integer.parseInt(st.nextToken());
+        rb = new Robot(R, C, D);
 
         for(int i=0; i<N; i++) {
             st = new StringTokenizer(br.readLine(), " ");
@@ -32,49 +42,56 @@ public class Main_14503 {
                 j++;
             }
         }
-
-        DFS(robot);
-
-        System.out.println("--------------------");
-
-        for(int i=0; i<N; i++) {
-            System.out.println(Arrays.toString(board[i]));
-        }
-
-        System.out.println(count);
     }
 
-    public static void DFS (Robot robot) {
+    public static void logic() {
+        while(true) {
+            clean(); // 현재 위치를 청소한다.
+            
+            if (search()) { // 청소할 곳을 찾지 못했다면
+                int x = rb.x;
+                int y = rb.y;
+                int d = rb.d;
 
-        // System.out.println("(" + robot.x + ", " + robot.y + ") : " + robot.d);
+                int nx = x + dx[(d+2)%4];
+                int ny = y + dy[(d+2)%4]; // 뒤 쪽 좌표
 
-        int x = robot.x;
-        int y = robot.y;
-        int d = robot.d;
+                if (board[nx][ny] == 1) break; // 바로 뒤 쪽이 벽이라면 작동을 멈춘다.
+                else { // 그렇지 않다면 한 칸 후진한다.
+                    rb.x = nx;
+                    rb.y = ny;
+                }
+            }
+        }
+    }
 
-        visited[x][y] = true;
-        count++;
-        board[x][y] = count;
+    public static void clean() {
+        if (!visited[rb.x][rb.y]) {
+            visited[rb.x][rb.y] = true;
+            result++;
+        }
+    }
 
-        for(int i=1; i<= 4; i++) {
-            int nd = (d - i + 4) % 4;
-            int nx = x + dx[nd];
-            int ny = y + dy[nd];
+    public static boolean search() {
+        int x = rb.x;
+        int y = rb.y;
+        int d = rb.d;
+        for(int i=0; i<4; i++) {
+            d = (d - 1 + 4) % 4;
+            int nx = x + dx[d];
+            int ny = y + dy[d];
 
             if (nx < 0 || nx >= N || ny < 0 || ny >= M) continue;
 
-            if (!visited[nx][ny] && board[nx][ny] == 0) {
-                DFS(new Robot(nx, ny, nd));
+            if (!visited[nx][ny] && board[nx][ny] == 0) { // 아직 청소하지 않은 빈 공간
+                rb.d = d; // 회전한 후
+                rb.x = nx; // 한 칸 전진
+                rb.y = ny;
+                return false;
             }
         }
 
-        // int nd = (d + 2) % 4;
-        // int nx = x + dx[nd];
-        // int ny = y + dy[nd];
-        // if (board[nx][ny] == 0) {
-        //     DFS(new Robot(nx, ny, d));
-        // }
-
+        return true;
     }
 
 }
