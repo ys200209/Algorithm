@@ -2,38 +2,34 @@ import java.util.*;
 import java.io.*;
 
 public class Main16_2012 {
-    static int N, count=0;
+    static int N, result=0;
     static boolean[] visited;
-    static Queue<Integer> n1 = new PriorityQueue<>(); // 예상 석차
-    static Queue<Integer> n2 = new PriorityQueue<>(); // 실제 석차
-    
+    static Queue<Integer> pq1 = new PriorityQueue<>(); // 실제
+    static Queue<Integer> pq2 = new PriorityQueue<>(); // 예상
+
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         N = Integer.parseInt(br.readLine());
         visited = new boolean[N+1];
+
         for(int i=1; i<=N; i++) {
-            int number = Integer.parseInt(br.readLine());
+            int num = Integer.parseInt(br.readLine());
             
-            if (!visited[i]) n2.offer(i);
+            if (!visited[i]) pq1.offer(i);
 
-            if (!visited[number]) {
-                visited[number] = true;
-                if (n2.contains(number)) n2.remove(number);
-                continue;
-            } else n1.offer(number);
+            if (!visited[num]) {
+                visited[num] = true;
+                pq1.remove(num);
+            } else {
+                pq2.offer(num);
+            }
         }
 
-        getCount();
-
-        System.out.println(count);
-    }
-
-    public static void getCount() {
-        while(!n1.isEmpty()) {
-            count += Math.abs(n1.poll() - n2.poll());
+        while(!pq1.isEmpty()) {
+            result += Math.abs(pq2.poll() - pq1.poll());
         }
+        System.out.println(result);
     }
 
 }
