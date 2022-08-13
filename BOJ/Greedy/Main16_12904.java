@@ -3,9 +3,7 @@ import java.io.*;
 
 public class Main16_12904 {
     static String S, T;
-    static Deque<String> deque = new ArrayDeque<>();
-    static Stack<String> stack = new Stack<>();
-    static Queue<String> queue = new LinkedList<>();
+    static boolean isLeft = true;
 
     public static void main(String[] args) throws IOException {
 
@@ -18,7 +16,7 @@ public class Main16_12904 {
         int lenT = T.length();
 
         while(lenS < lenT) {
-            
+
 
 
             lenS++;
