@@ -60,8 +60,6 @@ class ProgrammersTest2_3_2 {
             
             distance++;
         }
-
-       
     }
     
 }
