@@ -83,6 +83,7 @@ public class Main16_19236 {
 
     public static Shark sharkMove(Shark shark) {
         
+        shark.vector++;
 
         return null;
     }
