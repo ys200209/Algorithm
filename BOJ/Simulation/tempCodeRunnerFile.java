@@ -1,1 +1,0 @@
-checkDiagonal(i, j)

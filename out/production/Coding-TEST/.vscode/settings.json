@@ -1,0 +1,27 @@
+{
+    "java.project.sourcePaths": [
+        "skill",
+        "middle_test",
+        "Stack Queue",
+        "KAKAO BLIND RECRUITMENT/2021",
+        "KAKAO BLIND RECRUITMENT/2019",
+        "Dev-Matching/2021",
+        "Code Challenge/Sesson2",
+        "Code Challenge/Sesson 3",
+        "Code Challenge/Sesson 1",
+        "BOJ/Heap",
+        "BOJ/Greedy",
+        "BOJ/Dynamic_Programming1",
+        "BOJ/DFS_BFS",
+        "8",
+        "5",
+        "2021 Kakao Internship",
+        "2019 Kakao Winter",
+        "14",
+        "13",
+        "12",
+        "11",
+        "9"
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic"
+}
