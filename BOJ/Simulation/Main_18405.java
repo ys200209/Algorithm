@@ -1,3 +1,5 @@
+package BOJ.Simulation;
+
 import java.util.*;
 import java.io.*;
 
@@ -8,8 +10,8 @@ public class Main_18405 {
     static int[][] board;
     static boolean[][] visited;
     static ArrayList<Virus> viruses = new ArrayList<>();
-    // static Queue<Virus> pq = new PriorityQueue<>();
-    // static Queue<Virus> queue = new LinkedList<>();
+     static Queue<Virus> pq = new PriorityQueue<>();
+     static Queue<Virus> queue = new LinkedList<>();
     
     public static void main(String[] args) throws IOException {
 
@@ -44,7 +46,7 @@ public class Main_18405 {
                 queue.offer(pq.poll());
             }
 
-            BFS();
+//            BFS();
         }
 
         System.out.println(board[X][Y]);
@@ -71,23 +73,23 @@ public class Main_18405 {
         }
     }
 
-}
+    static class Virus /*implements Comparable<Virus> */{
 
-class Virus /*implements Comparable<Virus> */{
+        int x;
+        int y;
+        int number;
 
-    int x;
-    int y;
-    int number;
-
-    public Virus(int x, int y, int number) {
-        this.x = x;
-        this.y = y;
-        this.number = number;
-    }
+        public Virus(int x, int y, int number) {
+            this.x = x;
+            this.y = y;
+            this.number = number;
+        }
 
     /*@Override
     public int compareTo(Virus virus) {
         return this.number - virus.number;
     }*/
+
+    }
 
 }

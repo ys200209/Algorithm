@@ -82,16 +82,16 @@ public class Main38_18436 {
         }
     }
 
-}
+    static class Number {
 
-class Number {
+        int two;
+        int three;
 
-    int two;
-    int three;
+        public Number(int two, int three) {
+            this.two = two;
+            this.three = three;
+        }
 
-    public Number(int two, int three) {
-        this.two = two;
-        this.three = three;
     }
-
 }
+

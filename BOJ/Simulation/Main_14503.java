@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Main_14503 {
-    static int[] dx = {-1, 0, 1, 0}; // ºÏ, µ¿, ³², ¼­
+    static int[] dx = {-1, 0, 1, 0}; // ï¿½ï¿½, ï¿½ï¿½, ï¿½ï¿½, ï¿½ï¿½
     static int[] dy = {0, 1, 0, -1};
     static int N, M, result=0;
     static int[][] board;
@@ -46,18 +46,18 @@ public class Main_14503 {
 
     public static void logic() {
         while(true) {
-            clean(); // ÇöÀç À§Ä¡¸¦ Ã»¼ÒÇÑ´Ù.
+            clean(); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ Ã»ï¿½ï¿½ï¿½Ñ´ï¿½.
             
-            if (search()) { // Ã»¼ÒÇÒ °÷À» Ã£Áö ¸øÇß´Ù¸é
+            if (search()) { // Ã»ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ß´Ù¸ï¿½
                 int x = rb.x;
                 int y = rb.y;
                 int d = rb.d;
 
                 int nx = x + dx[(d+2)%4];
-                int ny = y + dy[(d+2)%4]; // µÚ ÂÊ ÁÂÇ¥
+                int ny = y + dy[(d+2)%4]; // ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ç¥
 
-                if (board[nx][ny] == 1) break; // ¹Ù·Î µÚ ÂÊÀÌ º®ÀÌ¶ó¸é ÀÛµ¿À» ¸ØÃá´Ù.
-                else { // ±×·¸Áö ¾Ê´Ù¸é ÇÑ Ä­ ÈÄÁøÇÑ´Ù.
+                if (board[nx][ny] == 1) break; // ï¿½Ù·ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ ï¿½Ûµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½.
+                else { // ï¿½×·ï¿½ï¿½ï¿½ ï¿½Ê´Ù¸ï¿½ ï¿½ï¿½ Ä­ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
                     rb.x = nx;
                     rb.y = ny;
                 }
@@ -83,9 +83,9 @@ public class Main_14503 {
 
             if (nx < 0 || nx >= N || ny < 0 || ny >= M) continue;
 
-            if (!visited[nx][ny] && board[nx][ny] == 0) { // ¾ÆÁ÷ Ã»¼ÒÇÏÁö ¾ÊÀº ºó °ø°£
-                rb.d = d; // È¸ÀüÇÑ ÈÄ
-                rb.x = nx; // ÇÑ Ä­ ÀüÁø
+            if (!visited[nx][ny] && board[nx][ny] == 0) { // ï¿½ï¿½ï¿½ï¿½ Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                rb.d = d; // È¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+                rb.x = nx; // ï¿½ï¿½ Ä­ ï¿½ï¿½ï¿½ï¿½
                 rb.y = ny;
                 return false;
             }
@@ -94,18 +94,19 @@ public class Main_14503 {
         return true;
     }
 
-}
+    static class Robot {
 
-class Robot {
+        int x;
+        int y;
+        int d;
 
-    int x;
-    int y;
-    int d;
+        public Robot(int x, int y, int d) {
+            this.x = x;
+            this.y = y;
+            this.d = d;
+        }
 
-    public Robot(int x, int y, int d) {
-        this.x = x;
-        this.y = y;
-        this.d = d;
     }
 
 }
+

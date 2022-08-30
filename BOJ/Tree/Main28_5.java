@@ -1,9 +1,11 @@
+package BOJ.Tree;
+
 import java.util.*;
 import java.io.*;
 
 public class Main28_5 {
     static int N;
-    static Tree tree;
+//    static Tree tree;
     static int[] in, post;
     static StringBuilder sb = new StringBuilder();
 

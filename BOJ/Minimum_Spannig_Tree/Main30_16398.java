@@ -59,23 +59,23 @@ public class Main30_16398 {
         return parents[root] = find(parents[root]);
     }
 
+    static class Node implements Comparable<Node> {
+
+        int start;
+        int end;
+        int distance;
+
+        public Node(int start, int end, int distance) {
+            this.start = start;
+            this.end = end;
+            this.distance = distance;
+        }
+
+        @Override
+        public int compareTo(Node node) {
+            return this.distance - node.distance;
+        }
+
+    }
 }
 
-class Node implements Comparable<Node> {
-
-    int start;
-    int end;
-    int distance;
-
-    public Node(int start, int end, int distance) {
-        this.start = start;
-        this.end = end;
-        this.distance = distance;
-    }
-
-    @Override
-    public int compareTo(Node node) {
-        return this.distance - node.distance;
-    }
-    
-}

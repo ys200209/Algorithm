@@ -104,18 +104,18 @@ public class Main_2638 {
         }
     }
 
-}
+    static class Cell {
 
-class Cell {
+        int x;
+        int y;
+        // boolean isCheese;
 
-    int x;
-    int y;
-    // boolean isCheese;
+        public Cell(int x, int y/*, boolean isCheese*/) {
+            this.x = x;
+            this.y = y;
+            // this.isCheese = isCheese;
+        }
 
-    public Cell(int x, int y/*, boolean isCheese*/) {
-        this.x = x;
-        this.y = y;
-        // this.isCheese = isCheese;
     }
-
 }
+

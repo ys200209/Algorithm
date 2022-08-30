@@ -1,10 +1,12 @@
+package ProgrammersTest.test2;
+
 import java.util.*;
 
 class ProgrammersTest2_3 {
     static ArrayList<ArrayList<Node>> graph = new ArrayList<>();
     static Queue<Node> pq = new PriorityQueue<>();
     static int[] d;
-    // static boolean[] visited;
+     static boolean[] visited;
 
     public static void main(String[] args) {
 
@@ -69,22 +71,22 @@ class ProgrammersTest2_3 {
         // System.out.println(start + " - " + end + " : " + Arrays.toString(d));
         // return d[end] == (int)1e9 ? -1 : d[end];
     }
-    
+
+    static class Node implements Comparable<Node> {
+
+        int index;
+        int distance;
+
+        public Node(int index, int distance) {
+            this.index = index;
+            this.distance = distance;
+        }
+
+        @Override
+        public int compareTo(Node node) {
+            return this.distance = node.distance;
+        }
+
+    }
 }
 
-class Node implements Comparable<Node> {
-
-    int index;
-    int distance;
-
-    public Node(int index, int distance) {
-        this.index = index;
-        this.distance = distance;
-    }
-
-    @Override
-    public int compareTo(Node node) {
-        return this.distance = node.distance;
-    }
-
-}

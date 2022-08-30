@@ -101,17 +101,18 @@ public class Main2021_Internship_3 {
             list.get(process.back).front = process.index;
         }
     }
-}
 
-class Process {
+    static class Process {
 
-    int front;
-    int index;
-    int back;
+        int front;
+        int index;
+        int back;
 
-    public Process(int front, int index, int back) {
-        this.front = front;
-        this.index = index;
-        this.back = back;
+        public Process(int front, int index, int back) {
+            this.front = front;
+            this.index = index;
+            this.back = back;
+        }
     }
 }
+

@@ -3,7 +3,7 @@ import java.io.*;
 
 public class Main11_3190 {
     static int[] dx = {0, 1, 0, -1};
-    static int[] dy = {1, 0, -1, 0}; // [©Л, го, аб, ╩С] [B, B-D, B-D, R]
+    static int[] dy = {1, 0, -1, 0}; // [О©╫О©╫, О©╫О©╫, О©╫О©╫, О©╫О©╫] [B, B-D, B-D, R]
     static int N, K, L, vector=0, time=0;
     static int[][] map;
     static Snake snake;
@@ -79,16 +79,17 @@ public class Main11_3190 {
         return true;
     }
 
-}
+    static class Snake {
 
-class Snake {
+        int x;
+        int y;
 
-    int x;
-    int y;
+        public Snake(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
 
-    public Snake(int x, int y) {
-        this.x = x;
-        this.y = y;
     }
 
 }
+

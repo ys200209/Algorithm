@@ -38,24 +38,24 @@ public class Main2_3 {
 
         return answer;
     }
-    
+
+    static class City implements Comparable<City> {
+
+        private int rank;
+
+        public City(int rank) {
+            this.rank = rank;
+        }
+
+        public int getRank() {
+            return rank;
+        }
+
+        @Override
+        public int compareTo(City c1) {
+            return this.getRank() - c1.getRank();
+        }
+
+    }
 }
 
-class City implements Comparable<City> {
-
-    private int rank;
-
-    public City(int rank) {
-        this.rank = rank;
-    }
-
-    public int getRank() {
-        return rank;
-    }
-
-    @Override
-    public int compareTo(City c1) {
-        return this.getRank() - c1.getRank();
-    }
-
-}

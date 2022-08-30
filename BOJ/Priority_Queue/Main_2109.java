@@ -6,13 +6,13 @@ public class Main_2109 {
     static Queue<Work> pq = new PriorityQueue<>(new Comparator<Work>() {
         @Override
         public int compare(Work w1, Work w2) {
-            return w2.pay - w1.pay; // µ·À» ±âÁØÀ¸·Î ³»¸²Â÷¼ø Á¤·Ä
+            return w2.pay - w1.pay; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
     });
     static Queue<Work> readyPQ = new PriorityQueue<>(new Comparator<Work>() {
         @Override
         public int compare(Work w1, Work w2) {
-            return w2.day - w1.day; // ½Ã°£À» ±âÁØÀ¸·Î ³»¸²Â÷¼ø Á¤·Ä
+            return w2.day - w1.day; // ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
     });
     
@@ -49,16 +49,17 @@ public class Main_2109 {
         System.out.println(score);
     }
 
-}
+    static class Work {
 
-class Work {
+        int pay;
+        int day;
 
-    int pay;
-    int day;
+        public Work(int pay, int day) {
+            this.pay = pay;
+            this.day = day;
+        }
 
-    public Work(int pay, int day) {
-        this.pay = pay;
-        this.day = day;
     }
 
 }
+

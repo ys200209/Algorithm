@@ -13,9 +13,9 @@ public class Main_17144 {
         init();
 
         for(int t=0; t<T; t++) {
-            checkDust(); // È®»ê½ÃÅ³ ¹Ì¼¼¸ÕÁöµéÀ» Å¥¿¡ ´ã¾ÆÁÖ±â
-            BFS(); // È®»ê
-            board = onClean(); // °ø±â Ã»Á¤±â ÀÛµ¿
+            checkDust(); // È®ï¿½ï¿½ï¿½Å³ ï¿½Ì¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
+            BFS(); // È®ï¿½ï¿½
+            board = onClean(); // ï¿½ï¿½ï¿½ï¿½ Ã»ï¿½ï¿½ï¿½ï¿½ ï¿½Ûµï¿½
         }
 
         int result = getDust();
@@ -42,7 +42,7 @@ public class Main_17144 {
                 if (board[i][j] != null && board[i][j].now == -1) {
                     if (A1 == -1) A1 = i;
                     else A2 = i;
-                    board[i][j] = null; // °ø±â Ã»Á¤±â°¡ ÀÖ´Â °÷ÀÇ ¸ÕÁö¸¦ 0À¸·Î ¸¸µé¾îÁÖ±â (°ø±â Ã»Á¤±â µ¿ÀÛÀ» ½±°Ô ÇÏ·Á°í)
+                    board[i][j] = null; // ï¿½ï¿½ï¿½ï¿½ Ã»ï¿½ï¿½ï¿½â°¡ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ (ï¿½ï¿½ï¿½ï¿½ Ã»ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ï¿½ï¿½)
                 } 
 
                 j++;
@@ -65,10 +65,10 @@ public class Main_17144 {
             Dust dust = queue.poll();
             int x = dust.x;
             int y = dust.y;
-            int diffuse = 0; // ÆÛÁø È½¼ö
-            int amount = dust.now / 5; // ÆÛÁö´Â ¾ç
+            int diffuse = 0; // ï¿½ï¿½ï¿½ï¿½ È½ï¿½ï¿½
+            int amount = dust.now / 5; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 
-            if (amount < 1) continue; // È®»êÇÒ ¾çÀÌ ¾ÈµÇ¸é ¹«½Ã
+            if (amount < 1) continue; // È®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ÈµÇ¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 
             for(int i=0; i<4; i++) {
                 int nx = x + dx[i];
@@ -76,18 +76,18 @@ public class Main_17144 {
 
                 if (nx < 0 || nx >= R || ny < 0 || ny >= C) continue;
 
-                if ((nx == A1 || nx == A2) && ny == 0) continue; // È®»ê Áö¿ª¿¡ °ø±â Ã»Á¤±â°¡ Á¸ÀçÇÑ´Ù¸é ÁßÁö
+                if ((nx == A1 || nx == A2) && ny == 0) continue; // È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã»ï¿½ï¿½ï¿½â°¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 
                 if (board[nx][ny] == null) board[nx][ny] = new Dust(nx, ny, 0, amount);
                 else board[nx][ny].add += amount;
 
-                diffuse++; // ÆÛÁø È½¼ö
+                diffuse++; // ï¿½ï¿½ï¿½ï¿½ È½ï¿½ï¿½
             }
 
             dust.now -= (amount * diffuse);
         }
 
-        for(int i=0; i<R; i++) { // È®»ê Àû¿ëÇØÁÖ±â
+        for(int i=0; i<R; i++) { // È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
             for(int j=0; j<C; j++) {
                 if (board[i][j] != null) {
                     board[i][j].now += board[i][j].add;
@@ -100,44 +100,44 @@ public class Main_17144 {
     public static Dust[][] onClean() {
         Dust[][] temp = new Dust[R][C];
 
-        for(int i=1; i<A1; i++) { // °ø±â Ã»Á¤±â°¡ µ¿ÀÛµÇÁö ¾Ê´Â ºÎºÐ¿¡ ¸ÕÁö ÁÖÀÔ (»ó´Ü)
+        for(int i=1; i<A1; i++) { // ï¿½ï¿½ï¿½ï¿½ Ã»ï¿½ï¿½ï¿½â°¡ ï¿½ï¿½ï¿½Ûµï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ ï¿½ÎºÐ¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½)
             for(int j=1; j<C-1; j++) {
                 temp[i][j] = board[i][j];
             }
         }
 
-        for(int i=A2+1; i<R-1; i++) { // °ø±â Ã»Á¤±â°¡ µ¿ÀÛµÇÁö ¾Ê´Â ºÎºÐ¿¡ ¸ÕÁö ÁÖÀÔ (ÇÏ´Ü)
+        for(int i=A2+1; i<R-1; i++) { // ï¿½ï¿½ï¿½ï¿½ Ã»ï¿½ï¿½ï¿½â°¡ ï¿½ï¿½ï¿½Ûµï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ ï¿½ÎºÐ¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½Ï´ï¿½)
             for(int j=1; j<C-1; j++) {
                 temp[i][j] = board[i][j];
             }
         }
 
-        for(int i=1; i<C; i++) { // °¡·Î
-            temp[0][C-i-1] = board[0][C-i]; // 1Çà
+        for(int i=1; i<C; i++) { // ï¿½ï¿½ï¿½ï¿½
+            temp[0][C-i-1] = board[0][C-i]; // 1ï¿½ï¿½
             if (temp[0][C-i-1] != null) temp[0][C-i-1].y = C-i-1;
-            temp[A1][i] = board[A1][i-1]; // A1 Çà
+            temp[A1][i] = board[A1][i-1]; // A1 ï¿½ï¿½
             if (temp[A1][i] != null) temp[A1][i].y = i;
-            temp[A2][i] = board[A2][i-1]; // A2 Çà
+            temp[A2][i] = board[A2][i-1]; // A2 ï¿½ï¿½
             if (temp[A2][i] != null) temp[A2][i].y = i;
-            temp[R-1][C-i-1] = board[R-1][C-i]; // R Çà
+            temp[R-1][C-i-1] = board[R-1][C-i]; // R ï¿½ï¿½
             if (temp[R-1][C-i-1] != null) temp[R-1][C-i-1].y = C-i-1;
         }
 
-        for(int i=0; i<A1; i++) { // »ó´Ü ¼¼·Î
-            temp[i+1][0] = board[i][0]; // 1¿­
+        for(int i=0; i<A1; i++) { // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            temp[i+1][0] = board[i][0]; // 1ï¿½ï¿½
             if (temp[i+1][0] != null) temp[i+1][0].x = i+1;
-            temp[A1-i-1][C-1] = board[A1-i][C-1]; // C¿­
+            temp[A1-i-1][C-1] = board[A1-i][C-1]; // Cï¿½ï¿½
             if (temp[A1-i-1][C-1] != null) temp[A1-i-1][C-1].x = A1-i-1;
         }
 
-        for(int i=A2; i<R-1; i++) { // ÇÏ´Ü ¼¼·Î
-            temp[i][0] = board[i+1][0]; // 1¿­
+        for(int i=A2; i<R-1; i++) { // ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
+            temp[i][0] = board[i+1][0]; // 1ï¿½ï¿½
             if (temp[i][0] != null) temp[i][0].x = i;
-            temp[i+1][C-1] = board[i][C-1]; // C¿­
+            temp[i+1][C-1] = board[i][C-1]; // Cï¿½ï¿½
             if (temp[i+1][C-1] != null) temp[i+1][C-1].x = i+1;
         }
 
-        // °ø±â Ã»Á¤±â·Î µé¾î°£ ¸ÕÁö ¾ø¾Ö±â
+        // ï¿½ï¿½ï¿½ï¿½ Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½î°£ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ö±ï¿½
         temp[A1][0] = null;
         temp[A2][0] = null;
 
@@ -156,20 +156,21 @@ public class Main_17144 {
         return result;
     }
 
-}
+    static class Dust {
 
-class Dust {
+        int x;
+        int y;
+        int now;
+        int add;
 
-    int x;
-    int y;
-    int now;
-    int add;
+        public Dust(int x, int y, int now, int add) {
+            this.x = x;
+            this.y = y;
+            this.now = now;
+            this.add = add;
+        }
 
-    public Dust(int x, int y, int now, int add) {
-        this.x = x;
-        this.y = y;
-        this.now = now;
-        this.add = add;
     }
 
 }
+

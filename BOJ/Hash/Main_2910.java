@@ -43,16 +43,16 @@ public class Main_2910 {
         System.out.println(sb);
     }
 
-}
+    static class Number {
 
-class Number {
+        int count;
+        int index;
 
-    int count;
-    int index;
+        public Number(int count, int index) {
+            this.count = count;
+            this.index = index;
+        }
 
-    public Number(int count, int index) {
-        this.count = count;
-        this.index = index;
     }
-
 }
+

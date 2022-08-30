@@ -110,20 +110,21 @@ public class Main_15683 {
         return count;
     }
 
-}
+    static class CCTV {
 
-class CCTV {
+        int x;
+        int y;
+        int number;
+        int vector;
 
-    int x;
-    int y;
-    int number;
-    int vector;
+        public CCTV(int x, int y, int number, int vector) {
+            this.x = x;
+            this.y = y;
+            this.number = number;
+            this.vector = vector;
+        }
 
-    public CCTV(int x, int y, int number, int vector) {
-        this.x = x;
-        this.y = y;
-        this.number = number;
-        this.vector = vector;
     }
 
 }
+

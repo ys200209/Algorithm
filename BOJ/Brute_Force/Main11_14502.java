@@ -96,24 +96,26 @@ public class Main11_14502 {
 
         return score;
     }
+
+    static class Virus {
+
+        private int x;
+        private int y;
+
+        public Virus(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+    }
+
 }
 
-class Virus {
-
-    private int x;
-    private int y;
-    
-    public Virus(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-}

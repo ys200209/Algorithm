@@ -40,16 +40,18 @@ public class Main_1781 {
         }
         System.out.println(score);
     }
-}
 
-class Work {
+    static class Work {
 
-    int dead;
-    int score; // де╤С╦И
+        int dead;
+        int score; // О©╫е╤О©╫О©╫
 
-    public Work(int dead, int score) {
-        this.dead = dead;
-        this.score = score;
+        public Work(int dead, int score) {
+            this.dead = dead;
+            this.score = score;
+        }
+
     }
 
 }
+

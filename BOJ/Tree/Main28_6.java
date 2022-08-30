@@ -18,7 +18,7 @@ public class Main28_6 {
             String left = st.nextToken();
             String right = st.nextToken();
 
-            tree.add(root, left, right); // Æ®¸®ÀÇ ³ëµåµéÀ» ¼³Á¤ÇØÁÜ
+            tree.add(root, left, right); // Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         }
 
         tree.preOrder(tree.rootNode); // preOrder
@@ -29,68 +29,69 @@ public class Main28_6 {
         
     }
 
-}
+    static class Tree {
 
-class Tree {
+        Node rootNode;
 
-    Node rootNode;
-
-    public void add(String root, String left, String right) {
-        if (rootNode == null) {
-            rootNode = new Node(root);
-            if (!left.equals(".")) rootNode.leftNode = new Node(left);
-            if (!right.equals(".")) rootNode.rightNode = new Node(right);
-        } else {
-            search(rootNode, root, left, right);
+        public void add(String root, String left, String right) {
+            if (rootNode == null) {
+                rootNode = new Node(root);
+                if (!left.equals(".")) rootNode.leftNode = new Node(left);
+                if (!right.equals(".")) rootNode.rightNode = new Node(right);
+            } else {
+                search(rootNode, root, left, right);
+            }
         }
-    }
 
-    public void search(Node rootNode, String root, String left, String right) {
-        if (rootNode == null) return;
+        public void search(Node rootNode, String root, String left, String right) {
+            if (rootNode == null) return;
 
-        if (rootNode.rootNode.equals(root)) {
-            if (!left.equals(".")) rootNode.leftNode = new Node(left);
-            if (!right.equals(".")) rootNode.rightNode = new Node(right);
-        } else {
-            search(rootNode.leftNode, root, left, right);
-            search(rootNode.rightNode, root, left, right);
+            if (rootNode.rootNode.equals(root)) {
+                if (!left.equals(".")) rootNode.leftNode = new Node(left);
+                if (!right.equals(".")) rootNode.rightNode = new Node(right);
+            } else {
+                search(rootNode.leftNode, root, left, right);
+                search(rootNode.rightNode, root, left, right);
+            }
         }
+
+        public void preOrder(Node root) {
+            if (root == null) return;
+
+            System.out.print(root.rootNode);
+            preOrder(root.leftNode);
+            preOrder(root.rightNode);
+        }
+
+        public void inOrder(Node root) {
+            if (root == null) return;
+
+            inOrder(root.leftNode);
+            System.out.print(root.rootNode);
+            inOrder(root.rightNode);
+        }
+
+        public void postOrder(Node root) {
+            if (root == null) return;
+
+            postOrder(root.leftNode);
+            postOrder(root.rightNode);
+            System.out.print(root.rootNode);
+        }
+
     }
 
-    public void preOrder(Node root) {
-        if (root == null) return;
+    static class Node {
 
-        System.out.print(root.rootNode);
-        preOrder(root.leftNode);
-        preOrder(root.rightNode);
-    }
+        String rootNode;
+        Node leftNode;
+        Node rightNode;
 
-    public void inOrder(Node root) {
-        if (root == null) return;
+        public Node(String rootNode) {
+            this.rootNode = rootNode;
+        }
 
-        inOrder(root.leftNode);
-        System.out.print(root.rootNode);
-        inOrder(root.rightNode);
-    }
-
-    public void postOrder(Node root) {
-        if (root == null) return;
-
-        postOrder(root.leftNode);
-        postOrder(root.rightNode);
-        System.out.print(root.rootNode);
     }
 
 }
 
-class Node {
-
-    String rootNode;
-    Node leftNode;
-    Node rightNode;
-
-    public Node(String rootNode) {
-        this.rootNode = rootNode;
-    }
-
-}

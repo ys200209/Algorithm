@@ -63,21 +63,23 @@ public class Main25_1238 {
         }
         return dp[end];
     }
-}
 
-class Node implements Comparable<Node> {
+    static class Node implements Comparable<Node> {
 
-    int index;
-    int distance;
+        int index;
+        int distance;
 
-    public Node(int index, int distance) {
-        this.index = index;
-        this.distance = distance;
+        public Node(int index, int distance) {
+            this.index = index;
+            this.distance = distance;
+        }
+
+        @Override
+        public int compareTo(Node n1) {
+            return this.distance - n1.distance;
+        }
+
     }
 
-    @Override
-    public int compareTo(Node n1) {
-        return this.distance - n1.distance;
-    }
-
 }
+

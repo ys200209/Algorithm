@@ -1,3 +1,5 @@
+package BOJ.Simulation;
+
 import java.util.*;
 import java.io.*;
 
@@ -22,7 +24,7 @@ public class Main_19236 {
         }
         System.out.println("-----------------------");
 
-        eat();
+//        eat();
 
         System.out.println("-----------------------");
         for(int i=0; i<4; i++) {
@@ -120,46 +122,47 @@ public class Main_19236 {
 
     public static void change() {}
 
-}
+    interface Pisces {
 
-interface Pisces {
 
-    
 
-}
+    }
 
-class Fish implements Pisces {
+    static class Fish implements Pisces {
 
-    int x;
-    int y;
-    int number;
-    int d;
-    // boolean isShark;
+        int x;
+        int y;
+        int number;
+        int d;
+        // boolean isShark;
 
-    public Fish(int x, int y, int number, int d/*, boolean isShark */) {
-        this.x = x;
-        this.y = y;
-        this.number = number;
-        this.d = d;
-        // this.isShark = isShark;
+        public Fish(int x, int y, int number, int d/*, boolean isShark */) {
+            this.x = x;
+            this.y = y;
+            this.number = number;
+            this.d = d;
+            // this.isShark = isShark;
+        }
+
+    }
+
+    static class Shark implements Pisces {
+
+        int x;
+        int y;
+        int score;
+        int d;
+        // boolean isShark;
+
+        public Shark(int x, int y, int score, int d/*, boolean isShark */) {
+            this.x = x;
+            this.y = y;
+            this.score = score;
+            this.d = d;
+            // this.isShark = isShark;
+        }
+
     }
 
 }
 
-class Shark implements Pisces {
-
-    int x;
-    int y;
-    int score;
-    int d;
-    // boolean isShark;
-
-    public Shark(int x, int y, int score, int d/*, boolean isShark */) {
-        this.x = x;
-        this.y = y;
-        this.score = score;
-        this.d = d;
-        // this.isShark = isShark;
-    }
-
-}

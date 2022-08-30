@@ -71,22 +71,23 @@ public class Main25_10282 {
                 }
             }
         }
-    } 
+    }
+
+    static class Node implements Comparable<Node> {
+
+        int index;
+        int distance;
+
+        public Node(int index, int distance) {
+            this.index = index;
+            this.distance = distance;
+        }
+
+        @Override
+        public int compareTo(Node node) {
+            return this.distance = node.distance;
+        }
+    }
 
 }
 
-class Node implements Comparable<Node> {
-
-    int index;
-    int distance;
-
-    public Node(int index, int distance) {
-        this.index = index;
-        this.distance = distance;
-    }
-
-    @Override
-    public int compareTo(Node node) {
-        return this.distance = node.distance;
-    }
-}

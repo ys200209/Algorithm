@@ -16,7 +16,7 @@ public class Main23_9 {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         board = new int[N][M];
-        visited = new boolean[N][M][2]; // (x, y) ÁÂÇ¥¸¦ ºÎ¼ø »óÅÂÀÎÁö ¾Æ´ÑÁö
+        visited = new boolean[N][M][2]; // (x, y) ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½Î¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ï¿½ï¿½
 
         for(int i=0; i<N; i++) {
             String[] str = br.readLine().split("");
@@ -38,8 +38,8 @@ public class Main23_9 {
     public static void BFS(int row, int column) {
         queue.offer(new Position(row, column, 1, 0));
         visited[row][column][0] = true;
-        // visited[x][y][0] : (x, y) ÁÂÇ¥¿¡ ¾ÆÁ÷ º®À» ºÎ¼öÁö ¾ÊÀº Ã¤ ¹æ¹®ÇÔ
-        // visited[x][y][1] : (x, y) ÁÂÇ¥¿¡ º®À» ºÎ¼ø Ã¤ ¹æ¹®ÇÔ
+        // visited[x][y][0] : (x, y) ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Î¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¤ ï¿½æ¹®ï¿½ï¿½
+        // visited[x][y][1] : (x, y) ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Î¼ï¿½ Ã¤ ï¿½æ¹®ï¿½ï¿½
 
         while(!queue.isEmpty()) {
             Position p = queue.poll();
@@ -52,7 +52,7 @@ public class Main23_9 {
 
                 if (nx < 0 || nx >= N || ny < 0 || ny >=M ) continue;
 
-                if (visited[nx][ny][p.isBreak]) continue; // ÀÌ¹Ì ¹æ¹®Çß´ø °÷ÀÌ¶ó¸é Å½»ö Áß´Ü
+                if (visited[nx][ny][p.isBreak]) continue; // ï¿½Ì¹ï¿½ ï¿½æ¹®ï¿½ß´ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ Å½ï¿½ï¿½ ï¿½ß´ï¿½
 
                 if (nx == N-1 && ny == M-1) {
                     result = p.count + 1;
@@ -63,8 +63,8 @@ public class Main23_9 {
                     visited[nx][ny][p.isBreak] = true;
                     queue.offer(new Position(nx, ny, p.count+1, p.isBreak));
                 } else {
-                    if (p.isBreak == 0) { // º®À» ¸¸³µÁö¸¸ ¾ÆÁ÷ ÇÑ¹øµµ º®À» ºÎ¼øÀûÀÌ ¾ø´Ù¸é
-                        if (visited[nx][ny][1]) continue; // ÀÌ¹Ì ¹æ¹®Çß´ø °÷ÀÌ¶ó¸é Å½»ö Áß´Ü
+                    if (p.isBreak == 0) { // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Î¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ù¸ï¿½
+                        if (visited[nx][ny][1]) continue; // ï¿½Ì¹ï¿½ ï¿½æ¹®ï¿½ß´ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ Å½ï¿½ï¿½ ï¿½ß´ï¿½
 
                         visited[nx][ny][1] = true;
                         queue.offer(new Position(nx, ny, p.count+1, 1));
@@ -78,20 +78,21 @@ public class Main23_9 {
 
     }
 
-}
+    static class Position {
 
-class Position {
+        int x;
+        int y;
+        int count;
+        int isBreak;
 
-    int x;
-    int y;
-    int count;
-    int isBreak;
+        public Position(int x, int y, int count, int isBreak) {
+            this.x = x;
+            this.y = y;
+            this.count = count;
+            this.isBreak = isBreak;
+        }
 
-    public Position(int x, int y, int count, int isBreak) {
-        this.x = x;
-        this.y = y;
-        this.count = count;
-        this.isBreak = isBreak;
     }
 
 }
+

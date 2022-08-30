@@ -65,16 +65,17 @@ public class Main28_2 {
         }
     }
 
-}
+    static class Node {
 
-class Node {
+        int index;
+        int distance;
 
-    int index;
-    int distance;
+        public Node(int index, int distance) {
+            this.index = index;
+            this.distance = distance;
+        }
 
-    public Node(int index, int distance) {
-        this.index = index;
-        this.distance = distance;
     }
 
 }
+

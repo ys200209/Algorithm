@@ -77,14 +77,15 @@ public class Main25_11780 {
         System.out.println(sb);
     }
 
-}
+    static class Node {
 
-class Node {
+        Queue<Integer> queue;
 
-    Queue<Integer> queue;
+        public Node() {
+            queue = new LinkedList<>();
+        }
 
-    public Node() {
-        queue = new LinkedList<>();
     }
 
 }
+

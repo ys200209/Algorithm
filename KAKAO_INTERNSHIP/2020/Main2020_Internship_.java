@@ -1,5 +1,6 @@
 import java.util.*;
 
+@SuppressWarnings("WrongPackageStatement")
 class Main2020_Internship_ {
 
     public static void main(String[] args) {
@@ -8,6 +9,9 @@ class Main2020_Internship_ {
 
     }
 
+    private static boolean solution() {
+        return false;
+    }
 
 
 }

@@ -91,21 +91,21 @@ public class Main27_6 {
 
     }
 
-}
+    static class Locate implements Comparable<Locate> {
 
-class Locate implements Comparable<Locate> {
+        int index;
+        int count;
 
-    int index;
-    int count;
+        public Locate(int index, int count) {
+            this.index = index;
+            this.count = count;
+        }
 
-    public Locate(int index, int count) {
-        this.index = index;
-        this.count = count;
-    }
+        @Override
+        public int compareTo(Locate locate) {
+            return this.count - locate.count;
+        }
 
-    @Override
-    public int compareTo(Locate locate) {
-        return this.count - locate.count;
     }
 
 }

@@ -1,3 +1,5 @@
+package Prorgammers.Anonymous;
+
 import java.util.*;
 
 class MainAno_ {
@@ -7,7 +9,10 @@ class MainAno_ {
         System.out.println(solution());
 
     }
-    
-    
+
+    private static boolean solution() {
+        return false;
+    }
+
 
 }

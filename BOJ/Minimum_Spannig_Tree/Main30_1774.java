@@ -35,7 +35,7 @@ public class Main30_1774 {
             st = new StringTokenizer(br.readLine(), " ");
             int X = Integer.parseInt(st.nextToken());
             int Y = Integer.parseInt(st.nextToken());
-            union(X, Y); // ¿Ö ¹Ì¸® ±×¾î³õÀº ¼±Àº result Ãß°¡ ¾ÈÇÏ³Ä
+            union(X, Y); // ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½×¾ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ result ï¿½ß°ï¿½ ï¿½ï¿½ï¿½Ï³ï¿½
         }
 
         while(!pq.isEmpty()) {
@@ -65,22 +65,23 @@ public class Main30_1774 {
         return parents[root] = find(parents[root]);
     }
 
-}
+    static class Node implements Comparable<Node> {
 
-class Node implements Comparable<Node> {
+        int x;
+        int y;
+        double distance;
 
-    int x;
-    int y;
-    double distance;
+        public Node(int x, int y, double distance) {
+            this.x = x;
+            this.y = y;
+            this.distance = distance;
+        }
 
-    public Node(int x, int y, double distance) {
-        this.x = x;
-        this.y = y;
-        this.distance = distance;
+        @Override public int compareTo(Node node) {
+            if (this.distance > node.distance) return 1;
+            else return -1;
+        }
     }
 
-    @Override public int compareTo(Node node) { 
-        if (this.distance > node.distance) return 1; 
-        else return -1; 
-    }
 }
+

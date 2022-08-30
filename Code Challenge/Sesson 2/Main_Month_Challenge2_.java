@@ -8,4 +8,8 @@ class Main_Month_Challenge2_ {
 
     }
 
+    private static boolean solution() {
+        return false;
+    }
+
 }

@@ -59,36 +59,36 @@ public class Main_16235 {
 
             if (pos[x][y] == null) pos[x][y] = new Position(x, y, new ArrayList<>());
             
-            pos[x][y].trees.add(new Tree(z, true)); // ³ª¹«ÀÇ ³ªÀÌ, »ýÁ¸ ¿©ºÎ
+            pos[x][y].trees.add(new Tree(z, true)); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             treeList.add(pos[x][y]);
         }
     }
 
-    public static void spring() { // º½
+    public static void spring() { // ï¿½ï¿½
         for (Position position : treeList) {
             int x = position.x;
             int y = position.y;
             ArrayList<Tree> trees = position.trees;
 
-            if (trees.size() > 1) { // ÇÑ Ä­¿¡ ³ª¹«°¡ 2°³ ÀÌ»óÀÌ¶ó¸é
-                Collections.sort(trees, (tree1, tree2) -> { // ³ªÀÌ°¡ ÀûÀº ¼øºÎÅÍ Á¤·Ä
+            if (trees.size() > 1) { // ï¿½ï¿½ Ä­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½Ì»ï¿½ï¿½Ì¶ï¿½ï¿½
+                Collections.sort(trees, (tree1, tree2) -> { // ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     return tree1.age - tree2.age;
                 });
             }
 
             for(Tree tree : trees) {
-                if (board[x][y] >= tree.age) { // ¾çºÐÀ» ¸ÔÀ» ¼ö ÀÖ´Ù¸é
+                if (board[x][y] >= tree.age) { // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½
                     board[x][y] -= tree.age;
                     tree.age++;
-                } else { // ¾çºÐÀ» ¸ÔÁö ¸øÇÑ´Ù¸é
-                    tree.isAlive = false; // »ýÁ¸ ¿©ºÎ¸¦ false·Î º¯°æ
+                } else { // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´Ù¸ï¿½
+                    tree.isAlive = false; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¸ï¿½ falseï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 }
             }
 
         }
     }
 
-    public static void summer() { // ¿©¸§
+    public static void summer() { // ï¿½ï¿½ï¿½ï¿½
         ArrayList<Position> deadPosition = new ArrayList<>();
 
         for (Position position : treeList) {
@@ -98,8 +98,8 @@ public class Main_16235 {
             ArrayList<Tree> deadTree = new ArrayList<>();
 
             for(Tree tree : trees) {
-                if (!tree.isAlive) { // ³ª¹«°¡ Á×¾ú´Ù¸é
-                    board[x][y] += (tree.age / 2); // ¾çºÐÀÌ µÈ´Ù.
+                if (!tree.isAlive) { // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×¾ï¿½ï¿½Ù¸ï¿½
+                    board[x][y] += (tree.age / 2); // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½È´ï¿½.
                     deadTree.add(tree);
                 }
             }
@@ -108,7 +108,7 @@ public class Main_16235 {
                 trees.remove(tree);
             }
 
-            if (trees.size() == 0) deadPosition.add(position); // ÇØ´ç ¶¥¿¡ ³ª¹«°¡ Á¸ÀçÇÏÁö ¾Ê´Â´Ù¸é °´Ã¼ Á¦°Å
+            if (trees.size() == 0) deadPosition.add(position); // ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´Â´Ù¸ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½
         }
 
         for(Position position : deadPosition) {
@@ -117,7 +117,7 @@ public class Main_16235 {
         }
     }
 
-    public static void fall() { // °¡À»
+    public static void fall() { // ï¿½ï¿½ï¿½ï¿½
         ArrayList<Position> addPosition = new ArrayList<>();
 
         for (Position position : treeList) {
@@ -126,7 +126,7 @@ public class Main_16235 {
             ArrayList<Tree> trees = position.trees;
 
             for(Tree tree : trees) {
-                if (tree.age % 5 == 0) { // ³ª¹«ÀÇ ³ªÀÌ°¡ 5ÀÇ ¹è¼ö¶ó¸é ¹ø½Ä
+                if (tree.age % 5 == 0) { // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½ 5ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     for(int i=0; i<8; i++) {
                         int nx = x + dx[i];
                         int ny = y + dy[i];
@@ -138,7 +138,7 @@ public class Main_16235 {
                             addPosition.add(pos[nx][ny]);
                         }
 
-                        pos[nx][ny].trees.add(new Tree(1, true)); // 1»ìÀÎ ³ª¹«¸¦ »ý¼º
+                        pos[nx][ny].trees.add(new Tree(1, true)); // 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     }
                 }
             }
@@ -150,7 +150,7 @@ public class Main_16235 {
 
     }
 
-    public static void winter() { // °Ü¿ï
+    public static void winter() { // ï¿½Ü¿ï¿½
         for(int i=1; i<=N; i++) {
             for(int j=1; j<=N; j++) {
                 board[i][j] += A[i][j];
@@ -158,31 +158,30 @@ public class Main_16235 {
         }
     }
 
+    static class Position {
 
-}
+        int x;
+        int y;
+        ArrayList<Tree> trees = new ArrayList<>();
 
-class Position {
-    
-    int x;
-    int y;
-    ArrayList<Tree> trees = new ArrayList<>();
+        public Position(int x, int y, ArrayList<Tree> trees) {
+            this.x = x;
+            this.y = y;
+            this.trees = trees;
+        }
 
-    public Position(int x, int y, ArrayList<Tree> trees) {
-        this.x = x;
-        this.y = y;
-        this.trees = trees;
     }
 
-}
+    static class Tree {
 
-class Tree {
+        int age;
+        boolean isAlive;
 
-    int age;
-    boolean isAlive;
+        public Tree(int age, boolean isAlive) {
+            this.age = age;
+            this.isAlive = isAlive;
+        }
 
-    public Tree(int age, boolean isAlive) {
-        this.age = age;
-        this.isAlive = isAlive;
     }
 
 }

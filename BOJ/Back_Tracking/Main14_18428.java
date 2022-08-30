@@ -73,16 +73,18 @@ public class Main14_18428 {
         }
         return true;
     }
-}
 
-class Student {
+    static class Student {
 
-    int x;
-    int y;
+        int x;
+        int y;
 
-    public Student(int x, int y) {
-        this.x = x;
-        this.y = y;
+        public Student(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
     }
 
 }
+

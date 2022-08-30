@@ -1,3 +1,5 @@
+package BOJ.Simulation;
+
 import java.util.*;
 import java.io.*;
 
@@ -74,9 +76,9 @@ public class Main_16236 {
                     if (distance > dis) {
                         distance = dis;
                         fish = f;
-                    } else if (distance == dis) { // °Å¸®°¡ °¡±î¿î ¹°°í±â°¡ ¸¹´Ù¸é, °¡Àå À§¿¡ ÀÖ´Â ¹°°í±â¸¦ ¸Ô´Â´Ù.
+                    } else if (distance == dis) { // ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½â°¡ ï¿½ï¿½ï¿½Ù¸ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½â¸¦ ï¿½Ô´Â´ï¿½.
                         if (fish.x > f.x) fish = f;
-                        else if (fish.x == f.x) { // ±×·¯ÇÑ ¹°°í±â°¡ ¿©·¯¸¶¸®¶ó¸é, °¡Àå ¿ÞÂÊ¿¡ ÀÖ´Â ¹°°í±â¸¦ ¸Ô´Â´Ù.
+                        else if (fish.x == f.x) { // ï¿½×·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½â°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ê¿ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½â¸¦ ï¿½Ô´Â´ï¿½.
                             if (fish.y > f.y) fish = f;
                         }
                     }
@@ -108,10 +110,10 @@ public class Main_16236 {
 
                 if (nx < 0 || nx >= N || ny < 0 || ny >= N) continue;
 
-                if (visited[nx][ny]) continue; // ÀÌ¹Ì Áö³ª°¬´ø ÀÚ¸®¶ó¸é Áö³ª°¥ ¼ö ¾øÀ½.
-                if (board[nx][ny] > shark.size) continue; // ÀÚ½Åº¸´Ù Å©±â°¡ Å« ¹°°í±â´Â Áö³ª°¥ ¼ö ¾øÀ½.
+                if (visited[nx][ny]) continue; // ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+                if (board[nx][ny] > shark.size) continue; // ï¿½Ú½Åºï¿½ï¿½ï¿½ Å©ï¿½â°¡ Å« ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 
-                if (fish.x == nx && fish.y == ny) return shark.time+1; // ¹°°í±â¸¦ ÃÖ´Ü ½Ã°£¿¡ ¹ß°ßÇß´Ù¸é Á¾·á
+                if (fish.x == nx && fish.y == ny) return shark.time+1; // ï¿½ï¿½ï¿½ï¿½â¸¦ ï¿½Ö´ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ß´Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 
                 visited[nx][ny] = true;
                 queue.offer(new Shark(nx, ny, shark.size, shark.eatCount, shark.time+1));
@@ -122,40 +124,40 @@ public class Main_16236 {
         return (int)1e9;
     }
 
-}
+    static class Shark implements Comparable<Shark> {
 
-class Shark implements Comparable<Shark> {
+        int x;
+        int y;
+        int size;
+        int eatCount;
+        int time;
 
-    int x;
-    int y;
-    int size;
-    int eatCount;
-    int time;
+        public Shark(int x, int y, int size, int eatCount, int time) {
+            this.x = x;
+            this.y = y;
+            this.size = size;
+            this.eatCount = eatCount;
+            this.time = time;
+        }
 
-    public Shark(int x, int y, int size, int eatCount, int time) {
-        this.x = x;
-        this.y = y;
-        this.size = size;
-        this.eatCount = eatCount;
-        this.time = time;
+        @Override
+        public int compareTo(Shark s) {
+            return this.time - s.time;
+        }
+
     }
 
-    @Override
-    public int compareTo(Shark s) {
-        return this.time - s.time;
+    static class Fish {
+
+        int x;
+        int y;
+        int size;
+
+        public Fish(int x, int y, int size) {
+            this.x = x;
+            this.y = y;
+            this.size = size;
+        }
     }
 
-}
-
-class Fish {
-
-    int x;
-    int y;
-    int size;
-
-    public Fish(int x, int y, int size) {
-        this.x = x;
-        this.y = y;
-        this.size = size;
-    }
 }

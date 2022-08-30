@@ -77,39 +77,39 @@ public class Main30_2887 {
         return parents[root] = find(parents[root]);
     }
 
-}
+    static class Node implements Comparable<Node> {
 
-class Planet {
+        int from;
+        int to;
+        int distance;
 
-    int index;
-    int x;
-    int y;
-    int z;
+        public Node(int from, int to, int distance) {
+            this.from = from;
+            this.to = to;
+            this.distance = distance;
+        }
 
-    public Planet(int index, int x, int y, int z) {
-        this.index = index;
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        @Override
+        public int compareTo(Node node) {
+            return this.distance - node.distance;
+        }
+
     }
 
-}
+    static class Planet {
 
-class Node implements Comparable<Node> {
+        int index;
+        int x;
+        int y;
+        int z;
 
-    int from;
-    int to;
-    int distance;
+        public Planet(int index, int x, int y, int z) {
+            this.index = index;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
 
-    public Node(int from, int to, int distance) {
-        this.from = from;
-        this.to = to;
-        this.distance = distance;
-    }
-
-    @Override
-    public int compareTo(Node node) {
-        return this.distance - node.distance;
     }
 
 }

@@ -71,25 +71,22 @@ class MainBlind2021_3 {
         else if (s1.equals(s2)) return true;
         else return false;
     }
-    
-}
 
-class Person {
+    static class Person {
 
-    String lang;
-    String position;
-    String year;
-    String food;
-    int score;
+        String lang;
+        String position;
+        String year;
+        String food;
+        int score;
 
-    public Person(String lang, String position, String year, String food, int score) {
-        this.lang = lang;
-        this.position = position;
-        this.year = year;
-        this.food = food;
-        this.score = score;
+        public Person(String lang, String position, String year, String food, int score) {
+            this.lang = lang;
+            this.position = position;
+            this.year = year;
+            this.food = food;
+            this.score = score;
+        }
     }
-
-
-
 }
+

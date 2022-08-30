@@ -31,27 +31,27 @@ class MainBlind2021_4 {
         }
         
 
-        // °¢ÀÚ Å¸°í°¡´Â °æ¿ì
-        dijkstra(s); // s¿¡¼­ºÎÅÍ ¸ðµç ³ëµå±îÁöÀÇ ÃÖ´Ü°Å¸®¸¦ ´ãÀ½
-        answer = d[a] + d[b]; // s¿¡¼­ a·Î, b·ÎÀÇ °Å¸®¸¦ ±¸ÇÔ
+        // ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        dijkstra(s); // sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ü°Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        answer = d[a] + d[b]; // sï¿½ï¿½ï¿½ï¿½ aï¿½ï¿½, bï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         System.out.println("d : " + Arrays.toString(d));
         System.out.println("minIdx : " + minIndex + ", minCost : " + minCost);
 
-        // °°ÀÌ Å¸´Â °æ¿ì
+        // ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½
         int t = (int)1e9;
         for(int i=1; i<=n; i++) {
-            if (i == s) continue; // Á¦ÀÚ¸® ÀÌµ¿±ÝÁö
+            if (i == s) continue; // ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½
             
             dijkstra(s); 
-            int min = d[i]; // s¿¡¼­ i±îÁö °°ÀÌ °¡°í
+            int min = d[i]; // sï¿½ï¿½ï¿½ï¿½ iï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-            if (min >= t) continue; // ÃÖ¼Òºñ¿ë ÀÌ»óÀÌ¸é Áß´Ü
+            if (min >= t) continue; // ï¿½Ö¼Òºï¿½ï¿½ ï¿½Ì»ï¿½ï¿½Ì¸ï¿½ ï¿½ß´ï¿½
 
             dijkstra(i);
-            min += (d[a] + d[b]); // i¿¡¼­ °¢ÀÚ ÁýÀ¸·Î °¡´Â °Í
+            min += (d[a] + d[b]); // iï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             
-            if (min < 0) continue; // ºñ¿ëÀÌ À½¼ö°¡ ³ª¿À¸é ¾ÈµÊ
+            if (min < 0) continue; // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Èµï¿½
             
             t = Math.min(t, min);
         }
@@ -83,21 +83,23 @@ class MainBlind2021_4 {
             }
         }
     }
-}
 
-class Node implements Comparable<Node> {
+    static class Node implements Comparable<Node> {
 
-    int index;
-    int distance;
+        int index;
+        int distance;
 
-    public Node(int index, int distance) {
-        this.index = index;
-        this.distance = distance;
+        public Node(int index, int distance) {
+            this.index = index;
+            this.distance = distance;
+        }
+
+        @Override
+        public int compareTo(Node node) {
+            return this.distance - node.distance;
+        }
+
     }
 
-    @Override
-    public int compareTo(Node node) {
-        return this.distance - node.distance;
-    }
-
 }
+

@@ -65,16 +65,16 @@ public class Main38_4 {
         return leftNode == null ? rightNode : leftNode;
     }
 
-}
+    static class Node {
 
-class Node {
+        int MIN;
+        int MAX;
 
-    int MIN;
-    int MAX;
+        public Node(int MIN, int MAX) {
+            this.MIN = MIN;
+            this.MAX = MAX;
+        }
 
-    public Node(int MIN, int MAX) {
-        this.MIN = MIN;
-        this.MAX = MAX;
     }
-
 }
+

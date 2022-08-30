@@ -1,3 +1,5 @@
+package BOJ.Priority_Queue;
+
 import java.util.*;
 import java.io.*;
 
@@ -21,7 +23,7 @@ public class Main_2014 {
             i++;
         }
 
-        DFS(0);
+        DFS();
 
     }
 

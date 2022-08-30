@@ -18,7 +18,7 @@ public class Main_1966 {
             pq = new PriorityQueue<>(new Comparator<Work>() {
                 @Override
                 public int compare(Work w1, Work w2) {
-                    return w2.distance - w1.distance; // Áß¿äÇÑ ¹®¼­ºÎÅÍ Ã³¸®
+                    return w2.distance - w1.distance; // ï¿½ß¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
                 }
             });
 
@@ -49,16 +49,17 @@ public class Main_1966 {
         System.out.println(sb);
     }
 
-}
+    static class Work {
 
-class Work {
+        int index;
+        int distance;
 
-    int index;
-    int distance;
+        public Work(int index, int distance) {
+            this.index = index;
+            this.distance = distance;
+        }
 
-    public Work(int index, int distance) {
-        this.index = index;
-        this.distance = distance;
     }
 
 }
+

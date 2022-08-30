@@ -1,14 +1,18 @@
+package BOJ.Hash;
+
 import java.util.*;
 import java.io.*;
 
 public class Main_2002 {
     static int N, result=0;
     static ArrayList<String> list = new ArrayList<>();
+    static boolean[] cars;
     
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
+
         cars = new boolean[N];
 
         for(int i=0; i<N; i++) {

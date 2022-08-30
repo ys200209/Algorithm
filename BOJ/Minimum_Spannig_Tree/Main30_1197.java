@@ -57,18 +57,18 @@ public class Main30_1197 {
         return parents[root] = find(parents[root]);
     }
 
-}
+    static class Node {
 
-class Node {
+        int from;
+        int to;
+        int distance;
 
-    int from;
-    int to;
-    int distance;
+        public Node(int from, int to, int distance) {
+            this.from = from;
+            this.to = to;
+            this.distance = distance;
+        }
 
-    public Node(int from, int to, int distance) {
-        this.from = from;
-        this.to = to;
-        this.distance = distance;
     }
-
 }
+

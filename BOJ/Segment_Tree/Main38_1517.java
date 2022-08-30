@@ -1,3 +1,5 @@
+package BOJ.Segment_Tree;
+
 import java.util.*;
 import java.io.*;
 
@@ -28,7 +30,7 @@ public class Main38_1517 {
         System.out.println(sb);
     }
 
-    public static int init(int start, int end, int node, int w) {
+    public static int init(int start, int end, int node) {
         if (start == end) return tree[node] = list[start];
 
         int mid = (start + end) / 2;

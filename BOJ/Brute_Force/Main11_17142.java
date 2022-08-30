@@ -86,23 +86,25 @@ public class Main11_17142 {
         }
         if (zeroCount == zero) result = Math.min(result, time);
     }
-}
 
-class Virus implements Comparable<Virus> {
+    static class Virus implements Comparable<Virus> {
 
-    int x;
-    int y;
-    int count=0;
+        int x;
+        int y;
+        int count=0;
 
-    public Virus(int x, int y, int count) {
-        this.x = x;
-        this.y = y;
-        this.count = count;
+        public Virus(int x, int y, int count) {
+            this.x = x;
+            this.y = y;
+            this.count = count;
+        }
+
+        @Override
+        public int compareTo(Virus v1) {
+            return this.count - v1.count;
+        }
+
     }
 
-    @Override
-    public int compareTo(Virus v1) {
-        return this.count - v1.count;
-    }
-
 }
+

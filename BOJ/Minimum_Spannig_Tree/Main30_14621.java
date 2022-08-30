@@ -43,7 +43,7 @@ public class Main30_14621 {
             int A = node.from;
             int B = node.to;
 
-            if (nodes[A].equals(nodes[B])) continue; // °°Àº ¼ºº°ÀÇ ´ëÇÐ±³¶ó¸é ±æÀ» ÀÕÁö ¾Ê´Â´Ù.
+            if (nodes[A].equals(nodes[B])) continue; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´Â´ï¿½.
 
             // System.out.println("A : " + A + ", nodes[A] : " + nodes[A]);
             // System.out.println("B : " + B + ", nodes[B] : " + nodes[B]);
@@ -84,23 +84,24 @@ public class Main30_14621 {
         return parents[root] = find(parents[root]);
     }
 
-}
+    static class Node implements Comparable<Node> {
 
-class Node implements Comparable<Node> {
+        int from;
+        int to;
+        int distance;
 
-    int from;
-    int to;
-    int distance;
+        public Node(int from, int to, int distance) {
+            this.from = from;
+            this.to = to;
+            this.distance = distance;
+        }
 
-    public Node(int from, int to, int distance) {
-        this.from = from;
-        this.to = to;
-        this.distance = distance;
+        @Override
+        public int compareTo(Node node) {
+            return this.distance - node.distance;
+        }
+
     }
 
-    @Override
-    public int compareTo(Node node) {
-        return this.distance - node.distance;
-    }
-
 }
+

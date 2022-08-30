@@ -60,35 +60,35 @@ public class Main30_4386 {
         return parents[root] = find(parents[root]);
     }
 
-}
+    static class Node implements Comparable<Node> {
 
-class Star {
+        double from;
+        double to;
+        double distance;
 
-    int x;
-    int y;
-    
-    public Star (int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-    
-}
+        public Node(double from, double to, double distance) {
+            this.from = from;
+            this.to = to;
+            this.distance = distance;
+        }
 
-class Node implements Comparable<Node> {
+        @Override
+        public int compareTo(Node node) {
+            return (int) (this.distance - node.distance);
+        }
 
-    double from;
-    double to;
-    double distance;
-
-    public Node(double from, double to, double distance) {
-        this.from = from;
-        this.to = to;
-        this.distance = distance;
     }
 
-    @Override
-    public int compareTo(Node node) {
-        return (int) (this.distance - node.distance);
+    static class Star {
+
+        int x;
+        int y;
+
+        public Star (int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
     }
 
 }

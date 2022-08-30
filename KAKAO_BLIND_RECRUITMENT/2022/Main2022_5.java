@@ -1,3 +1,4 @@
+
 import java.util.*;
 import java.io.*;
 
@@ -87,27 +88,27 @@ public class Main2022_5 {
         return info;
     }
 
+    static class Node implements Comparable<Node> {
+
+        int now;
+        int sheep;
+        int wolf;
+        boolean[] visited;
+        int[] info;
+
+        public Node(int now, int sheep, int wolf, boolean[] visited, int[] info) {
+            this.now = now;
+            this.sheep = sheep;
+            this.wolf = wolf;
+            this.visited = visited;
+            this.info = info;
+        }
+
+        @Override
+        public int compareTo(Node node) {
+            return node.sheep - this.sheep;
+        }
+
+    }
 }
 
-class Node implements Comparable<Node> {
-
-    int now;
-    int sheep;
-    int wolf;
-    boolean[] visited;
-    int[] info;
-
-    public Node(int now, int sheep, int wolf, boolean[] visited, int[] info) {
-        this.now = now;
-        this.sheep = sheep;
-        this.wolf = wolf;
-        this.visited = visited;
-        this.info = info;
-    }
-
-    @Override
-    public int compareTo(Node node) {
-        return node.sheep - this.sheep;
-    }
-
-}

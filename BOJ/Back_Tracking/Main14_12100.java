@@ -1,8 +1,10 @@
+package BOJ.Back_Tracking;
+
 import java.util.*;
 import java.io.*;
 
 public class Main14_12100 {
-    static int[] dx = {1, 0, -1, 0}; // ºÏ, µ¿, ³², ¼­
+    static int[] dx = {1, 0, -1, 0}; // ï¿½ï¿½, ï¿½ï¿½, ï¿½ï¿½, ï¿½ï¿½
     static int[] dy = {0, 1, 0, -1};
     static int N, max=0;
     static Queue<Game> queue = new LinkedList<>();
@@ -44,21 +46,33 @@ public class Main14_12100 {
 
     }
 
+    private static void Left() {
+    }
+
+    private static void Down() {
+
+    }
+
+    private static void Right() {
+
+    }
+
     public static void Up() {
         
     }
 
-}
+    static class Game {
 
-class Game {
+        int[][] board;
+        int moveCount;
+        int max;
 
-    int[][] board;
-    int moveCount;
-    int max;
-
-    public Game(int[][] board, int moveCount, int max) {
-        this.board = board;
-        this.moveCount = moveCount;
-        this.max = max;
+        public Game(int[][] board, int moveCount, int max) {
+            this.board = board;
+            this.moveCount = moveCount;
+            this.max = max;
+        }
     }
+
 }
+

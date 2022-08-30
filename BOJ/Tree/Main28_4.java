@@ -1,3 +1,5 @@
+package BOJ.Tree;
+
 import java.util.*;
 import java.io.*;
 
@@ -27,69 +29,70 @@ public class Main28_4 {
         tree.postOrder(tree.rootNode);
 
     }
-    
-}
 
-class Node {
-    String rootNode;
-    Node leftNode;
-    Node rightNode;
+    static class Node {
+        String rootNode;
+        Node leftNode;
+        Node rightNode;
 
-    public Node(String rootNode) {
-        this.rootNode = rootNode;
-    }
-}
-
-class Tree {
-    Node rootNode;
-    
-    public void add(String root, String left, String right) {
-        if (rootNode == null) {
-            rootNode = new Node(root);
-            if (!left.equals(".")) rootNode.leftNode = new Node(left);
-            if (!right.equals(".")) rootNode.rightNode = new Node(right);
-        } else {
-            search(rootNode, root, left, right); 
+        public Node(String rootNode) {
+            this.rootNode = rootNode;
         }
     }
 
-    public void search(Node rootNode, String root, String left, String right) {
+    static class Tree {
+        Node rootNode;
 
-        if (rootNode == null) return;
+        public void add(String root, String left, String right) {
+            if (rootNode == null) {
+                rootNode = new Node(root);
+                if (!left.equals(".")) rootNode.leftNode = new Node(left);
+                if (!right.equals(".")) rootNode.rightNode = new Node(right);
+            } else {
+                search(rootNode, root, left, right);
+            }
+        }
 
-        if (rootNode.rootNode.equals(root)) { // Å½»ö µµÁß Å¸°Ù ³ëµå¸¦ ¹ß°ßÇß´Ù¸é
-            if (!left.equals(".")) rootNode.leftNode = new Node(left);
-            if (!right.equals(".")) rootNode.rightNode = new Node(right);
-        } else {
-            // ¹ß°ßÇÏÁö ¸øÇß´Ù¸é ´Ù¸¥ ÀÚ½Ä ³ëµåµéÀ» Å½»ö
-            search(rootNode.leftNode, root, left, right);
-            search(rootNode.rightNode, root, left, right);
+        public void search(Node rootNode, String root, String left, String right) {
+
+            if (rootNode == null) return;
+
+            if (rootNode.rootNode.equals(root)) { // Å½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½å¸¦ ï¿½ß°ï¿½ï¿½ß´Ù¸ï¿½
+                if (!left.equals(".")) rootNode.leftNode = new Node(left);
+                if (!right.equals(".")) rootNode.rightNode = new Node(right);
+            } else {
+                // ï¿½ß°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß´Ù¸ï¿½ ï¿½Ù¸ï¿½ ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å½ï¿½ï¿½
+                search(rootNode.leftNode, root, left, right);
+                search(rootNode.rightNode, root, left, right);
+            }
+
+        }
+
+        public void preOrder(Node rootNode) {
+
+            System.out.print(rootNode.rootNode);
+            if (rootNode.leftNode != null) preOrder(rootNode.leftNode);
+            if (rootNode.rightNode != null) preOrder(rootNode.rightNode);
+
+        }
+
+        public void inOrder(Node rootNode) {
+
+            if (rootNode.leftNode != null) inOrder(rootNode.leftNode);
+            System.out.print(rootNode.rootNode);
+            if (rootNode.rightNode != null) inOrder(rootNode.rightNode);
+
+        }
+
+        public void postOrder(Node rootNode) {
+
+            if (rootNode.leftNode != null) postOrder(rootNode.leftNode);
+            if (rootNode.rightNode != null) postOrder(rootNode.rightNode);
+            System.out.print(rootNode.rootNode);
+
         }
 
     }
-
-    public void preOrder(Node rootNode) {
-        
-        System.out.print(rootNode.rootNode);
-        if (rootNode.leftNode != null) preOrder(rootNode.leftNode);
-        if (rootNode.rightNode != null) preOrder(rootNode.rightNode);
-
-    }
-
-    public void inOrder(Node rootNode) {
-
-        if (rootNode.leftNode != null) inOrder(rootNode.leftNode);
-        System.out.print(rootNode.rootNode);
-        if (rootNode.rightNode != null) inOrder(rootNode.rightNode);
-
-    }
-
-    public void postOrder(Node rootNode) {
-
-        if (rootNode.leftNode != null) postOrder(rootNode.leftNode);
-        if (rootNode.rightNode != null) postOrder(rootNode.rightNode);
-        System.out.print(rootNode.rootNode);
-
-    }
-
+    
 }
+

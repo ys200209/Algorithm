@@ -1,3 +1,5 @@
+package BOJ.Shortest_Path;
+
 import java.util.*;
 import java.io.*;
 
@@ -68,34 +70,35 @@ public class Main25_2 {
 			}
 		}
 		
-		return dp;
+		return dp[end];
 	}
-}
 
-class Node3 implements Comparable<Node3> {
-	
-	private int index;
-	private int distance;
-	
-	public Node3(int index, int distance) {
-		this.index = index;
-		this.distance = distance;
-	}
-	
-	public int getIndex() {
-		return index;
-	}
-	
-	public int getDistance() {
-		return distance;
-	}
-	
-	@Override
-	public int compareTo(Node3 n1) {
-		if (this.getDistance() < n1.getDistance()) {
-			return -1;
+	static class Node3 implements Comparable<Node3> {
+
+		private int index;
+		private int distance;
+
+		public Node3(int index, int distance) {
+			this.index = index;
+			this.distance = distance;
 		}
-		return 1;
-	}
 
+		public int getIndex() {
+			return index;
+		}
+
+		public int getDistance() {
+			return distance;
+		}
+
+		@Override
+		public int compareTo(Node3 n1) {
+			if (this.getDistance() < n1.getDistance()) {
+				return -1;
+			}
+			return 1;
+		}
+
+	}
 }
+

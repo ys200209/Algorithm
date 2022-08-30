@@ -1,3 +1,5 @@
+package BOJ.Back_Tracking;
+
 import java.util.*;
 import java.io.*;
 
@@ -46,7 +48,7 @@ public class Main14_19942 {
 
     public static boolean checkFood(Food now) {
         if (now.mp >= result_food.mp && now.mf >= result_food.mf && 
-        now.ms >= result_food.ms && now.mu >= result_food.mu) { // ÃÖ¼Ò ¿µ¾ç¼Ò¿¡ ¸¸Á·ÇÑ´Ù¸é
+        now.ms >= result_food.ms && now.mu >= result_food.mu) { // ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ò¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´Ù¸ï¿½
 
             if (result_price > now.price) {
                 result_price = now.price;
@@ -57,23 +59,24 @@ public class Main14_19942 {
         return false;
     }
 
-}
+    static class Food {
 
-class Food {
+        int mp;
+        int mf;
+        int ms;
+        int mu;
+        int price;
 
-    int mp;
-    int mf;
-    int ms;
-    int mu;
-    int price;
+        public Food() { /* empty */}
 
-    public Food() { /* empty */}
-
-    public Food(int mp, int mf, int ms, int mu, int price) {
-        this.mp = mp;
-        this.mf = mf;
-        this.ms = ms;
-        this.mu = mu;
-        this.price = price;
+        public Food(int mp, int mf, int ms, int mu, int price) {
+            this.mp = mp;
+            this.mf = mf;
+            this.ms = ms;
+            this.mu = mu;
+            this.price = price;
+        }
     }
+
 }
+

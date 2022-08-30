@@ -110,18 +110,19 @@ public class Main23_17141 {
         return true;
     }
 
-}
+    static class Virus {
 
-class Virus {
+        int x;
+        int y;
+        int time;
 
-    int x;
-    int y;
-    int time;
+        public Virus(int x, int y, int time) {
+            this.x = x;
+            this.y = y;
+            this.time = time;
+        }
 
-    public Virus(int x, int y, int time) {
-        this.x = x;
-        this.y = y;
-        this.time = time;
     }
 
 }
+

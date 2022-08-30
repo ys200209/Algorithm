@@ -107,16 +107,16 @@ public class Main38_14428 {
         return tree[node];
     }
 
-}
+    static class Node {
 
-class Node {
+        int value;
+        int index;
 
-    int value;
-    int index;
+        public Node(int value, int index) {
+            this.value = value;
+            this.index = index;
+        }
 
-    public Node(int value, int index) {
-        this.value = value;
-        this.index = index;
     }
-
 }
+

@@ -93,16 +93,17 @@ public class Main_DevMatching_2022_2 {
         }
     }
 
-}
+    static class Cell {
 
-class Cell {
+        int row;
+        int column;
 
-    int row;
-    int column;
+        public Cell(int row, int column) {
+            this.row = row;
+            this.column = column;
+        }
 
-    public Cell(int row, int column) {
-        this.row = row;
-        this.column = column;
     }
 
 }
+

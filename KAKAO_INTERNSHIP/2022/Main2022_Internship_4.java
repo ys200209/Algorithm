@@ -1,7 +1,7 @@
     import java.util.*;
 
 class Main2022_Internship_4 {
-    static int INF = (int)1e9, intensity = (int)1e9, summit; // INF : ¹è¿­ ÃÊ±âÈ­ °ª, ÃÖ¼Ò µî»êÄÚ½º °Å¸®, »êºÀ¿ì¸® °ª
+    static int INF = (int)1e9, intensity = (int)1e9, summit; // INF : ï¿½è¿­ ï¿½Ê±ï¿½È­ ï¿½ï¿½, ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ú½ï¿½ ï¿½Å¸ï¿½, ï¿½ï¿½ï¿½ï¿½ì¸® ï¿½ï¿½
     static int[] d;
     static ArrayList<ArrayList<Node>> graph = new ArrayList<>();
     static Queue<Node> pq;
@@ -54,13 +54,13 @@ class Main2022_Internship_4 {
             int now = node.index;
             int dis = node.distance;
 
-            if (d[now] < dis) continue; // ÇöÀç À§Ä¡¿¡ ´õ ÂªÀº °Å¸®·Î ¿Â ±â·ÏÀÌ ÀÖ´Ù¸é ´Ù¸¥ ³ëµå ÀçÅ½»ö
+            if (d[now] < dis) continue; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ Âªï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Å½ï¿½ï¿½
 
             for(int i=0; i<graph.get(now).size(); i++) {
                 int cost = d[now] + graph.get(now).get(i).distance;
 
-                if (d[graph.get(now).get(i).index] > cost) { // ±âÁ¸º¸´Ù ´õ ÃÖ´Ü°Å¸®¸¦ ¹ß°ßÇß´Ù¸é
-                    d[graph.get(now).get(i).index] = cost; // ÃÖ´Ü °Å¸® °»½Å
+                if (d[graph.get(now).get(i).index] > cost) { // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´Ü°Å¸ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ß´Ù¸ï¿½
+                    d[graph.get(now).get(i).index] = cost; // ï¿½Ö´ï¿½ ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½
                     pq.offer(new Node(graph.get(now).get(i).index, cost));
                 }
             }
@@ -68,27 +68,29 @@ class Main2022_Internship_4 {
 
         // System.out.println("d : " + Arrays.toString(d));
 
-        return d[to]; // start¿¡¼­ to·ÎÀÇ ÃÖ´Ü°Å¸®°ªÀ» ¸®ÅÏ.
+        return d[to]; // startï¿½ï¿½ï¿½ï¿½ toï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ü°Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+    }
+
+    static class Node implements Comparable<Node> {
+
+        int index;
+        int distance;
+
+        public Node(int index, int distance) {
+            this.index = index;
+            this.distance = distance;
+        }
+
+        @Override
+        public int compareTo(Node node) {
+            return this.distance - node.distance;
+        }
     }
 
 }
 
-class Node implements Comparable<Node> {
 
-    int index;
-    int distance;
-
-    public Node(int index, int distance) {
-        this.index = index;
-        this.distance = distance;
-    }
-
-    @Override
-    public int compareTo(Node node) {
-        return this.distance - node.distance;
-    }
-}
 
 /*
-    Q1 : ´ÙÀÍ½ºÆ®¶ó ¾Ë°í¸®Áò¿¡ ´ëÇØ ¸»ÇØº¸¶ó
+    Q1 : ï¿½ï¿½ï¿½Í½ï¿½Æ®ï¿½ï¿½ ï¿½Ë°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Øºï¿½ï¿½ï¿½
 */ 
