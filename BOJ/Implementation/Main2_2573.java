@@ -8,7 +8,6 @@ public class Main2_2573 {
     static int[] dy = {0, -1, 0, 1};
     static int N, M, result=0;
     static Ice[][] board;
-//    static boolean[][] visited;
     static List<Ice> iceList = new ArrayList<>();
     static Queue<Ice> removeQueue = new LinkedList<>();
 
@@ -26,15 +25,12 @@ public class Main2_2573 {
             while(st.hasMoreTokens()) {
                 int height = Integer.parseInt(st.nextToken());
                 board[i][j] = height == 0 ? null : new Ice(i, j, height);
-                if (board[i][j] != null) iceList.add(new Ice(i, j, height));
+                if (board[i][j] != null) iceList.add(board[i][j]);
                 j++;
             }
         }
 
-        int count=0;
-        while ((count = nextYear()) < 2) {
-            System.out.println("count = " + count);
-            System.out.println("iceList = " + iceList.size());
+        while (nextYear() < 2) {
             remove();
 
             if (iceList.isEmpty()) {
@@ -52,12 +48,13 @@ public class Main2_2573 {
         for(Ice ice : iceList) {
             if (ice.amount <= 0) {
                 removeQueue.offer(ice);
-                board[ice.x][ice.y] = null;
             }
         }
 
         while(!removeQueue.isEmpty()) {
-            iceList.remove(removeQueue.poll());
+            Ice poll = removeQueue.poll();
+            board[poll.x][poll.y] = null;
+            iceList.remove(poll);
         }
     }
 
@@ -92,14 +89,14 @@ public class Main2_2573 {
 
                         if (visited[nx][ny]) continue;
 
+                        visited[nx][ny] = true;
 
                         queue.offer(board[nx][ny]);
                     }
-                    board[ice.x][ice.y].amount -= fuseCount;
+                    pollIce.amount -= fuseCount;
                 }
             }
         }
-
         return count;
     }
 
