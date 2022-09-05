@@ -13,9 +13,10 @@ public class Main2_16235 {
     static Queue<Tree> fallQueue = new LinkedList<>();
 
     public static void main(String[] args) throws IOException {
-        
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        long startTime = System.currentTimeMillis();
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
@@ -54,10 +55,12 @@ public class Main2_16235 {
             year++;
         }
         System.out.println(trees.size());
+        long endTime = System.currentTimeMillis();
+        System.out.println((endTime - startTime) + " ms");
     }
 
     private static void spring() {
-        Collections.sort(trees, Comparator.comparingInt(tree -> tree.age));
+        Collections.sort(trees);
 
         for (Tree tree : trees) {
             int x = tree.x;
@@ -109,7 +112,7 @@ public class Main2_16235 {
         }
     }
 
-    static class Tree {
+    static class Tree implements Comparable<Tree> {
         int x;
         int y;
         int age;
@@ -118,6 +121,11 @@ public class Main2_16235 {
             this.x = x;
             this.y = y;
             this.age = age;
+        }
+
+        @Override
+        public int compareTo(Tree o) {
+            return this.age - o.age;
         }
     }
 
