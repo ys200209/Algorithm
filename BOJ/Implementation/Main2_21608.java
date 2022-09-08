@@ -6,174 +6,150 @@ import java.util.*;
 public class Main2_21608 {
     static int[] dx = {-1, 0, 1, 0};
     static int[] dy = {0, -1, 0, 1};
-    static int N, score=0;
+    static int N;
     static Position[][] board;
-    static List<Position> posList = new ArrayList<>();
-    static List<Integer> numList = new ArrayList<>();
-    static Map<Integer, List<Integer>> friend = new HashMap<>();
-    static Map<Integer, Position> sit = new HashMap<>();
+    static List<Integer> studentNumbers = new ArrayList<>(); // 어떤 학생부터 앉을지 순서대로 담은 리스트
+    static Student[] students; // 모든 학생 정보들
 
     public static void main(String[] args) throws IOException {
-        
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
         N = Integer.parseInt(br.readLine());
         board = new Position[N+1][N+1];
+        students = new Student[N*N+1];
 
-        for(int i=1; i<=N*N; i++) {
+        for(int i=0; i<N*N; i++) {
             st = new StringTokenizer(br.readLine(), " ");
-            int num = Integer.parseInt(st.nextToken());
-            numList.add(num);
-            friend.put(num, new ArrayList<>());
-            while(st.hasMoreTokens()) {
-                friend.get(num).add(Integer.parseInt(st.nextToken()));
-            }
-//            System.out.println("board[" + ((i+N-1)/N) + "][" + ((i-1)%N + 1) + "]");
+            int number = Integer.parseInt(st.nextToken());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            int c = Integer.parseInt(st.nextToken());
+            int d = Integer.parseInt(st.nextToken());
 
-            Position position = null;
-            if (((i+N-1)/N == 1 || (i+N-1)/N == N) && ((i-1)%N + 1 == 1 || (i-1)%N + 1 == N)) { // 가장 구석 (r = 2)
-                position = new Position((i+N-1)/N, (i-1)%N + 1, 0, 2);
-            } else if (((i+N-1)/N == 1 || (i+N-1)/N == N) || ((i-1)%N + 1 == 1 || (i-1)%N + 1 == N)) { // 모서리 (r = 3)
-                position = new Position((i+N-1)/N, (i-1)%N + 1, 0, 3);
-            } else {
-                position = new Position((i+N-1)/N, (i-1)%N + 1, 0, 4);
-            }
-            posList.add(position);
-            board[(i+N-1)/N][(i-1)%N + 1] = position;
+            students[number] = new Student(number, new ArrayList<>(Arrays.asList(a, b, c, d)));
+            studentNumbers.add(number); // 어떤 학생부터 앉을지 순서대로 담은 리스트
+            board[i/N+1][i%N+1] = new Position(i/N+1, i%N+1, null); // 아직 아무 학생도 앉지 않음 (null)
         }
 
-        for (int n : numList) {
-            Position sitPos = null;
+        for(int i=0; i<studentNumbers.size(); i++) {
+            int sitNumber = studentNumbers.get(i); // 앉을 학생의 번호
 
-            for(int i=0; i<friend.get(n).size(); i++) {
+            Position position = search(sitNumber); // 학생이 앉을 위치(Position)
+            position.student = students[sitNumber]; // 해당 위치에 학생을 앉힘
 
-                if (sit.get(friend.get(n).get(i)) != null) {
+//            print();
+        }
 
-                    Position sitFriend = sit.get(friend.get(n).get(i));
-                    int x = sitFriend.x;
-                    int y = sitFriend.y;
+        int score = getScore();
+        System.out.println(score);
+    }
 
-                    if (n == 3) {
-                        System.out.println("3 friend : " + sitFriend.number);
-                    }
+    private static int getScore() {
+        int score = 0;
+        for(int i=1; i<=N; i++) {
+            for(int j=1; j<=N; j++) {
+                int count = 0;
 
-                    Position nSitPos = null;
-                    int count = 0;
+                for(int k=0; k<4; k++) {
+                    int nx = i + dx[k];
+                    int ny = j + dy[k];
 
-                    for(int j=0; j<4; j++) {
-                        int nx = x + dx[j];
-                        int ny = y + dy[j];
+                    if (nx < 1 || nx > N || ny < 1 || ny > N) continue;
+
+                    if (board[i][j].student.friends.contains(board[nx][ny].student.number)) count++; // 친구가 옆에 앉아있다면
+                }
+
+                score += Math.pow(10, count-1);
+            }
+        }
+        return score;
+    }
+
+    /*private static void print() {
+        for(int i=1; i<=N; i++) {
+            System.out.println();
+            for(int j=1; j<=N; j++) {
+                System.out.print((board[i][j].student == null ? "X" : board[i][j].student.number) + " ");
+            }
+        }
+        System.out.println();
+    }*/
+
+    private static Position search(int sitNumber) {
+        Position position = null;
+        List<Integer> friends = students[sitNumber].friends;
+        int maxEmptyCount = -1;
+        int maxFriendCount = -1;
+
+        for(int i=1; i<=N; i++) {
+            for(int j=1; j<=N; j++) {
+                if (board[i][j].student == null) { // 빈 자리라면 (이 곳에 앉으려고 할 때)
+                    int emptyCount = 0;
+                    int friendCount = 0;
+                    for(int k=0; k<4; k++) {
+                        int nx = i + dx[k];
+                        int ny = j + dy[k];
 
                         if (nx < 1 || nx > N || ny < 1 || ny > N) continue;
 
-                        if (board[nx][ny] != null) continue;
-
-                        nSitPos = board[nx][ny];
-
-                        if (sitPos == null) sitPos = nSitPos;
-
-                        if (sitPos != null) {
-                            if (sitPos.r < nSitPos.r) sitPos = nSitPos;
-                            else if (sitPos.r == nSitPos.r) {
-                                if (sitPos.x > nSitPos.x) sitPos = nSitPos;
-                                else if (sitPos.x == nSitPos.x) {
-                                    if (sitPos.y > nSitPos.y) sitPos = nSitPos;
-                                }
+                        if (board[nx][ny].student == null) emptyCount++;
+                        else {
+                            if (friends.contains(board[nx][ny].student.number)) { // 친한 친구 리스트에 있다면
+                                friendCount++;
                             }
                         }
                     }
 
-
+                    if (maxFriendCount < friendCount) {
+                        position = board[i][j];
+                        maxEmptyCount = emptyCount;
+                        maxFriendCount = friendCount;
+                    } else if (maxFriendCount == friendCount) {
+                        if (maxEmptyCount < emptyCount) {
+                            position = board[i][j];
+                            maxEmptyCount = emptyCount;
+                            maxFriendCount = friendCount;
+                        } else if (maxEmptyCount == emptyCount) {
+                            if (position.x > i) {
+                                position = board[i][j];
+                                maxEmptyCount = emptyCount;
+                                maxFriendCount = friendCount;
+                            } else if (position.x == i) {
+                                if (position.y > j) {
+                                    position = board[i][j];
+                                    maxEmptyCount = emptyCount;
+                                    maxFriendCount = friendCount;
+                                }
+                            }
+                        }
+                    }
                 }
             }
-
-            if (sitPos == null) { // 아직 친구가 아무도 앉지 않았다면
-                Collections.sort(posList);
-                sitPos = posList.get(0); // 여기에 그냥 앉아버림
-            }
-
-            decreaseR(sitPos.x, sitPos.y); // 주변의 여유 공간 감소
-            sitPos.number = n;
-            sit.put(n, sitPos); // 앉은 사람과 위치 정보를 기록
-            posList.remove(sitPos); // 남은 자리에 대한 정보에서 삭제
         }
-
-        getScore();
-
-        print();
-
-        System.out.println("score = " + score);
+        return position;
     }
 
-    private static void print() {
-        for(int i=1; i<=N; i++) {
-            System.out.println();
-            for(int j=1; j<=N; j++) {
-                System.out.print(board[i][j].number + " ");
-            }
-        }
-        System.out.println();
+    static class Position { // 교실의 자리 위치
 
-        System.out.println("4 = (" + sit.get(4).x + ", " + sit.get(4).y + ")");
-    }
-
-    private static void getScore() {
-        for (int n : numList) {
-            Position me = sit.get(n);
-            int x = me.x;
-            int y = me.y;
-
-            int count = 0;
-            for(int i=0; i<4; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-
-                if (nx < 1 || nx > N || ny < 1 || ny > N) continue;
-
-                if (friend.get(n).contains(board[nx][ny].number)) count++;
-            }
-
-            System.out.println("getScore() n=" + n + ", count : " + count);
-
-            if (count != 0) score += Math.pow(10, count-2);
-        }
-    }
-
-    private static void decreaseR(int x, int y) {
-        for(int i=0; i<4; i++) { // 주변의 여유 공간을 하나씩 줄임 (가운데 착석 했기 때문에)
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-
-            if (nx < 1 || nx > N || ny < 1 || ny > N) continue;
-
-            board[nx][ny].r--;
-        }
-    }
-
-    static class Position implements Comparable<Position> {
         int x;
         int y;
-        int number; // 학생 번호
-        int r; // 인접한 비어있는 칸의 갯수
+        Student student; // 해당 (x, y) 좌표에 어떤 학생이 앉아있는지를 나타냄
 
-        public Position() {
-        }
-
-        public Position(int x, int y, int number, int r) {
+        public Position(int x, int y, Student student) {
             this.x = x;
             this.y = y;
-            this.number = number;
-            this.r = r;
+            this.student = student;
         }
+    }
 
-        @Override
-        public int compareTo(Position p) {
-            if (p.r == this.r) {
-                if (p.x == this.x) {
-                    return this.y - p.y;
-                }
-                return this.x - p.x;
-            } else return p.r - this.r;
+    static class Student { // 학생 정보
+        int number;
+        List<Integer> friends;
+
+        public Student(int number, List<Integer> friends) {
+            this.number = number;
+            this.friends = friends;
         }
     }
 
