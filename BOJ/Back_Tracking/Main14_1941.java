@@ -1,20 +1,18 @@
 package BOJ.Back_Tracking;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Main14_1941 {
     static int[] dx = {-1, 0, 1, 0};
     static int[] dy = {0, -1, 0, 1};
-    static int N = 5, result = 0;
+    static int N=5, result=0;
     static Member[][] board = new Member[5][5];
-    static boolean[][] visited; // 전체 방문 처리
-    static boolean[][] sVisited = new boolean[5][5]; // 이다솜 그룹의 멤버 방문 처리
     static List<Member> members = new ArrayList<>();
-    static List<Member> sMember = new ArrayList<>();
+    static Queue<Member> queue = new LinkedList<>();
+    static boolean[][] visited;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException { // 15% Error
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         for (int i = 0; i < N; i++) {
@@ -22,64 +20,98 @@ public class Main14_1941 {
             for (int j = 0; j < split.length; j++) {
                 Member member = new Member(i, j, split[j]);
                 board[i][j] = member;
-                if (member.name.equals("S")) sMember.add(member);
             }
         }
 
-        for (int i = 0; i < sMember.size()-3; i++) { // 이다솜 파는 최소 4명 이상이어야 하기 때문에 -3을 해주어 최댓값을 조정함 (어차피 그 뒤부턴 이다솜 파가 무조건 4명 미만이 되기 때문에 계산할 필요가 없음)
-            Member member = sMember.get(i);
-            visited = new boolean[5][5];
-            sVisited[member.x][member.y] = true;
-            members.add(member);
-            DFS(member, 1, 1);
-            members.remove(member);
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<N; j++) {
+                Member member = board[i][j];
+                members.add(member);
+                DFS(member, member.name.equals("S") ? 1 : 0);
+                members.remove(member);
+            }
         }
-
         System.out.println(result);
     }
 
-    private static void DFS(Member sMem, int depth, int count) {
-        if (depth == 7) {
-            if (count >= 4) result++; // 다솜파가 우세할 때만 경우의 수 +1
-
-            /*sb = new StringBuilder();
-            for (int i = 0; i < members.size(); i++) {
-                sb.append(members.get(i).name);
+    private static void DFS(Member member, int count) {
+        if (members.size() == 7) {
+            if (count >= 4 && isGroup()) {
+                print();
+                result++;
+//                System.out.println("\nGROUP !!!");
             }
-            if (sb.toString().contains("1111111")) {
-                System.out.println("1111111 is True!!");
-            }*/
-//            System.out.println("sb = " + sb);
             return;
         }
 
-        for (int i = 0; i < members.size(); i++) {
-            Member member = members.get(i);
-            int x = member.x;
-            int y = member.y;
+        for(int i=member.x; i<N; i++) {
+            for(int j=(i==member.x ? member.y+1 : 0); j<N; j++) {
+                Member addMember = board[i][j];
 
-            for (int k = 0; k < 4; k++) {
-                int nx = x + dx[k];
-                int ny = y + dy[k];
+                members.add(addMember);
+                DFS(addMember, addMember.name.equals("S") ? count+1 : count);
+                members.remove(addMember);
+            }
+        }
+    }
+
+    private static boolean isGroup() { // 모든 그룹원들이 서로 붙어있는지 확인
+        int groupCount = 0;
+        visited = new boolean[5][5];
+
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<N; j++) {
+                if (members.contains(board[i][j]) && !visited[i][j]) {
+                    groupCount++;
+
+                    if (groupCount > 1) return false; // 그룹 단위가 2개 이상이라면 모두 붙어있는 것이 아니므로 거짓.
+
+                    BFS(board[i][j]);
+                }
+            }
+        }
+        return true;
+    }
+
+    private static void BFS(Member member) {
+        queue.clear();
+        queue.offer(member);
+        while(!queue.isEmpty()) {
+            Member poll = queue.poll();
+            int x = poll.x;
+            int y = poll.y;
+
+            for(int i=0; i<4; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
 
                 if (nx < 0 || nx >= N || ny < 0 || ny >= N) continue;
 
-                if (visited[nx][ny] || sVisited[nx][ny]) continue;
+                if (!members.contains(board[nx][ny])) continue;
 
-                if (nx < sMem.x || (nx == sMem.x && ny <= sMem.y)) continue;
-
-                Member addMember = board[nx][ny];
+                if (visited[nx][ny]) continue;
 
                 visited[nx][ny] = true;
-                members.add(addMember);
+                queue.offer(board[nx][ny]);
+            }
 
-                if (board[nx][ny].name.equals("S")) DFS(addMember, depth + 1, count + 1);
-                else DFS(addMember, depth + 1, count);
+        }
 
-                members.remove(addMember);
-                visited[nx][ny] = false;
+    }
+
+    private static void print() {
+        String[][] prints = new String[5][5];
+        for (Member member : members) {
+            prints[member.x][member.y] = "O";
+        }
+
+        for(int i=0; i<N; i++) {
+            System.out.println();
+            for(int j=0; j<N; j++) {
+                System.out.print(prints[i][j] == null ? "X" : "O");
             }
         }
+        System.out.println();
     }
 
     static class Member {
@@ -93,4 +125,5 @@ public class Main14_1941 {
             this.name = name;
         }
     }
+
 }
