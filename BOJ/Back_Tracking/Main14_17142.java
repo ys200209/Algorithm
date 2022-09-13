@@ -117,8 +117,8 @@ public class Main14_17142 {
                 visited[nx][ny] = true;
 
                 if (board[x][y] == -1 && board[nx][ny] != -1) queue.offer(new Virus(nx, ny, poll.time+2));
-                else if (board[x][y] == -1 && board[nx][ny] == -1)
-                else if (board[x][y] != -1 && board[nx][ny] == -1) queue.offer(new Virus(nx, ny, poll.time));
+//                else if (board[x][y] == -1 && board[nx][ny] == -1)
+//                else if (board[x][y] != -1 && board[nx][ny] == -1) queue.offer(new Virus(nx, ny, poll.time));
                 else queue.offer(new Virus(nx, ny, poll.time+1));
             }
         }
