@@ -1,12 +1,11 @@
 package BOJ.Brute_Force;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class Main11_1038 {
-    static int N, count=-1;
+    static int N, count=0;
     static long X=0, MAX=9876543210L;
+    static boolean isMax=false;
 
     public static void main(String[] args) throws IOException {
 
@@ -14,22 +13,31 @@ public class Main11_1038 {
         N = Integer.parseInt(br.readLine());
 
         while(count < N) {
+//            System.out.println();
             count++;
-            if (X > MAX) {
-                System.out.println("-1");
-                return;
-            }
-
-            isDecrease(X);
-            if (count == N) break;
-
             X++;
+            isDecrease(X);
+//            System.out.println("count = " + count);
+//            System.out.println("number : " + X);
+//            System.out.println("count = " + count);
+
+
+//            if (count == N) break;
+
+//            System.out.println("number : " + X);
+
 //            System.out.println(count);
         }
-        System.out.println(X);
+//        System.out.println("--------------");
+        System.out.println(isMax ? "-1" : X);
     }
 
-    private static boolean isDecrease(long num) {
+    private static void isDecrease(long num) {
+        if (X > MAX) {
+            isMax = true;
+            return;
+        }
+
 //        System.out.println("num = " + num);
         long mod = num % 10;
         int maxDivCount = 0;
@@ -50,9 +58,9 @@ public class Main11_1038 {
             long newX = (((long)(X / Math.pow(10, maxDivCount))+1) * (long)(Math.pow(10, maxDivCount)));
 //            System.out.println("newX = " + newX);
             X = newX;
-            return false;
+            isDecrease(X); // 변경한 값이 '감소하는 수' 인지 재귀호출 검증
+            // ex) 333 : 8421
         }
-        return true;
     }
 
 }
