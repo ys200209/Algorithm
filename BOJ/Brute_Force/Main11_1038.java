@@ -18,8 +18,8 @@ public class Main11_1038 {
             X++;
             isDecrease(X);
 //            System.out.println("count = " + count);
-//            System.out.println("number : " + X);
-//            System.out.println("count = " + count);
+            System.out.println("number : " + X);
+            System.out.println("count = " + count);
 
 
 //            if (count == N) break;
@@ -59,7 +59,7 @@ public class Main11_1038 {
 //            System.out.println("newX = " + newX);
             X = newX;
             isDecrease(X); // 변경한 값이 '감소하는 수' 인지 재귀호출 검증
-            // ex) 333 : 8421
+            // ex) 333 -> (327 : 8321) (328 : 8330) <- ??? 8330은 감소하는 수가 아니다.
         }
     }
 
