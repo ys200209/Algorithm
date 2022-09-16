@@ -4,76 +4,45 @@ import java.io.*;
 import java.util.*;
 
 public class Main11_1062 {
-    static int answer=(int)1e9;
-    static List<NameCard> cards = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
-        System.out.println(solution(new int[][]{{60, 50}, {30, 70}, {60, 30}, {80, 40}})); // 4000
+        System.out.println(solution(" 3people unFollowed me  a WW")); // "3people Unfollowed Me"
 //        System.out.println(solution(new int[][]{{10, 7}, {12, 3}, {8, 15}, {14, 7}, {5, 15}})); // 120
 
     }
 
-    public static int solution(int[][] sizes) {
-        /*int w=0;
-        int h=0;
-        for(int i=0; i<sizes.length; i++) {
-            w = Math.max(w, sizes[i][0]);
-            h = Math.max(h, sizes[i][1]);
-            cards.add(new NameCard(sizes[i][0], sizes[i][1], false));
-        }
-        answer = w * h;
+    public static String solution(String s) {
+        String answer = "";
+        int index=0;
 
-        DFS(0);*/
+        String[] words = s.split(" ");
+        for(String word : words) {
+            if (word.isBlank()) continue;
 
-        int w = 0;
-        int h = 0;
-        for (int[] size : sizes) {
-            if (answer == 0) {
-                w = size[0];
-                h = size[1];
-                answer = w*h;
+            if (index == 0) {
+                answer += s.substring(0, s.indexOf(word));
+                index += s.indexOf(word);
             } else {
-                // 뒤집은게 더 작은 사각형이라면
-                if (Math.max(w, size[0]) * Math.max(h, size[1]) > Math.max(w, size[1]) * Math.max(h, size[0])) {
-                    w = Math.max(w, size[1]);
-                    h = Math.max(h, size[0]);
-                } else {
-                    w = Math.max(w, size[0]);
-                    h = Math.max(h, size[1]);
-                }
+                String blank = s.substring(index, index + s.substring(index).indexOf(word));
+                answer += blank;
+                index += blank.length();
             }
-        }
 
-        return w*h;
+            String newWord = changeWord(word);
+            answer += newWord;
+
+            index += word.length();
+        }
+        answer += s.substring(index);
+        return answer;
     }
 
-    /*private static void DFS(int index) {
-        answer = Math.min(answer, getSize());
-
-        for(int i=index; i<cards.size(); i++) {
-            cards.get(i).isRotate = true;
-            DFS(i+1);
-            cards.get(i).isRotate = false;
-        }
-    }
-
-    private static int getSize() {
-        int w=0, h=0;
-
-        for (NameCard card : cards) {
-            w = Math.max(w, card.isRotate ? card.h : card.w);
-            h = Math.max(h, card.isRotate ? card.w : card.h);
-        }
-        return w*h;
-    }*/
-
-    static class NameCard {
-        int w;
-        int h;
-
-        public NameCard(int w, int h) {
-            this.w = w;
-            this.h = h;
+    private static String changeWord(String word) {
+        if (word.charAt(0) - '0' <= 9) return word.toLowerCase();
+        else {
+            String lowerCase = word.toLowerCase();
+            String upperCase = lowerCase.substring(0, 1).toUpperCase();
+            return word.length() == 1 ? upperCase : upperCase + lowerCase.substring(1, lowerCase.length());
         }
     }
 
