@@ -6,43 +6,37 @@ import java.util.*;
 public class Main11_1062 {
 
     public static void main(String[] args) throws IOException {
-        System.out.println(solution(" 3people unFollowed me  a WW")); // "3people Unfollowed Me"
+//        System.out.println(Arrays.toString(solution(10, 2))); // "3people Unfollowed Me"
+//        System.out.println(Arrays.toString(solution(80, 1))); // "3people Unfollowed Me"
+        System.out.println(Arrays.toString(solution(18, 6))); // "3people Unfollowed Me"
 //        System.out.println(solution(new int[][]{{10, 7}, {12, 3}, {8, 15}, {14, 7}, {5, 15}})); // 120
 
     }
 
-    public static String solution(String s) {
-        String answer = "";
-        int index=0;
+    public static int[] solution(int brown, int yellow) {
+        int[] answer = new int[2];
 
-        String[] words = s.split(" ");
-        for(String word : words) {
-            if (word.isBlank()) continue;
+        int sum = brown+yellow;
+        int width = 3;
+        int diff = (int)1e9;
+        while(true) {
+            if (width > sum/2) return answer;
 
-            if (index == 0) {
-                answer += s.substring(0, s.indexOf(word));
-                index += s.indexOf(word);
-            } else {
-                String blank = s.substring(index, index + s.substring(index).indexOf(word));
-                answer += blank;
-                index += blank.length();
+            if (sum % width == 0) {
+                int h = sum / width;
+
+                if (Math.abs(width - h) < diff && (width-2)*(h-2) == yellow) {
+                    diff = Math.abs(width - h);
+                    if (h > width) {
+                        answer[0] = h;
+                        answer[1] = width;
+                    } else {
+                        answer[0] = width;
+                        answer[1] = h;
+                    }
+                }
             }
-
-            String newWord = changeWord(word);
-            answer += newWord;
-
-            index += word.length();
-        }
-        answer += s.substring(index);
-        return answer;
-    }
-
-    private static String changeWord(String word) {
-        if (word.charAt(0) - '0' <= 9) return word.toLowerCase();
-        else {
-            String lowerCase = word.toLowerCase();
-            String upperCase = lowerCase.substring(0, 1).toUpperCase();
-            return word.length() == 1 ? upperCase : upperCase + lowerCase.substring(1, lowerCase.length());
+            width++;
         }
     }
 
