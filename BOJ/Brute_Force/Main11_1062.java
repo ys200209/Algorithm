@@ -1,53 +1,36 @@
 package BOJ.Brute_Force;
 
 import java.io.*;
+import java.util.*;
 
 public class Main11_1062 {
+    static int answer=0;
 
-    
     public static void main(String[] args) throws IOException {
-        System.out.println(solution("  try    try   world  hello   try")); // "TrY HeLlO WoRlD"
+        System.out.println(solution(new int[]{1,3,2,5,4}, 9)); // 3
+//        System.out.println(solution(new int[]{2,2,3,3}, 10)); // 4
 
     }
 
-    public static String solution(String s) {
-        String answer = "";
-        String[] words = s.split(" ");
-        int index = 0;
-        for (String word : words) {
-            if (word.isBlank()) continue;
-
-            if (index != 0) {
-                String blank = s.substring(index, index + s.substring(index).indexOf(word));
-                answer += blank;
-                index += blank.length();
-            } else {
-                index += s.indexOf(word);
-                answer += s.substring(0, index);
-                System.out.println("answer = " + answer);
-            }
-
-            index += word.length();
-            String newWord = changeWord(word);
-            answer += newWord;
-        }
-
-        answer += s.substring(index);
+    public static int solution(int[] d, int budget) {
+        Arrays.sort(d);
+        System.out.println(Arrays.toString(d));
+        DFS(0, 0, d, budget);
 
         return answer;
     }
 
-    private static String changeWord(String word) {
-        String newWord = "";
-
-        for(int i=0; i<word.length(); i++) {
-            if (i % 2 == 0) {
-                newWord += word.substring(i, i+1).toUpperCase();
-            } else {
-                newWord += word.substring(i, i+1).toLowerCase();
-            }
+    private static void DFS(int index, int count, int[] d, int budget) {
+        if (count > answer) {
+            answer = count;
         }
-        return newWord;
+
+        for(int i=index; i<d.length; i++) {
+            if (budget >= d[i]) {
+                DFS(i+1, count+1, d, budget-d[i]);
+                break;
+            } else return;
+        }
     }
 
 }
