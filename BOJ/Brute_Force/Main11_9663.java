@@ -1,79 +1,80 @@
+package BOJ.Brute_Force;
+
 import java.util.*;
 import java.io.*;
 
 public class Main11_9663 {
-    static int[] dx = {-1, -1, 1, 1};
-    static int[] dy = {-1, 1, -1, 1};
-    static int N, result = 0;
-    static boolean[] row, column;
-    static boolean[][] m;
+    static int N, result=0;
+    static Queen[][] board;
+    static List<Queen> list = new ArrayList<>();
+    static boolean[][] visited;
     
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
-        row = new boolean[N];
-        column = new boolean[N];
-        m = new boolean[N][N];
+        board = new Queen[N][N];
+        visited = new boolean[N][N];
 
-        //checkM(4, 4, true);
-
-        DFS(0, m);
-
-        /*for(int i=0; i<N; i++) {
-            System.out.println(Arrays.toString(m[i]));
-        }*/
-        System.out.println(result);
-    }
-
-    public static void DFS(int count, boolean[][] visited) {
-        if (row[count]) return;
-
-        for(int j=0; j<N; j++) {
-            if (column[j]) continue;
-
-            if (!visited[count][j]) { 
-                if (count == N-1) {
-                    result++;
-                    return;
-                }
-                row[count] = true;
-                column[j] = true;
-                boolean[][] temp = checkM(count, j, visited);
-                DFS(count+1, temp);
-                row[count] = false;
-                column[j] = false;
-            }
-        }
-
-    }
-
-    public static boolean[][] checkM(int x, int y, boolean[][] visited) {
-        // System.out.println("x : " + x + ", y : " + y + ", check : " + check);
-        
-        boolean[][] t = new boolean[N][N];
         for(int i=0; i<N; i++) {
             for(int j=0; j<N; j++) {
-                t[i][j] = visited[i][j];
+                board[i][j] = new Queen(i, j);
             }
         }
 
+        DFS(0);
 
-        t[x][y] = true;
+        System.out.println(result);
 
-        for(int i=0; i<4; i++) {
-            int nx = x;
-            int ny = y;
-            while(true) {
-                nx += dx[i];
-                ny += dy[i];
-
-                if (nx < 0 || nx >= N || ny < 0 || ny >= N) break;
-
-                t[nx][ny] = true;
-            }
-        }
-
-        return t;
     }
+
+    private static void DFS(int count) {
+        if (count == N) {
+            result++;
+//            print();
+            return;
+        }
+
+        for(int i=count; i<count+1; i++) {
+            for(int j=0; j<N; j++) {
+                if (!visited[i][j]) {
+                    if (checkQueen(i, j)) {
+                        visited[i][j] = true;
+                        list.add(board[i][j]);
+                        DFS(count+1);
+                        list.remove(board[i][j]);
+                        visited[i][j] = false;
+                    }
+                }
+            }
+        }
+    }
+
+    private static boolean checkQueen(int row, int column) {
+
+        for (Queen queen : list) {
+            int x = queen.x;
+            int y = queen.y;
+
+            int xDiff = Math.abs(row - x);
+            int yDiff = Math.abs(column - y);
+
+            if (xDiff == 0 || yDiff == 0 || xDiff == yDiff) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    static class Queen {
+        int x;
+        int y;
+
+        public Queen(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
 }
