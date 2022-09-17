@@ -109,7 +109,6 @@ public class Main11_17406 {
             for(int i=0; i<(x2-r)-(x1+r); i++) {
                 tempBoard[x1+i+r][y1+r] = board[x1+i+r+1][y1+r];
                 tempBoard[x1+i+r+1][y2-r] = board[x1+i+r][y2-r];
-//                System.out.println();
             }
         }
 

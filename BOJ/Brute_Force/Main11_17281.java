@@ -51,10 +51,7 @@ public class Main11_17281 {
                 numbers.remove(i);
 
             }
-
-
         }
-
     }
 
     private static int getScore() {
