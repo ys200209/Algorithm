@@ -4,94 +4,59 @@ import java.io.*;
 import java.util.*;
 
 public class Main11_17281 {
-    static int N, result=0;
-    static int[][] game;
-    static List<Integer> numbers = new ArrayList<>();
-    static boolean[] visited;
-    static int[] field = new int[3];
+    static Map<String, Integer> map = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-        N = Integer.parseInt(br.readLine());
-        game = new int[N+1][10];
-        visited = new boolean[10];
-
-        for(int i=1; i<=N; i++) {
-            st = new StringTokenizer(br.readLine(), " ");
-            int j=1;
-            while(st.hasMoreTokens()) {
-                game[i][j] = Integer.parseInt(st.nextToken());
-                j++;
-            }
-        }
-
-        visited[1] = true;
-        numbers.add(1);
-        DFS(0);
-
+        System.out.println(solution(new String[]{"AN", "CF", "MJ", "RT", "NA"}, new int[]{5, 3, 2, 7, 5})); // TCMA
 
     }
 
-    private static void DFS(int count) {
-        if (count == 9) {
-            int score = getScore();
+    public static String solution(String[] survey, int[] choices) {
+        String answer = "";
 
+        for(int i=0; i< survey.length; i++) {
+            String s = survey[i];
+            String[] split = s.split("");
+            String A = split[0];
+            String B = split[1];
+            int choice = choices[i];
 
-            return;
+            MBTI(A, B, choice);
         }
 
-        for(int i=2; i<=N; i++) {
-            if(!visited[i]) {
-                numbers.add(i);
-                visited[i] = true;
-                DFS(count+1);
-                visited[i] = false;
-                numbers.remove(i);
+        answer += getMBTI("R", "T");
+        answer += getMBTI("C", "F");
+        answer += getMBTI("J", "M");
+        answer += getMBTI("A", "N");
 
-            }
+        return answer;
+    }
+
+    public static void MBTI(String A, String B, int choice) {
+        if (choice < 4) {
+            map.put(A, map.getOrDefault(A, 0) + (4 - choice));
+        } else if (choice > 4) {
+            map.put(B, map.getOrDefault(B, 0) + (choice - 4));
         }
     }
 
-    private static int getScore() {
-        Arrays.fill(field, 0);
-        int score = 0;
-        int inning = 1;
-        int out=0;
-        int index = 0;
-
-        while(inning < N) {
-
-            while(out < 3) {
-                for(int i=index; i<9; i++) {
-                    index = i;
-                    int num = game[inning][i];
-                    if (num == 0) out++;
-
-                    if (out == 3) break;
-
-                    for(int j=3; j>=1; j--) {
-                        if (field[j] + num > 3) {
-                            field[j] = 0;
-                            score++;
-                        }
-
-                        if (field[j] != 0) {
-                            int f = field[j];
-                            field[j] = 0;
-                            field[f]++;
-                        }
-                    }
-                }
+    public static String getMBTI(String A, String B) {
+        if (map.get(A) == null && map.get(B) == null) {
+            if (A.charAt(0) > B.charAt(0)) return B;
+            else return A;
+        } else if (map.get(A) == null) {
+            return B;
+        } else if (map.get(B) == null) {
+            return A;
+        } else {
+            if (map.get(A) > map.get(B)) return A;
+            else if (map.get(A) == map.get(B)) {
+                if (A.charAt(0) > B.charAt(0)) return B;
+                else return A;
             }
-
-            out = 0;
-            inning++;
+            else return B;
         }
-
-
-        return score;
     }
 
 }
