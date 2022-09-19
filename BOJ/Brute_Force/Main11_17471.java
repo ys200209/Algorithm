@@ -16,6 +16,7 @@ public class Main11_17471 {
         N = Integer.parseInt(br.readLine());
         amount = new int[N+1];
         select = new boolean[N+1];
+        visited = new boolean[N+1];
         for(int i=0; i<=N; i++) {
             graph.add(new ArrayList<>());
         }
@@ -35,60 +36,82 @@ public class Main11_17471 {
             }
         }
 
-        DFS(1, 0);
+        /*for(i=1; i<=N; i++) {
+            System.out.println("i : " + i);
+            for (Integer integer : graph.get(i)) {
+                System.out.print(integer + " ");
+            }
+            System.out.println();
+        }*/
+
+        for(i=1; i<=N; i++) {
+            System.out.println("i : " + i);
+            select(i);
+            System.out.println();
+        }
 
         System.out.println("result = " + (result == (int)1e9 ? -1 : result));
     }
 
-    private static void DFS(int from, int to) {
-
-        for(int i=from; i<=N; i++) {
-            visited = new boolean[N+1];
-            visited[i] = true;
-            select[i] = true;
-            if (checkDiv()) {
-                result = Math.min(result, getScore());
-            }
-
-            for(int j=to; j<=graph.get(i).size(); j++) {
-                select[j] = true;
-                visited[j] = true;
-                DFS(i, j+1);
-                visited[j] = false;
-                select[j] = false;
-            }
-            select[i] = false;
-            visited[i] = false;
+    private static void select(int target) {
+        System.out.print(target + " ");
+        if (visited[target]) {
+//            System.out.println("already Visited!");
+            return;
         }
 
+        select[target] = true;
+        visited[target] = true;
+        if (checkDiv()) {
+            result = Math.min(result, getScore());
+//            System.out.println();
+//            System.out.println(Arrays.toString(select) + ", result : " + result);
+        } else {
+            select[target] = false;
+            visited[target] = false;
+//            System.out.println("!checkDiv() return");
+            return;
+        }
 
+        for (int num : graph.get(target)) {
+            select(num);
+        }
+        select[target] = false;
+        visited[target] = false;
     }
 
     private static boolean checkDiv() {
         int count = 0;
+        boolean[] checkVisited = new boolean[N+1];
+
         for(int i=1; i<=N; i++) {
-            if (!visited[i]) {
+            if (visited[i]) checkVisited[i] = true;
+        }
+
+        System.out.println("\ncheckVisited : " + Arrays.toString(checkVisited));
+        for(int i=1; i<=N; i++) {
+            if (!checkVisited[i]) {
                 if (count == 1) return false;
-                BFS(i);
+                BFS(i, checkVisited);
                 count++;
+                System.out.println("checkVisited : " + Arrays.toString(checkVisited));
             }
         }
         return true;
     }
 
-    private static void BFS(int number) {
+    private static void BFS(int number, boolean[] checkVisited) {
         Queue<Integer> queue = new LinkedList<>();
         queue.offer(number);
+        checkVisited[number] = true;
 
         while(!queue.isEmpty()) {
             Integer poll = queue.poll();
-            if (visited[poll]) continue;
 
-            visited[poll] = true;
             for (Integer num : graph.get(poll)) {
-                if (visited[num]) continue;
+                if (checkVisited[num]) continue;
                 queue.offer(num);
-                visited[num] = true;
+                checkVisited[num] = true;
             }
         }
 
