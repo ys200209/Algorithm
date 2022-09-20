@@ -9,25 +9,23 @@ public class Main11_17825 {
 
     public static void main(String[] args) throws IOException {
 
-        System.out.println(solution(4)); // 5
-//        System.out.println(solution(3)); // 3
+//        System.out.println(solution(5)); // 2
+        System.out.println(solution(5000)); // 5
+//        System.out.println(solution(10000)); //
 
 
     }
 
-    public static long solution(int n) {
-        int[] dp = new int[n+1];
+    public static int solution(int n) {
+        return recursive(n);
+    }
 
-        dp[1] = 1;
-        dp[2] = 2;
+    private static int recursive(int n) {
+        if (n == 0) return 0;
+        if (n == 1) return 1;
 
-        for(int i=3; i<=n; i++) {
-            dp[i] = dp[i-1] + dp[i-2];
-        }
-
-        System.out.println(Arrays.toString(dp));
-
-        return dp[n];
+        if (n % 2 == 0) return recursive(n/2);
+        else return recursive(n/2) + 1;
     }
 
 }
