@@ -4,165 +4,76 @@ import java.io.*;
 import java.util.*;
 
 public class Main11_17825 {
-    static String[] langs = new String[]{"cpp", "java", "python"};
-    static String[] positions = new String[]{"backend", "frontend"};
-    static String[] careers = new String[]{"junior", "senior"};
-    static String[] foods = new String[]{"chicken", "pizza"};
-//    static String[] lang = new String[]{"cpp", "java", "python"};
-    static Map<String, List<Integer>> developers = new HashMap<>(); // <"java backend junior pizza", [10, 20, 30]>
-    static int count = 0;
+    static int INF = (int)1e9;
+    static int[][] dp;
+//    static List<List<Integer>> graph = new ArrayList<>();
+
 
     public static void main(String[] args) throws IOException {
-        System.out.println(Arrays.toString(solution(
-                new String[]{"java backend junior pizza 150", "python frontend senior chicken 210", "python frontend senior chicken 150", "cpp backend senior pizza 260", "java backend junior chicken 80", "python backend senior chicken 50"},
-                new String[]{"java and backend and junior and pizza 100", "python and frontend and senior and chicken 200", "cpp and - and senior and pizza 250", "- and backend and senior and - 150", "- and - and - and chicken 100", "- and - and - and - 150"})));
-        // [1,1,1,1,2,4]
+//        System.out.println(solution(6, 4, 6, 2,
+//                new int[][]{{4,1,10}, {3,5,24}, {5,6,2}, {3,1,41}, {5,1,24}, {4,6,50}, {2,4,66},{2,3,22}, {1,6,25}}));
+//        // 82
+        System.out.println(solution(7, 3, 4, 1,
+                new int[][]{{5,7,9}, {4,6,4}, {3,6,1}, {3,2,3}, {2,1,6}}));
+        // 14
     }
 
-    public static int[] solution(String[] info, String[] query) {
-        int[] answer = new int[query.length];
+    public static int solution(int n, int s, int a, int b, int[][] fares) {
+        int answer = 0;
 
-        init(info);
+        dp = new int[n+1][n+1];
 
-        for(int i=0; i<query.length; i++) {
-//            System.out.println("i = " + i);
-
-            String replaceQuery = query[i].replaceAll("and ", "");
-            int lastIndex = replaceQuery.lastIndexOf(" ");
-            String[] split = replaceQuery.split(" ");
-            String str = replaceQuery.substring(0, lastIndex);
-            String lang = split[0];
-            String position = split[1];
-            String career = split[2];
-            String food = split[3];
-            int score = Integer.parseInt(split[4]);
-            count = 0;
-
-            if (developers.get(str) == null) {
-                if (lang.equals("-") || position.equals("-") || career.equals("-") || food.equals("-")) {
-                    replaceStr(lang, position, career, food, score);
-                } else continue;
-            } else {
-                int minIndex = getScore(0, developers.get(str).size(), developers.get(str), score, (int) 1e9);
-//                System.out.println("1 minIndex = " + minIndex);
-                count = minIndex == (int)1e9 ? 0 : developers.get(str).size() - minIndex;
-            }
-
-//            System.out.println("developers.get(str) = " + developers.get(str));
-//            System.out.println("count = " + count);
-//            System.out.println();
-            answer[i] = count;
-        }
-
-        return answer;
-    }
-
-    private static void replaceStr(String lang, String position, String career, String food, int score) {
-        if (lang.equals("-") || position.equals("-") || career.equals("-") || food.equals("-")) {
-            if (lang.equals("-")) {
-                for (int i = 0; i < langs.length; i++) {
-                    replaceStr(langs[i], position, career, food, score);
-                }
-            } else if (position.equals("-")) {
-                for (int i = 0; i < positions.length; i++) {
-                    replaceStr(lang, positions[i], career, food, score);
-                }
-            } else if (career.equals("-")) {
-                for (int i = 0; i < careers.length; i++) {
-                    replaceStr(lang, position, careers[i], food, score);
-                }
-            } else if (food.equals("-")) {
-                for (int i = 0; i < foods.length; i++) {
-                    replaceStr(lang, position, career, foods[i], score);
-                }
-            }
-        } else {
-            String str = lang + " " + position + " " + career + " " + food;
-//            System.out.println("str = " + str + ", " + developers.get(str));
-//            System.out.println("score = " + score);
-            if (developers.get(str) != null) {
-                int minIndex = getScore(0, developers.get(str).size(), developers.get(str), score, (int)1e9);
-//                System.out.println("minIndex = " + minIndex);
-                count += (minIndex != (int)1e9 ? developers.get(str).size() - minIndex : 0);
-            }
-        }
-    }
-
-    private static int getScore(int start, int end, List<Integer> scores, int score, int minIndex) { // 이분 탐색
-        if (start >= end) return minIndex;
-
-        int mid = (start + end) / 2;
-        if (scores.get(mid) < score) {
-            return getScore(mid+1, end, scores, score, minIndex);
-        } else {
-            minIndex = Math.min(Math.min(minIndex, mid), getScore(start, mid, scores, score, minIndex));
-            return minIndex;
-        }
-    }
-
-
-    private static void init(String[] info) {
-        /*langMap.put("-", new ArrayList<>());
-//        positionMap.put("-", new ArrayList<>());
-//        careerMap.put("-", new ArrayList<>());
-//        foodMap.put("-", new ArrayList<>());
-
-        for(int i=0; i<info.length; i++) {
-            String[] split = info[i].split(" ");
-            String lang = split[0];
-            String position = split[1];
-            String career = split[2];
-            String food = split[3];
-            int score = Integer.parseInt(split[4]);
-            Developer developer = new Developer(lang, position, career, food, score);
-
-            if (langMap.get(lang) == null) langMap.put(lang, new ArrayList<>());
-            if (positionMap.get(position) == null) positionMap.put(position, new ArrayList<>());
-            if (careerMap.get(career) == null) careerMap.put(career, new ArrayList<>());
-            if (foodMap.get(food) == null) foodMap.put(food, new ArrayList<>());
-
-            if (!lang.equals("-")) langMap.get("-").add(developer);
-//            if (!position.equals("-")) positionMap.get("-").add(developer);
-//            if (!career.equals("-")) careerMap.get("-").add(developer);
-//            if (!food.equals("-")) foodMap.get("-").add(developer);
-
-            langMap.get(lang).add(developer);
-            positionMap.get(position).add(developer);
-            careerMap.get(career).add(developer);
-            foodMap.get(food).add(developer);
+        /*for(int i=0; i<=n; i++) {
+            graph.add(new ArrayList<>());
         }*/
 
-        for(int i=0; i<info.length; i++) {
-            int lastIndex = info[i].lastIndexOf(" ");
-            String str = info[i].substring(0, lastIndex);
-//            System.out.println("str = " + str);
-//            System.out.println("info[i].substring(lastIndex) = " + info[i].substring(lastIndex+1));
-            if (developers.get(str) == null) developers.put(str, new ArrayList<>());
-
-            developers.get(str).add(Integer.parseInt(info[i].substring(lastIndex+1)));
+        for(int i=1; i<=n; i++) {
+            Arrays.fill(dp[i], INF);
         }
 
-        for (String key : developers.keySet()) {
-            Collections.sort(developers.get(key));
+        for(int i=1; i<=n; i++) {
+            for(int j=1; j<=n; j++) {
+                if (i == j) dp[i][j] = 0;
+            }
         }
 
-    }
+        for(int i=0; i<fares.length; i++) {
+            int[] fare = fares[i];
+            int x = fare[0];
+            int y = fare[1];
+            int c = fare[2];
 
-    static class Developer {
-        String[] stats;
-        String lang;
-        String position;
-        String career;
-        String food;
-        int score;
-
-        public Developer(String lang, String position, String career, String food, int score) {
-            this.lang = lang;
-            this.position = position;
-            this.career = career;
-            this.food = food;
-            this.score = score;
+            dp[x][y] = c;
+            dp[y][x] = c;
+//            System.out.println("dp[x][y] = " + dp[x][y]);
         }
+
+        for(int k=1; k<=n; k++) {
+            for(int i=1; i<=n; i++) {
+                for(int j=1; j<=n; j++) {
+                    dp[i][j] = Math.min(dp[i][j], dp[i][k] + dp[k][j]);
+                }
+            }
+        }
+
+        for(int i=0; i<=n; i++) {
+            System.out.println(Arrays.toString(dp[i]));
+        }
+
+        int distance = dp[s][a] + dp[s][b];
+        for(int i=1; i<=n; i++) {
+//            if (i == s || i == a || i == b) continue;
+
+            int d = dp[s][i] + dp[i][a] + dp[i][b];
+            if (d >= (int)1e9 || d < 0) continue;
+
+            distance = Math.min(distance, d);
+//            System.out.println("distance = " + distance);
+        }
+
+        distance = Math.min(distance, Math.min(dp[s][a] + dp[a][b], dp[s][b] + dp[b][a]));
+
+        return distance;
     }
 
 }
