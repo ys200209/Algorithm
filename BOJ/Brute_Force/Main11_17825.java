@@ -4,76 +4,59 @@ import java.io.*;
 import java.util.*;
 
 public class Main11_17825 {
-    static int INF = (int)1e9;
-    static int[][] dp;
-//    static List<List<Integer>> graph = new ArrayList<>();
-
+    static Map<String, User> map = new HashMap<>();
+    static Map<String, Integer> reportCount = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
-//        System.out.println(solution(6, 4, 6, 2,
-//                new int[][]{{4,1,10}, {3,5,24}, {5,6,2}, {3,1,41}, {5,1,24}, {4,6,50}, {2,4,66},{2,3,22}, {1,6,25}}));
-//        // 82
-        System.out.println(solution(7, 3, 4, 1,
-                new int[][]{{5,7,9}, {4,6,4}, {3,6,1}, {3,2,3}, {2,1,6}}));
-        // 14
+//        System.out.println(Arrays.toString(solution(
+//                new String[]{"muzi", "frodo", "apeach", "neo"},
+//                new String[]{"muzi frodo", "apeach frodo", "frodo neo", "muzi neo", "apeach muzi"},
+//                2))); // [2,1,1,0]
+
+        System.out.println(Arrays.toString(solution(
+                new String[]{"con", "ryan"},
+                new String[]{"ryan con", "ryan con", "ryan con", "ryan con"},
+                3))); // [0,0]
     }
 
-    public static int solution(int n, int s, int a, int b, int[][] fares) {
-        int answer = 0;
+    public static int[] solution(String[] id_list, String[] report, int k) {
+        int[] answer = new int[id_list.length];
 
-        dp = new int[n+1][n+1];
-
-        /*for(int i=0; i<=n; i++) {
-            graph.add(new ArrayList<>());
-        }*/
-
-        for(int i=1; i<=n; i++) {
-            Arrays.fill(dp[i], INF);
+        for(int i=0; i<id_list.length; i++) {
+            map.put(id_list[i], new User(new ArrayList<>(), new ArrayList<>()));
         }
 
-        for(int i=1; i<=n; i++) {
-            for(int j=1; j<=n; j++) {
-                if (i == j) dp[i][j] = 0;
-            }
+        for(int i=0; i<report.length; i++) {
+            String[] split = report[i].split(" ");
+            if (map.get(split[0]).report.contains(split[1])) continue;
+
+            map.get(split[0]).report.add(split[1]);
+            map.get(split[1]).beReported.add(split[0]);
         }
 
-        for(int i=0; i<fares.length; i++) {
-            int[] fare = fares[i];
-            int x = fare[0];
-            int y = fare[1];
-            int c = fare[2];
-
-            dp[x][y] = c;
-            dp[y][x] = c;
-//            System.out.println("dp[x][y] = " + dp[x][y]);
-        }
-
-        for(int k=1; k<=n; k++) {
-            for(int i=1; i<=n; i++) {
-                for(int j=1; j<=n; j++) {
-                    dp[i][j] = Math.min(dp[i][j], dp[i][k] + dp[k][j]);
+        for (String key : map.keySet()) {
+            if (map.get(key).beReported.size() >= k) {
+                for (String name : map.get(key).beReported) {
+                    reportCount.put(name, reportCount.getOrDefault(name, 0) + 1);
                 }
             }
         }
 
-        for(int i=0; i<=n; i++) {
-            System.out.println(Arrays.toString(dp[i]));
+        for(int i=0; i<answer.length; i++) {
+            answer[i] = reportCount.get(id_list[i]) == null ? 0 : reportCount.get(id_list[i]);
         }
 
-        int distance = dp[s][a] + dp[s][b];
-        for(int i=1; i<=n; i++) {
-//            if (i == s || i == a || i == b) continue;
+        return answer;
+    }
 
-            int d = dp[s][i] + dp[i][a] + dp[i][b];
-            if (d >= (int)1e9 || d < 0) continue;
+    static class User {
+        List<String> report;
+        List<String> beReported;
 
-            distance = Math.min(distance, d);
-//            System.out.println("distance = " + distance);
+        public User(List<String> report, List<String> beReported) {
+            this.report = report;
+            this.beReported = beReported;
         }
-
-        distance = Math.min(distance, Math.min(dp[s][a] + dp[a][b], dp[s][b] + dp[b][a]));
-
-        return distance;
     }
 
 }
