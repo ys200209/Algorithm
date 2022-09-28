@@ -1,71 +1,59 @@
 package BOJ.Brute_Force;
 
-import java.io.*;
-import java.util.*;
-
 public class Main11_1799 {
-    static int[] dx = {-1, -1, 1, 1};
-    static int[] dy = {-1, 1, -1, 1};
-    static int N, result=0;
-    static Bishop[][] board;
-    static List<Bishop> bishopList = new ArrayList<>();
+    static int NUMBER=0;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-        N = Integer.parseInt(br.readLine());
-        board = new Bishop[N][N];
+        System.out.println(solution(2, 4, 2, 1)); // "0111"
 
-        for(int i=0; i<N; i++) {
-            st = new StringTokenizer(br.readLine(), " ");
-            int j=0;
-            while(st.hasMoreTokens()) {
-                int num = Integer.parseInt(st.nextToken());
-                board[i][j] = num == 1 ? new Bishop(i, j) : null;
-                j++;
-            }
-        }
+//        System.out.println(solution(16, 17, 2, 1)); // "0111"
 
-        DFS(0, 0, 0);
 
-        System.out.println(result);
     }
 
-    private static void DFS(int row, int column, int count) {
-        result = Math.max(result, count);
+    public static String solution(int n, int t, int m, int p) {
+        String answer = "";
 
-        for(int i=row; i<N; i++) {
-            for(int j= i==row ? column : 0; j<N; j++) {
-                if (board[i][j] != null && checkBishop(board[i][j])) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("0");
 
-                    bishopList.add(board[i][j]);
-                    DFS(i, j+1, count+1);
-                    bishopList.remove(board[i][j]);
-                }
-            }
+        int i=1;
+        while(sb.length() < t*m) {
+            sb.append(game(n, i));
+            i++;
         }
+
+//        System.out.println("sb = " + sb);
+
+        String[] split = sb.toString().split("");
+        for(i=1; i<=split.length; i++) {
+            if (i%m == p%m) answer += split[i-1];
+
+            if (answer.length() == t) break;
+        }
+
+
+        return answer;
     }
 
-    private static boolean checkBishop(Bishop bishop) {
-        int x = bishop.x;
-        int y = bishop.y;
+    private static String game(int n, int number) { 
+        StringBuilder sb = new StringBuilder();
 
-        for (Bishop bs : bishopList) {
-            if (Math.abs(bs.x - x) == Math.abs(bs.y - y)) return false;
+        while(number > 0) {
+            int anInt = number%n;
+//            System.out.println("anInt = " + anInt);
+            if (anInt >= 10) sb.insert(0, (char)('A' + (anInt-10)));
+            else sb.insert(0, anInt);
+
+            number /= n;
+//            System.out.println("(prime) sb = " + sb);
         }
 
-        return true;
-    }
 
-    static class Bishop {
-        int x;
-        int y;
-
-        public Bishop(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
+//        if (anInt >= 10) return (char)('A' + (anInt-10));
+//        else return sb.toString().charAt(0);
+        return sb.toString();
     }
 
 }
