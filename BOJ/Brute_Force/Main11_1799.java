@@ -3,31 +3,38 @@ package BOJ.Brute_Force;
 import java.util.*;
 
 public class Main11_1799 {
+    static Map<String, Integer> map = new HashMap<>();
 
     public static void main(String[] args) {
-        System.out.println(solution(new int[][]{{1, 2, 3, 5}, {5, 6, 7, 8}, {4, 3, 2, 1}})); // 16
+        System.out.println(solution("CBD", new String[]{"BACDE", "CBADF", "AECB", "BDA"})); // 2
     }
 
-    public static int solution(int[][] land) {
+    public static int solution(String skill, String[] skill_trees) {
         int answer = 0;
 
-        int[][] dp = new int[land.length][4];
-        for(int i=0; i<4; i++) {
-            dp[0][i] = land[0][i];
+        String[] split = skill.split("");
+        for(int i=0; i<split.length; i++) {
+            map.put(split[i], i+1);
         }
 
-        for(int i=1; i<land.length; i++) {
-            dp[i][0] = Math.max(dp[i-1][1], Math.max(dp[i-1][2], dp[i-1][3])) + land[i][0];
-            dp[i][1] = Math.max(dp[i-1][0], Math.max(dp[i-1][2], dp[i-1][3])) + land[i][1];
-            dp[i][2] = Math.max(dp[i-1][0], Math.max(dp[i-1][1], dp[i-1][3])) + land[i][2];
-            dp[i][3] = Math.max(dp[i-1][0], Math.max(dp[i-1][1], dp[i-1][2])) + land[i][3];
-        }
-
-        for(int i=0; i<4; i++) {
-            answer = Math.max(answer, dp[land.length-1][i]);
+        for(int i=0; i<skill_trees.length; i++) {
+            split = skill_trees[i].split("");
+            if (checkSkill(split)) answer++;
         }
 
         return answer;
+    }
+
+    private static boolean checkSkill(String[] split) {
+        int number=0
+                ;
+        for(int i=0; i<split.length; i++) {
+            if (map.get(split[i]) == null) continue;
+
+            if (map.get(split[i]) == number+1) number++;
+            else return false;
+        }
+        return true;
     }
 
 }
