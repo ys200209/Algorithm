@@ -2,71 +2,67 @@
 import java.util.*;
 
 public class Programmers {
-    static Stack<String> stack = new Stack<>();
-    static String u="", v="", answer="";
+    static long[] factArr = new long[21];
 
     public static void main(String[] args) {
-//        System.out.println(solution("(()())()")); // "(()())()"
-//        System.out.println(solution(")(")); // "()"
-        System.out.println(solution("()))((()"	)); // "()(())()"
+//        System.out.println(Arrays.toString(solution(3, 5))); // [3,1,2]
+        System.out.println(Arrays.toString(solution(3, 6))); // [3,2,1]
     }
 
-    public static String solution(String p) {
-        answer += step1(p); // Step.1
+    public static int[] solution(int n, long k) {
+        int[] answer = new int[n];
+
+        List<Integer> list = new ArrayList<>();
+        for(int i=1; i<=n; i++) list.add(i);
+
+        int count = 0;
+        
+        factorial();
+
+//        System.out.println(Arrays.toString(factArr));
+        
+        for(int i=0; i<n; i++) {
+            if (count == k) {
+                answer[i] = list.get(list.size()-1);
+                list.remove(list.size()-1);
+                continue;
+            }
+
+            int listIndex = 0;
+            for(int j=0; j<list.size(); j++) {
+                listIndex = j;
+
+                long factNum = factArr[n - (i + 1)];
+
+                if (count + factNum < k) count += factArr[n-(i+1)];
+                else if (count + factNum == k) {
+                    count += factArr[n-(i+1)];
+                    break;
+                } else break; // count + factNum > k
+            }
+
+            answer[i] = list.get(listIndex);
+            list.remove(listIndex);
+//            System.out.println("answer[i] = " + answer[i]);
+        }
+
+        /*
+            4 1 2 3
+            4 1 3 2
+            4 2 1 3
+            4 2 3 1
+            4 3 1 2
+            4 3 2 1
+            
+         */
+
         return answer;
     }
 
-    private static String step1(String p) {
-        if (p.isEmpty()) return p;
-        else return step2(p); // Step.2
-    }
-
-    private static String step2(String p) {
-        String[] split = p.split("");
-        int left=0, right=0;
-
-        for(int i=0; i<split.length; i++) {
-            if (split[i].equals("(")) left++;
-            else right++;
-
-            if (left == right) {
-                u = p.substring(0, i+1);
-                v = p.substring(i+1, split.length);
-                break;
-            }
+    private static void factorial() {
+        factArr[1] = 1;
+        for(int i=2; i<=20; i++) {
+            factArr[i] = factArr[i-1] * i;
         }
-
-        // u가 올바른 괄호 문자열이라면
-        if (step3(u)) return u + step1(v); // u를 반환 (answer에 더함) + 다시 v를 1단계부터 실행함
-        else return step4(u, v); // 아니라면 4단계로 진행함
     }
-
-    private static boolean step3(String u) {
-        stack.clear();
-
-        for (String s : u.split("")) {
-            if (s.equals("(")) stack.push(u);
-            else {
-                if (stack.isEmpty()) return false;
-                else if (stack.peek().equals("(")) stack.pop();
-            }
-        }
-        return true;
-    }
-
-    private static String step4(String u, String v) {
-        String newAnswer = "("; // 4-1
-        newAnswer += step1(v); // 4-2
-        newAnswer += ")"; // 4-3
-
-        if (u.length() <= 2) return newAnswer; // 4-5
-
-        for (String s : u.substring(1, u.length() - 1).split("")) { // 4-4
-            if (s.equals("(")) newAnswer += ")";
-            else newAnswer += "(";
-        }
-        return newAnswer; // 4-5
-    }
-
-
 }
