@@ -2,67 +2,82 @@
 import java.util.*;
 
 public class Programmers {
-    static long[] factArr = new long[21];
+    static int INF = (int)1e9;
+    static int[] dp;
+    static Queue<Node> pq = new PriorityQueue<>();
+    static ArrayList<ArrayList<Node>> graph = new ArrayList<>();
 
     public static void main(String[] args) {
 //        System.out.println(Arrays.toString(solution(3, 5))); // [3,1,2]
-        System.out.println(Arrays.toString(solution(3, 6))); // [3,2,1]
+//        System.out.println(Arrays.toString(solution(3, 6))); // [3,2,1]
     }
 
-    public static int[] solution(int n, long k) {
-        int[] answer = new int[n];
-
-        List<Integer> list = new ArrayList<>();
-        for(int i=1; i<=n; i++) list.add(i);
-
-        int count = 0;
-        
-        factorial();
-
-//        System.out.println(Arrays.toString(factArr));
-        
-        for(int i=0; i<n; i++) {
-            if (count == k) {
-                answer[i] = list.get(list.size()-1);
-                list.remove(list.size()-1);
-                continue;
-            }
-
-            int listIndex = 0;
-            for(int j=0; j<list.size(); j++) {
-                listIndex = j;
-
-                long factNum = factArr[n - (i + 1)];
-
-                if (count + factNum < k) count += factArr[n-(i+1)];
-                else if (count + factNum == k) {
-                    count += factArr[n-(i+1)];
-                    break;
-                } else break; // count + factNum > k
-            }
-
-            answer[i] = list.get(listIndex);
-            list.remove(listIndex);
-//            System.out.println("answer[i] = " + answer[i]);
+    public static int solution(int N, int[][] road, int K) {
+        int answer = 0;
+        dp = new int[N+1];
+        for(int i=0; i<=N; i++) {
+            graph.add(new ArrayList<>());
         }
 
-        /*
-            4 1 2 3
-            4 1 3 2
-            4 2 1 3
-            4 2 3 1
-            4 3 1 2
-            4 3 2 1
-            
-         */
+        for(int i=0; i<road.length; i++) {
+            int a = road[i][0];
+            int b = road[i][1];
+            int c = road[i][2];
+
+            graph.get(a).add(new Node(b, c));
+            graph.get(b).add(new Node(a, c));
+        }
+
+        for(int i=1; i<=N; i++) {
+            if (dijkstra(1, i, K)) answer++;
+        }
 
         return answer;
     }
 
-    private static void factorial() {
-        factArr[1] = 1;
-        for(int i=2; i<=20; i++) {
-            factArr[i] = factArr[i-1] * i;
+    private static boolean dijkstra(int start, int end, int K) {
+        pq.clear();
+        Arrays.fill(dp, INF);
+        dp[start] = 0;
+        pq.offer(new Node(start, 0));
+
+        while(!pq.isEmpty()) {
+            Node poll = pq.poll();
+            int now = poll.to;
+            int dis = poll.distance;
+
+            if (dp[now] < dis) continue;
+
+            for(int i=0; i<graph.get(now).size(); i++) {
+                int cost = dp[now] + graph.get(now).get(i).distance;
+
+                if (cost < dp[graph.get(now).get(i).to]) {
+                    dp[graph.get(now).get(i).to] = cost;
+                    pq.offer(new Node(graph.get(now).get(i).to, cost));
+                }
+            }
         }
+
+        System.out.println(start + " -> " + end + " : " + dp[end]);
+
+        if (dp[end] <= K) return true;
+        else return false;
     }
+
+    static class Node implements Comparable<Node> {
+        int to;
+        int distance;
+
+        public Node(int to, int distance) {
+            this.to = to;
+            this.distance = distance;
+        }
+
+        @Override
+        public int compareTo(Node node) {
+            return this.distance - node.distance;
+        }
+
+    }
+
 }
